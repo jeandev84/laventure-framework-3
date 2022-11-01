@@ -1,0 +1,20 @@
+<?php
+
+namespace App\stubs\model;
+
+use Laventure\Component\Database\ORM\Model\Model;
+
+class User extends Model
+{
+
+     /**
+      * @var string
+     */
+     protected $table = 'users';
+
+
+     /**
+      * @var string[]
+     */
+     protected $fillable = ['username', 'password'];
+}

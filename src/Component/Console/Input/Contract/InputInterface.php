@@ -129,7 +129,7 @@ interface InputInterface
        * @param $name
        * @return mixed
       */
-      public function getFlag($name);
+      public function flag($name);
 
 
 

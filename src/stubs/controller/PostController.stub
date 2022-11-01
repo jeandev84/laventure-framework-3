@@ -1,0 +1,62 @@
+<?php
+namespace App\Http\Controllers\Admin;
+
+use Laventure\Component\Http\Request\Request;
+
+class PostController
+{
+
+     // GET : show all posts ( /posts )
+     public function index()
+     {
+
+     }
+
+
+
+     // GET : show one post ( posts/{post} )
+     public function show($id)
+     {
+
+     }
+
+
+
+     // GET show form ( posts/create )
+     public function create()
+     {
+
+     }
+
+
+
+     // POST store form data : ( posts )
+     public function store(Request $request)
+     {
+
+     }
+
+
+
+     // GET show record to update : posts/{post}/edit
+     public function edit($id)
+     {
+
+     }
+
+
+
+     // PUT|PATCH update post  : ( posts/{post}/edit )
+     public function update(Request $request, $id)
+     {
+
+     }
+
+
+
+     // DELETE delete post : ( posts/{post} )
+     public function destroy($id)
+     {
+
+     }
+}

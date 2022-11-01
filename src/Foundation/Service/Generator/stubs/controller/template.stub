@@ -4,7 +4,7 @@ namespace DummyNamespace;
 
 use Laventure\Component\Http\Request\Request;
 use Laventure\Component\Http\Response\Response;
-use Laventure\Foundation\Http\Controller\Controller;
+use Laventure\Foundation\Http\Controllers\Controller;
 
 
 /**

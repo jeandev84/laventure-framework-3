@@ -17,6 +17,7 @@ class MigrationGenerator extends ClassGenerator
       public function generateMapperMigrationClass(array $credentials): ?string
       {
             $credentials = array_merge([
+                 "DummyStubPath"     => "database/migration/template",
                  "DummyNamespace" => "App\\Migration",
                  "DummyClass"     => sprintf('Version%s', date('YmdHis')),
                  "DummyPath"      => "app/Migration",
@@ -36,6 +37,7 @@ class MigrationGenerator extends ClassGenerator
       public function generateModelMigrationClass(array $credentials): ?string
       {
           $credentials = array_merge([
+              "DummyStubPath"  => "database/migration/template",
               "DummyNamespace" => "Database\\Migrations",
               "DummyClass"     => 'create_users_table', // add_column_demo_to_users_table,
               "DummyPath"      => "database/migrations",
@@ -43,17 +45,5 @@ class MigrationGenerator extends ClassGenerator
           ], $credentials);
 
           return $this->generateClass($credentials);
-      }
-
-
-
-
-
-      /**
-       * @inheritDoc
-      */
-      protected function dummyStubPath(): string
-      {
-           return 'database/migration/template';
       }
 }

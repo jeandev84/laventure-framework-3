@@ -27,6 +27,7 @@ class CommandGenerator extends ClassGenerator
         [$commandClass, $commandProperty] = $this->makeCommandCredentials($commandName);
 
         $credentials = [
+            'DummyStubPath'          => "command/template",
             'DummyNamespace'         => "App\\Console\\Commands",
             'DummyClass'             => $commandClass,
             'DummyPath'              => "app/Console/Commands",
@@ -77,16 +78,5 @@ class CommandGenerator extends ClassGenerator
         }
 
         return sprintf('%sCommand', implode($items));
-    }
-
-
-
-
-    /**
-     * @inheritDoc
-    */
-    protected function dummyStubPath(): string
-    {
-        return 'command/template';
     }
 }

@@ -148,9 +148,9 @@ class Renderer implements RendererInterface
      * @param $layout
      * @return $this
     */
-    public function withLayout($layout): self
+    public function layout($layout): self
     {
-         $this->layout = $layout;
+         $this->layout = $this->resolvePath($layout);
 
          return $this;
     }
@@ -270,6 +270,9 @@ class Renderer implements RendererInterface
 
           return $this->renderTemplate($cachePath, $arguments);
     }
+
+
+
 
 
     /**

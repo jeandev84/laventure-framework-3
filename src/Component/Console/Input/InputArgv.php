@@ -235,7 +235,7 @@ abstract class InputArgv implements InputInterface
      /**
       * @inheritDoc
      */
-     public function getFlag($name)
+     public function flag($name)
      {
           return $this->flags[$name] ?? null;
      }

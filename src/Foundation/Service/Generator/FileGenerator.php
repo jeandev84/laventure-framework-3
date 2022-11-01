@@ -37,15 +37,13 @@ class FileGenerator
     */
     public function generate($targetPath, $content): ?string
     {
-        if ($this->generated($targetPath)) {
-             $this->createGeneratorException("File '{$targetPath}' already generated.");
+        if (! $this->generated($targetPath)) {
+            if($this->fs()->write($targetPath, $content)) {
+                return $targetPath;
+            }
         }
 
-        if(! $this->fs()->write($targetPath, $content)) {
-            return null;
-        }
-
-        return $targetPath;
+        return null;
     }
 
 

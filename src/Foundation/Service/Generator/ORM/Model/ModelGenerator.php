@@ -13,21 +13,11 @@ class ModelGenerator extends ClassGenerator
        public function generateModelClass(array $credentials): ?string
        {
              $credentials = array_merge([
+                 "DummyStubPath"  => "database/orm/model/template",
                  "DummyNamespace" => "App\\Model",
                  "DummyPath"      => 'app/Model'
              ], $credentials);
 
              return $this->generateClass($credentials);
-       }
-
-
-
-
-       /**
-        * @inheritDoc
-       */
-       protected function dummyStubPath(): string
-       {
-           return 'database/orm/model/template';
        }
 }

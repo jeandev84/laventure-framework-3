@@ -71,34 +71,6 @@ abstract class Resource
 
 
 
-      /**
-       * @param Router $router
-       * @return array
-      */
-      public function makeRoutes(Router $router): array
-      {
-           $routes = [];
-
-           foreach ($this->configureRoutes() as $route) {
-                 $routes[] = $router->makeRoute(
-                     $route['methods'],
-                     $this->routePath($route['path']),
-                     $this->routeAction($route['action'])
-                 )->name($this->routeName($route['action']))
-                 ->whereNumber($this->routeParameter());
-           }
-
-           return $routes;
-      }
-
-
-
-      public function makeViews()
-      {
-
-      }
-
-
 
 
       /**
@@ -217,18 +189,43 @@ abstract class Resource
 
 
 
-      /**
-       * @return array
-      */
-      abstract protected function configureRoutes(): array;
+
+
+     /**
+      * @param Router $router
+      * @return array
+     */
+     public function makeRoutes(Router $router): array
+     {
+            $routes = [];
+
+            foreach ($this->configureRoutes() as $route) {
+                $routes[] = $router->makeRoute(
+                    $route['methods'],
+                    $this->routePath($route['path']),
+                    $this->routeAction($route['action'])
+                )->name($this->routeName($route['action']))
+                    ->whereNumber($this->routeParameter());
+            }
+
+            return $routes;
+     }
 
 
 
 
-      /**
-       * Get resource type
-       *
-       * @return string
-      */
-      abstract public function getType(): string;
+    /**
+    * @return array
+    */
+    abstract protected static function configureRoutes(): array;
+
+
+
+
+    /**
+    * Get resource type
+    *
+    * @return string
+    */
+    abstract public function getType(): string;
 }

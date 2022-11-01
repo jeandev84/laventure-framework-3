@@ -1,0 +1,32 @@
+<?php
+namespace App\stubs\commands;
+
+use Laventure\Component\Console\Command\Command;
+use Laventure\Component\Console\Input\Contract\InputInterface;
+use Laventure\Component\Console\Output\Contract\OutputInterface;
+
+
+class HelloCommand extends Command
+{
+
+     /**
+      * @var string
+     */
+     protected $defaultName = 'hello';
+
+
+
+
+
+     /**
+       * @param InputInterface $input
+       * @param OutputInterface $output
+       * @return int
+     */
+     public function execute(InputInterface $input, OutputInterface $output): int
+     {
+           echo "Hello Command ...\n";
+
+           return Command::SUCCESS;
+     }
+}

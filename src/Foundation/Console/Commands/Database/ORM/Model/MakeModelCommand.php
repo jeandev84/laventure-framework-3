@@ -23,12 +23,12 @@ class MakeModelCommand extends Command
 
 
        /**
-        * @param ModelGenerator $generator
+        * @param ModelGenerator $controllerGenerator
        */
-       public function __construct(ModelGenerator $generator)
+       public function __construct(ModelGenerator $controllerGenerator)
        {
            parent::__construct('make:model');
-           $this->generator = $generator;
+           $this->generator = $controllerGenerator;
        }
 
 

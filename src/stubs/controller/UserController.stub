@@ -1,0 +1,63 @@
+<?php
+namespace App\Http\Controllers\Admin;
+
+
+use Laventure\Component\Http\Request\Request;
+
+class UserController
+{
+
+    // GET : show all users ( /users )
+    public function index()
+    {
+
+    }
+
+
+
+    // GET : show one post ( users/{user} )
+    public function show($id)
+    {
+
+    }
+
+
+
+    // GET show form ( users/create )
+    public function create()
+    {
+
+    }
+
+
+
+    // POST store form data : ( users )
+    public function store(Request $request)
+    {
+
+    }
+
+
+
+    // GET show record to update : users/{post}/edit
+    public function edit($id)
+    {
+
+    }
+
+
+
+    // PUT|PATCH update post  : ( users/{user}/edit )
+    public function update(Request $request, $id)
+    {
+
+    }
+
+
+
+    // DELETE delete post : ( users/{post} )
+    public function destroy($id)
+    {
+
+    }
+}

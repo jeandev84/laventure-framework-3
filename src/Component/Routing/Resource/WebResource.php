@@ -25,7 +25,7 @@ class WebResource extends Resource
     /**
      * @inheritDoc
     */
-    protected function configureRoutes(): array
+    protected static function configureRoutes(): array
     {
          return [
             [
@@ -64,5 +64,16 @@ class WebResource extends Resource
                  'action'  => 'destroy'
             ]
          ];
+    }
+
+
+
+
+    /**
+     * @return array
+    */
+    public static function views(): array
+    {
+        return ['index', 'show', 'create', 'edit'];
     }
 }

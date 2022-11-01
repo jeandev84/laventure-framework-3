@@ -19,6 +19,11 @@ class Response implements ResponseInterface
       use StatusCode;
 
 
+      const HTTP_OK      = 200;
+      const HTTP_CREATED = 201;
+
+
+
 
       /**
        * @var string

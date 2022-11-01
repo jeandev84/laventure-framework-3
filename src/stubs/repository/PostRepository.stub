@@ -1,0 +1,14 @@
+<?php
+namespace App\stubs\repository;
+
+use App\stubs\entity\Post;
+use Laventure\Component\Database\ORM\Mapper\Manager\EntityManager;
+use Laventure\Component\Database\ORM\Mapper\Repository\ServiceRepository;
+
+class PostRepository extends ServiceRepository
+{
+      public function __construct(EntityManager $em)
+      {
+          parent::__construct($em, Post::class);
+      }
+}

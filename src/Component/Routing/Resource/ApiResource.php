@@ -23,7 +23,7 @@ class ApiResource extends Resource
     /**
      * @inheritDoc
     */
-    protected function configureRoutes(): array
+    protected static function configureRoutes(): array
     {
         return [
             [

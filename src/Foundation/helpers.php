@@ -1,7 +1,10 @@
 <?php
 use Laventure\Component\Container\Container;
+use Laventure\Component\Http\Response\JsonResponse;
+use Laventure\Component\Http\Response\RedirectResponse;
 use Laventure\Component\Http\Response\Response;
 use Laventure\Component\Routing\Generator\UrlGenerator;
+use Laventure\Component\Templating\Renderer\Renderer;
 use Laventure\Foundation\Application;
 use Laventure\Foundation\Facade\Routing\Route;
 use Laventure\Foundation\Facade\Routing\Url;
@@ -234,10 +237,92 @@ if (! function_exists('view')) {
      */
      function view(string $template, array $data = []): Response
      {
-          $response = View::render($template, $data);
+          /** @var Renderer $view */
+          $view = app()->get('view');
+          $view->layout(app()->get('view.layout'));
 
-          return new Response($response);
+          return \response($view->render($template, $data));
      }
+}
+
+
+
+/*
+|-----------------------------------------------------------------------------
+|   Response
+|
+|   response('{'id': 1, 'content': 'some content here', Response::HTTP_OK, ['Accept' => 'application/json']);
+|-----------------------------------------------------------------------------
+*/
+
+if (! function_exists('response')) {
+
+    /**
+     * @param $content
+     * @param int $status
+     * @param array $headers
+     * @return Response
+    */
+    function response($content, int $status = 200, array $headers = []): Response
+    {
+        return new Response($content, $status, $headers);
+    }
+}
+
+
+
+
+/*
+|-----------------------------------------------------------------------------
+|   JsonResponse
+|
+|   json([
+|      'id' => 1,
+|      'content' => 'some content here'
+|   ], Response::HTTP_OK);
+|-----------------------------------------------------------------------------
+*/
+
+if (! function_exists('json')) {
+
+    /**
+     * @param array $data
+     * @param int $status
+     * @param array $headers
+     * @return Response
+    */
+    function json(array $data, int $status = 200, array $headers = []): Response
+    {
+        return new JsonResponse($data, $status, $headers);
+    }
+}
+
+
+
+
+
+/*
+|-----------------------------------------------------------------------------
+|   JsonResponse
+|
+|   json([
+|      'id' => 1,
+|      'content' => 'some content here'
+|   ], Response::HTTP_OK);
+|-----------------------------------------------------------------------------
+*/
+
+if (! function_exists('json')) {
+
+    /**
+     * @param null $path
+     * @param array $headers
+     * @return Response
+    */
+    function redirect($path = null, array $headers = []): Response
+    {
+          return new RedirectResponse($path, 301, $headers);
+    }
 }
 
 

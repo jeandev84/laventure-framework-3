@@ -18,7 +18,7 @@ use Laventure\Foundation\Facade\Routing\Route;
 use Laventure\Foundation\Facade\Routing\Url;
 use Laventure\Foundation\Facade\Templating\Asset;
 use Laventure\Foundation\Facade\Templating\View;
-use Laventure\Foundation\Http\Controller\DefaultController;
+use Laventure\Foundation\Http\Controllers\DefaultController;
 use Laventure\Foundation\Routing\Router;
 
 

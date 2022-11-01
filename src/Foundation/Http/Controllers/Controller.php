@@ -1,8 +1,9 @@
 <?php
-namespace Laventure\Foundation\Http\Controller;
+namespace Laventure\Foundation\Http\Controllers;
 
 
 use Laventure\Component\Container\Common\ContainerAwareTrait;
+use Laventure\Component\Container\Container;
 use Laventure\Component\Container\Contract\ContainerAwareInterface;
 use Laventure\Component\Http\Response\JsonResponse;
 use Laventure\Component\Http\Response\RedirectResponse;
@@ -14,17 +15,41 @@ use Laventure\Component\Http\Response\Response;
 */
 abstract class Controller implements ContainerAwareInterface
 {
-      use ContainerAwareTrait;
+
+       use ContainerAwareTrait;
+
+
+
+       /**
+        * View Layout
+        *
+        * @var string
+       */
+       protected $layout = 'layouts/default';
+
+
+
+       /**
+        * @param Container $container
+        * @return void
+       */
+       public function setContainer(Container $container)
+       {
+            $container->instance('view.layout', $this->getLayout());
+            $this->container = $container;
+       }
+
+
 
 
        /**
         * @param $id
         * @return mixed|string
        */
-      public function get($id)
-      {
-           return $this->container->get($id);
-      }
+       public function get($id)
+       {
+            return $this->container->get($id);
+       }
 
 
 
@@ -81,5 +106,17 @@ abstract class Controller implements ContainerAwareInterface
       public function json(array $data, int $statusCode = 200, array $headers = []): JsonResponse
       {
            return new JsonResponse($data, $statusCode, $headers);
+      }
+
+
+
+
+
+      /**
+       * @return string
+      */
+      protected function getLayout(): string
+      {
+            return $this->layout;
       }
 }

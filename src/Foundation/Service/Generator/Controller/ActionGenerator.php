@@ -1,6 +1,7 @@
 <?php
-namespace Laventure\Foundation\Service\Generator\Http;
+namespace Laventure\Foundation\Service\Generator\Controller;
 
+use Laventure\Component\FileSystem\FileSystem;
 use Laventure\Foundation\Service\Generator\StubGenerator;
 
 
@@ -17,31 +18,26 @@ class ActionGenerator extends StubGenerator
     protected $resources = [];
 
 
-
     /**
-     * @param array $credentials
+     * @param array $actions
+     * @param array $options
      * @return string
     */
-    public function generateActions(array $credentials): string
+    public function generateActions(array $actions, array $options = []): string
     {
-        if (empty($credentials['DummyActions'])) {
+        if (empty($actions)) {
              return "";
         }
 
-        $controllerPath = $credentials['DummyClass'] ?: "Dummy";
+        $actionStubs    = [];
+        $controllerPath = $options['DummyControllerPath'] ?: 'Dummy';
 
-        $actionStubs = [];
+        foreach ($actions as $action) {
+            $actionStubs[] = $this->generateStub("controller/action/template", array_merge([
+                'DummyActionName' => $action
+            ], $options));
 
-        foreach ($credentials['DummyActions'] as $action) {
-
-            $resource = $this->generateResourcePath($controllerPath, $action);
-
-            $actionStubs[] = $this->generateStub($this->actionStubPath(), [
-                'DummyActionName' => $action,
-                'DummyViewPath'   => $resource
-            ]);
-
-            $this->resources[] = $resource;
+            $this->resources[] = $this->generateResourcePath($controllerPath, $action);
         }
 
         return implode("\n\n", $actionStubs);
@@ -72,19 +68,5 @@ class ActionGenerator extends StubGenerator
          $controllerPath = str_replace('Controller', '', $controllerPath);
 
          return sprintf('%s/%s', strtolower($controllerPath), $actionPath);
-    }
-
-
-
-
-
-
-
-    /**
-     * @return string
-    */
-    protected function actionStubPath(): string
-    {
-         return 'http/action/web/template';
     }
 }

@@ -41,7 +41,7 @@ class ViewServiceProvider extends ServiceProvider
                   'root' => $fs->locate('/resources/views/')
               ]);
 
-              $render->withLayout('layouts/default.tpl.php');
+              $render->layout('layouts/default');
               return $render;
          });
 

@@ -22,6 +22,7 @@ class EntityRepositoryGenerator extends ClassGenerator
          [$entityNamespace, $entityClass] = $this->resolveEntityNamespace($credentials["DummyClass"]);
 
          $credentials = array_merge([
+              "DummyStubPath"   => "database/orm/mapper/template/repository",
               "DummyNamespace"  => "App\\Repository",
               "DummyClass"      => sprintf("%sRepository", $credentials["DummyClass"]),
               "DummyPath"       => "app/Repository",
@@ -30,17 +31,6 @@ class EntityRepositoryGenerator extends ClassGenerator
          ]);
 
          return $this->generateClass($credentials);
-    }
-
-
-
-
-    /**
-     * @inheritDoc
-    */
-    protected function dummyStubPath(): string
-    {
-         return 'database/orm/mapper/template/repository';
     }
 
 

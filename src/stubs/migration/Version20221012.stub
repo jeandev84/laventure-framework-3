@@ -1,0 +1,23 @@
+<?php
+namespace App\Migration\migration;
+
+use Laventure\Component\Database\Migration\Migration;
+
+
+class Version20221012 extends Migration
+{
+
+    public function up()
+    {
+        // TODO: Implement up() method.
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function down()
+    {
+        // TODO: Implement down() method.
+    }
+}

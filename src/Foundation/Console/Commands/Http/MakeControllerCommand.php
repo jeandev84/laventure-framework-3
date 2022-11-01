@@ -4,7 +4,10 @@ namespace Laventure\Foundation\Console\Commands\Http;
 use Laventure\Component\Console\Command\Command;
 use Laventure\Component\Console\Input\Contract\InputInterface;
 use Laventure\Component\Console\Output\Contract\OutputInterface;
-use Laventure\Foundation\Service\Generator\Http\ControllerGenerator;
+use Laventure\Component\Routing\Resource\ApiResource;
+use Laventure\Component\Routing\Resource\WebResource;
+use Laventure\Foundation\Service\Generator\Controller\ControllerGenerator;
+use Laventure\Foundation\Service\Generator\Template\TemplateGenerator;
 
 
 class MakeControllerCommand extends Command
@@ -14,19 +17,26 @@ class MakeControllerCommand extends Command
      /**
       * @var ControllerGenerator
      */
-     protected $generator;
-
+     protected $controllerGenerator;
 
 
 
 
      /**
-      * @param ControllerGenerator $generator
+      * @var TemplateGenerator
      */
-     public function __construct(ControllerGenerator $generator)
+     protected $templateGenerator;
+
+
+      /**
+       * @param ControllerGenerator $controllerGenerator
+       * @param TemplateGenerator $templateGenerator
+     */
+     public function __construct(ControllerGenerator $controllerGenerator, TemplateGenerator $templateGenerator)
      {
            parent::__construct('make:controller');
-           $this->generator = $generator;
+           $this->controllerGenerator = $controllerGenerator;
+           $this->templateGenerator   = $templateGenerator;
      }
 
 
@@ -41,8 +51,21 @@ class MakeControllerCommand extends Command
      */
      public function execute(InputInterface $input, OutputInterface $output): int
      {
-         if ($path = $this->generateController($input)) {
+         if ($path = $this->makeController($input)) {
+
               $output->success("Controller '$path' successfully generated.");
+
+              if ($input->flag('resource')) {
+                  if ($layout = $this->makeLayout()) {
+                      $output->success("Layout '{$layout}' successfully generated.");
+                  }
+                  if ($views = $this->makeResourceViews($input->getArgument())) {
+                       $output->success("View files successfully generated:");
+                       foreach ($views as $view) {
+                            $output->success($view);
+                       }
+                  }
+              }
          }
 
          return Command::SUCCESS;
@@ -57,11 +80,42 @@ class MakeControllerCommand extends Command
       * @param InputInterface $input
       * @return string
      */
-     protected function generateController(InputInterface $input): string
+     protected function makeController(InputInterface $input): string
      {
-           return $this->generator->generateController([
-               'DummyClass'   => $input->getArgument(),
-               // 'DummyActions' => ['index', 'show', 'create', 'update', 'destroy']
-           ]);
+           $controller = $input->getArgument();
+
+           if($input->flag('resource')) {
+               return $this->controllerGenerator->generateResourceController($controller);
+           } elseif ($input->flag('api')) {
+               return $this->controllerGenerator->generateApiController($controller);
+           }
+
+           return $this->controllerGenerator->generateController($controller);
      }
+
+
+
+
+     /**
+      * @param $controller
+      * @return string[]
+     */
+     public function makeResourceViews($controller): array
+     {
+           $views = $this->controllerGenerator->generateResourcePaths($controller);
+
+           return $this->templateGenerator->generateViews($views);
+     }
+
+
+
+
+     /**
+      * @return string|null
+     */
+     public function makeLayout(): ?string
+     {
+          return $this->templateGenerator->generateLayout();
+     }
+
 }

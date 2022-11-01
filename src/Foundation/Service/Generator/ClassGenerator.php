@@ -16,14 +16,19 @@ abstract class ClassGenerator extends StubGenerator
     {
         $class          = $credentials['DummyClass'] ?? 'DummyClass';
         $dummyPath      = $credentials['DummyPath']  ?? 'DummyPath';
-        $targetPath     = $this->generatePath($dummyPath, $class);
+        $targetPath     = $this->generatePath($dummyPath, sprintf('%s.php', $class));
         $dummyNamespace = $credentials['DummyNamespace'] ?? 'DummyNamespace';
 
         [$dummyNamespace, $class]       = $this->resolveClassNamespace($dummyNamespace, $class);
         $credentials['DummyNamespace']  = $dummyNamespace;
         $credentials['DummyClass']      = $class;
 
-        $stub = $this->generateStub($this->dummyStubPath(), $credentials);
+        if (empty($credentials['DummyStubPath'])) {
+             $this->createGeneratorException("DummyStubPath undefined. Try to set it please.");
+        }
+
+        $dummyStubPath = $credentials['DummyStubPath'];
+        $stub = $this->generateStub($dummyStubPath, $credentials);
 
         return $this->generate($targetPath, $stub);
     }
@@ -54,15 +59,15 @@ abstract class ClassGenerator extends StubGenerator
 
     /**
      * @param $basePath
-     * @param $classname
+     * @param $template
      * @return string
     */
-    public function generatePath($basePath, $classname): string
+    public function generatePath($basePath, $template): string
     {
         $basePath  = trim($basePath, '\\/');
-        $classname = trim($classname, "\\/");
+        $template = trim($template, "\\/");
 
-        return sprintf('%s/%s.php', $basePath, $classname);
+        return sprintf('%s/%s', $basePath, $template);
     }
 
 
@@ -70,5 +75,8 @@ abstract class ClassGenerator extends StubGenerator
     /**
      * @return string
     */
-    abstract protected function dummyStubPath(): string;
+    protected function dummyStubPath(): string
+    {
+         return "";
+    }
 }

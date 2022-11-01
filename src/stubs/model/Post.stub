@@ -1,0 +1,11 @@
+<?php
+namespace App\stubs\model;
+
+
+use Laventure\Component\Database\ORM\Model\Model;
+
+class Post extends Model
+{
+
+     protected $table = 'posts';
+}

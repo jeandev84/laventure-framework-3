@@ -1,5 +1,5 @@
 <?php
-namespace Laventure\Foundation\Http\Controller;
+namespace Laventure\Foundation\Http\Controllers;
 
 use Laventure\Component\Http\Response\Response;
 use Laventure\Component\Templating\Renderer\Renderer;
@@ -14,7 +14,7 @@ class DefaultController extends Controller
       */
       public function __construct(Renderer $renderer)
       {
-           $renderer->withLayout(null);
+           $renderer->layout(null);
            $renderer->basePath(__DIR__ . '/Resources/views');
       }
 
