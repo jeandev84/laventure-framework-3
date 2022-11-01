@@ -1,0 +1,78 @@
+<?php
+namespace Laventure\Component\Database\ORM\Mapper\Manager\Event;
+
+
+/**
+ * EntityEventManager
+*/
+class EntityEventManager
+{
+
+       /**
+        * @var array
+       */
+       protected $events = [];
+
+
+
+
+       /**
+        * @param object $object
+        * @param $eventName
+        * @return $this
+       */
+       public function addEvent(object $object, $eventName): self
+       {
+            $this->events[get_class($object)][] = $eventName;
+
+            return $this;
+       }
+
+
+
+
+       /**
+        * @param array $events
+        * @param $object
+        * @return void
+       */
+       public function addEvents($object, array $events)
+       {
+            foreach ($events as $eventName) {
+                 $this->addEvent($object, $eventName);
+            }
+       }
+
+
+
+       /**
+        * @param object $object
+        * @param string $eventName
+        * @return object
+       */
+       public function dispatchEvent(object $object, string $eventName): object
+       {
+             if (array_key_exists($eventName, $this->events)) {
+                  $events = $this->events[get_class($object)];
+             }
+
+
+             if (! method_exists($object, $eventName)) {
+                  exit('Invalid event name');
+             }
+
+             call_user_func([$object, $eventName]);
+
+             return $object;
+       }
+
+
+
+       public function dispatchEvents()
+       {
+            foreach ($this->events as $className => $events) {
+
+            }
+       }
+
+}
