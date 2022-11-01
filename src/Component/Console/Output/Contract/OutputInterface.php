@@ -48,11 +48,13 @@ interface OutputInterface
 
 
      /**
-      * Print messages
+      * Show messages or do other things
+      *  echo | print 'Result of execution'
       *
       * @return void
      */
-     public function print();
+     public function display();
+
 
 
 

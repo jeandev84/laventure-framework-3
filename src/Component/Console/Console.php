@@ -153,7 +153,7 @@ class Console implements ConsoleInterface
 
             $status = $command->run($input, $output);
 
-            $output->print();
+            $output->display();
 
             return $status;
      }

@@ -67,7 +67,7 @@ class ConsoleOutput implements OutputInterface
     */
     public function writeln($message)
     {
-        $this->messages[] = $message. PHP_EOL;
+        $this->messages[] = sprintf("%s%s", $message, PHP_EOL);
 
         return $this;
     }
@@ -88,10 +88,11 @@ class ConsoleOutput implements OutputInterface
 
 
 
+
     /**
      * @return void
     */
-    public function print()
+    public function display()
     {
          print($this);
     }

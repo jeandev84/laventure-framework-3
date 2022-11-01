@@ -85,34 +85,6 @@ abstract class Controller implements ContainerAwareInterface
 
 
       /**
-       * @param string $path
-       * @param int $code
-       * @return RedirectResponse
-      */
-      public function redirectTo(string $path, int $code = 301): RedirectResponse
-      {
-           return new RedirectResponse($path, $code);
-      }
-
-
-
-
-      /**
-       * @param array $data
-       * @param int $statusCode
-       * @param array $headers
-       * @return JsonResponse
-      */
-      public function json(array $data, int $statusCode = 200, array $headers = []): JsonResponse
-      {
-           return new JsonResponse($data, $statusCode, $headers);
-      }
-
-
-
-
-
-      /**
        * @return string
       */
       protected function getLayout(): string

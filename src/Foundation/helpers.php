@@ -231,15 +231,22 @@ if (! function_exists('assets')) {
 if (! function_exists('view')) {
 
      /**
-      * @param string $template
+      * @param string|null $template
       * @param array $data
-      * @return Response
+      * @return Renderer|Response
      */
-     function view(string $template, array $data = []): Response
+     function view(string $template = null, array $data = [])
      {
           /** @var Renderer $view */
           $view = app()->get('view');
-          $view->layout(app()->get('view.layout'));
+
+          if (! $template) {
+              return $view;
+          }
+
+          if (method_exists($view, 'layout')) {
+              $view->layout(app()->get('view.layout'));
+          }
 
           return \response($view->render($template, $data));
      }
@@ -289,9 +296,9 @@ if (! function_exists('json')) {
      * @param array $data
      * @param int $status
      * @param array $headers
-     * @return Response
+     * @return JsonResponse
     */
-    function json(array $data, int $status = 200, array $headers = []): Response
+    function json(array $data, int $status = 200, array $headers = []): JsonResponse
     {
         return new JsonResponse($data, $status, $headers);
     }
@@ -316,12 +323,13 @@ if (! function_exists('json')) {
 
     /**
      * @param null $path
+     * @param int $status
      * @param array $headers
-     * @return Response
+     * @return RedirectResponse
     */
-    function redirect($path = null, array $headers = []): Response
+    function redirect($path = null, int $status = 301, array $headers = []): RedirectResponse
     {
-          return new RedirectResponse($path, 301, $headers);
+          return new RedirectResponse($path, $status, $headers);
     }
 }
 

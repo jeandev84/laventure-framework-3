@@ -45,6 +45,17 @@ class MakeControllerCommand extends Command
 
 
      /**
+      * Example :
+      *
+      * $ php console make:controller DemoController
+      * $ php console make:controller DemoController --resource
+      * $ php console make:controller Resource/Users/UserController --resource
+      * $ php console make:controller Admin/UserController --resource
+      * $ php console make:controller DemoController --api
+      * $ php console make:controller V1/DemoController --api
+      * $ php console make:controller Api/V1/DemoController --api
+      *
+      *
       * @param InputInterface $input
       * @param OutputInterface $output
       * @return int
