@@ -59,21 +59,33 @@ interface OutputInterface
 
 
 
-    /**
-     * @param $message
-     * @return mixed
-    */
-    public function success($message);
+
+     /**
+      * @param $command
+      * @return mixed
+     */
+     public function exec($command);
 
 
 
 
 
-    /**
-     * @param $message
-     * @return mixed
-    */
-    public function failure($message);
+
+     /**
+      * @param $message
+      * @return mixed
+     */
+     public function success($message);
+
+
+
+
+
+     /**
+      * @param $message
+      * @return mixed
+     */
+     public function failure($message);
 
 
 

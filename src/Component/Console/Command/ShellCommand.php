@@ -19,7 +19,7 @@ class ShellCommand extends Command implements ShellCommandInterface
       public function exec($command, array $headers = [])
       {
            if ($headers) {
-               print(join(PHP_EOL, $headers). "\n\n");
+               print(join("\n", $headers). "\n\n");
            }
 
            return shell_exec($command);
