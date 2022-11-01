@@ -34,26 +34,11 @@ interface OutputInterface
 
 
      /**
-      * Print messages
+      * Print all messages
       *
       * @return string
      */
      public function __toString();
-
-
-
-
-
-
-
-
-     /**
-      * Show messages or do other things
-      *  echo | print 'Result of execution'
-      *
-      * @return void
-     */
-     public function display();
 
 
 

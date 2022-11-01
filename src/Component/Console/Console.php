@@ -153,9 +153,23 @@ class Console implements ConsoleInterface
 
             $status = $command->run($input, $output);
 
-            $output->display();
+            print($output);
 
             return $status;
+     }
+
+
+
+
+     /**
+      * Print message
+      *
+      * @param $message
+      * @return void
+     */
+     public function print($message)
+     {
+          print($message);
      }
 
 

@@ -90,15 +90,6 @@ class ConsoleOutput implements OutputInterface
 
 
     /**
-     * @return void
-    */
-    public function display()
-    {
-         print($this);
-    }
-
-
-    /**
      * @param $command
      * @param array $messages
      * @return false|string|null

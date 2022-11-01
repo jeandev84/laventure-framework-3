@@ -26,10 +26,11 @@ abstract class ServerCommand extends ShellCommand
       * @param null $parsed
       * @return string
      */
-     protected function getHost($parsed = null): string
+     protected function host($parsed = null): string
      {
           return $parsed ?: $this->host;
      }
+
 
 
 
@@ -39,17 +40,21 @@ abstract class ServerCommand extends ShellCommand
       * @param $parsed
       * @return string
      */
-     protected function getPort($parsed = null): string
+     protected function port($parsed = null): string
      {
           return $parsed ?: '8000';
      }
+
+
+
+
 
 
      /**
       * @param null $port
       * @return string
      */
-     protected function getLink($port = null): string
+     protected function link($port = null): string
      {
           $port = $port ?: '8000';
 

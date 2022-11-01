@@ -61,8 +61,8 @@ class ServerRunCommand extends ServerCommand
             }
 
             return [
-                sprintf("Server listen on the port :%s", $this->getPort($port)),
-                sprintf("Open to your browser next link %s", $this->getLink($port))
+                sprintf("Server listen on the port :%s", $this->port($port)),
+                sprintf("Open to your browser next link %s", $this->link($port))
             ];
 
       }
@@ -77,7 +77,7 @@ class ServerRunCommand extends ServerCommand
       */
       protected function makeCommand(InputInterface $input): string
       {
-           $host = $this->getHost();
+           $host = $this->host();
 
            if ($input->hasOption('host')) {
                $host = $input->getOption('host');
