@@ -24,7 +24,9 @@ class TemplateGenerator extends StubGenerator
 
                ]);
 
-               $resources[] = $this->generate("resources/views/{$view}", $stub);
+               if (! $this->generated($viewPath = "resources/views/{$view}")) {
+                   $resources[] = $this->generate($viewPath, $stub);
+               }
            }
 
            return $resources;
@@ -43,6 +45,10 @@ class TemplateGenerator extends StubGenerator
 
          ]);
 
-         return $this->generate('resources/views/layouts/app.tpl.php', $stub);
+         if ($this->generated($layoutPath = 'resources/views/layouts/default.tpl.php')) {
+                return false;
+         }
+
+         return $this->generate($layoutPath, $stub);
      }
 }

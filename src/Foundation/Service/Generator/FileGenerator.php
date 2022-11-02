@@ -59,6 +59,26 @@ class FileGenerator
 
 
 
+    /**
+     * Regenerate existent file
+     *
+     * @param $targetPath
+     * @param $content
+     * @return false|mixed
+    */
+    public function regenerate($targetPath, $content)
+    {
+         if ($this->generated($targetPath)) {
+              $this->fs()->remove($targetPath);
+         }
+
+         return $this->generate($targetPath, $content);
+    }
+
+
+
+
+
 
     /**
      * @return string[]
