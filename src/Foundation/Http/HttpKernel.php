@@ -4,7 +4,6 @@ namespace Laventure\Foundation\Http;
 use Exception;
 use Laventure\Component\Http\Request\Request;
 use Laventure\Component\Http\Response\Response;
-use Laventure\Component\Routing\Collection\BadControllerException;
 use Laventure\Contract\Http\Kernel;
 use Laventure\Foundation\Application;
 use Laventure\Foundation\Http\Middleware\Api\BarApiMiddleware;

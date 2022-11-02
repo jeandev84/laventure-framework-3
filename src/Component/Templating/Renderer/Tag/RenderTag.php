@@ -1,17 +1,17 @@
 <?php
-namespace Laventure\Component\Templating\Renderer;
+namespace Laventure\Component\Templating\Renderer\Tag;
 
 
 /**
  * RenderTag
 */
-class RenderTag
+class RenderTag implements RenderTagInterface
 {
 
       /**
        * @var array
       */
-      protected $contentTags = [];
+      protected $tags = [];
 
 
 
@@ -22,17 +22,17 @@ class RenderTag
       */
       public function __construct()
       {
-           $this->add($this->defaultContentTags());
+           $this->withTags($this->defaultTags());
       }
 
 
 
 
+
       /**
-       * @param $content
-       * @return string
+       * @inheritdoc
       */
-      public function make($content): string
+      public function replaceTags($content): string
       {
            return (string) str_replace($this->searchs(), $this->replaces(), $content);
       }
@@ -42,12 +42,12 @@ class RenderTag
 
 
       /**
-       * @param array $tags
+       * @param $contentTags
        * @return void
       */
-      public function add(array $tags)
+      public function withTags($contentTags)
       {
-           $this->contentTags = array_merge($this->contentTags, $tags);
+           $this->tags = array_merge($this->tags, $contentTags);
       }
 
 
@@ -57,7 +57,7 @@ class RenderTag
       /**
        * @return string[]
       */
-      private function defaultContentTags(): array
+      private function defaultTags(): array
       {
           return [
               '{%'        =>  "<?php ",
@@ -80,7 +80,7 @@ class RenderTag
       */
       private function searchs(): array
       {
-           return array_keys($this->contentTags);
+           return array_keys($this->tags);
       }
 
 
@@ -91,6 +91,6 @@ class RenderTag
       */
       private function replaces(): array
       {
-           return array_values($this->contentTags);
+           return array_values($this->tags);
       }
 }

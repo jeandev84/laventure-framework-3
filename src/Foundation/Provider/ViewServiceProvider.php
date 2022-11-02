@@ -2,17 +2,18 @@
 namespace Laventure\Foundation\Provider;
 
 
+use Laventure\Component\Container\Provider\Contract\BootableServiceProvider;
 use Laventure\Component\Container\Provider\ServiceProvider;
-use Laventure\Component\FileSystem\FileSystem;
 use Laventure\Component\Templating\Asset\Asset;
 use Laventure\Component\Templating\Renderer\Renderer;
 use Laventure\Component\Templating\Renderer\RendererInterface;
+use Laventure\Foundation\Factory\Views\ViewFactory;
 
 
 /**
  * ViewServiceProvider
 */
-class ViewServiceProvider extends ServiceProvider
+class ViewServiceProvider extends ServiceProvider implements BootableServiceProvider
 {
 
 
@@ -26,6 +27,16 @@ class ViewServiceProvider extends ServiceProvider
 
 
 
+    /**
+     * @inheritdoc
+    */
+    public function boot()
+    {
+        $this->app->instance('view.layout', \config()->get('view.layout'));
+    }
+
+
+
 
 
     /**
@@ -33,15 +44,15 @@ class ViewServiceProvider extends ServiceProvider
     */
     public function register()
     {
-         $this->app->singleton(Renderer::class, function (FileSystem $fs) {
+         $this->app->singleton(Renderer::class, function () {
 
-              /* $render = new Renderer($fs->locate('/resources/views/')); */
+              $viewPath  = \fs()->locate(\config()->get('view.root'));
+              $extension = \config()->get('view.extension');
+              $render    = ViewFactory::create($viewPath, $extension);
 
-              $render = $this->app->make(Renderer::class, [
-                  'root' => $fs->locate('/resources/views/')
-              ]);
+              $render->compress(\config()->get('view.compress'));
+              $render->cachePath(fs()->locate('/temp/cache/app/views/'));
 
-              $render->layout('layouts/default');
               return $render;
          });
 

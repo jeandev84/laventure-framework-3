@@ -26,13 +26,13 @@ class Template implements TemplateInterface
 
 
     /**
-     * @param string|null $path
+     * @param $path
      * @param array $data
     */
-    public function __construct(string $path = null, array $data = [])
+    public function __construct($path, array $data = [])
     {
-         $this->withPath($path);
-         $this->withParameters($data);
+          $this->path = $path;
+          $this->data = $data;
     }
 
 
@@ -75,7 +75,7 @@ class Template implements TemplateInterface
     {
         extract($this->data, EXTR_SKIP);
 
-        if (! $this->existTemplate()) {
+        if (! $this->exist()) {
             $this->createException("Template file {$this->path} does not exist.");
         }
 
@@ -91,7 +91,7 @@ class Template implements TemplateInterface
     /**
      * @return bool
     */
-    public function existTemplate(): bool
+    public function exist(): bool
     {
          return is_file($this->path);
     }

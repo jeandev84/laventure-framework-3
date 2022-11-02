@@ -1,11 +1,11 @@
 <?php
-namespace Laventure\Component\Templating\Renderer;
+namespace Laventure\Component\Templating\Renderer\Compressor;
 
 
 /**
- * @RenderCompressor
- */
-class RenderCompressor
+ * @class RenderCompressor
+*/
+class RenderCompressor implements RenderCompressorInterface
 {
 
     /**
@@ -36,11 +36,11 @@ class RenderCompressor
 
 
 
+
     /**
-     * @param string $content
-     * @return array|string|string[]|null
+     * @inheritdoc
     */
-    public function compress(string $content)
+    public function compress($content)
     {
         return preg_replace($this->search, $this->replace, $content);
     }

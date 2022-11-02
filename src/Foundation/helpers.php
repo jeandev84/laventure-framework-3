@@ -1,9 +1,13 @@
 <?php
+
+use Laventure\Component\Config\Config;
 use Laventure\Component\Container\Container;
+use Laventure\Component\FileSystem\FileSystem;
 use Laventure\Component\Http\Response\JsonResponse;
 use Laventure\Component\Http\Response\RedirectResponse;
 use Laventure\Component\Http\Response\Response;
 use Laventure\Component\Routing\Generator\UrlGenerator;
+use Laventure\Component\Templating\Renderer\Adapter\RenderAdapter;
 use Laventure\Component\Templating\Renderer\Renderer;
 use Laventure\Foundation\Application;
 use Laventure\Foundation\Facade\Routing\Route;
@@ -40,6 +44,24 @@ if(! function_exists('app')) {
 
 
 
+/*
+|------------------------------------------------------------------
+|   Get Configuration
+|   config()
+|------------------------------------------------------------------
+*/
+
+if(! function_exists('config')) {
+
+    /**
+     * @return Config
+     */
+    function config(): Config
+    {
+         return app()->get('config');
+    }
+}
+
 
 
 /*
@@ -58,6 +80,26 @@ if(! function_exists('app_name')) {
 }
 
 
+
+
+
+/*
+|------------------------------------------------------------------
+|   Get Filesystem
+|   fs()
+|------------------------------------------------------------------
+*/
+
+if(! function_exists('fs')) {
+
+    /**
+     * @return FileSystem
+    */
+    function fs(): FileSystem
+    {
+        return app()->get('filesystem');
+    }
+}
 
 
 /*
@@ -233,20 +275,18 @@ if (! function_exists('view')) {
      /**
       * @param string|null $template
       * @param array $data
-      * @return Renderer|Response
+      * @return RenderAdapter|Response
      */
      function view(string $template = null, array $data = [])
      {
-          /** @var Renderer $view */
+          /** @var RenderAdapter $view */
           $view = app()->get('view');
 
           if (! $template) {
               return $view;
           }
 
-          if (method_exists($view, 'layout')) {
-              $view->layout(app()->get('view.layout'));
-          }
+          $view->layout(app()->get('view.layout'));
 
           return \response($view->render($template, $data));
      }

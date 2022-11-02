@@ -1,10 +1,12 @@
 <?php
-namespace Laventure\Component\Templating\Renderer;
+namespace Laventure\Component\Templating\Renderer\Cache;
+
+
 
 /**
  * RenderCacheManager
 */
-class RenderCache
+class RenderCache implements RenderCacheInterface
 {
 
       /**
@@ -43,25 +45,23 @@ class RenderCache
       */
       public function getCachePath(): string
       {
-           return $this->cachePath . DIRECTORY_SEPARATOR . 'cache';
+           return $this->cachePath;
       }
 
 
 
       /**
-       * @param $path
-       * @param $content
-       * @return false|int
+       * @inheritdoc
       */
-      public function cache($path, $content)
+      public function cache($template, $content)
       {
-           $dirname = pathinfo($path, PATHINFO_DIRNAME);
+           $dirname = pathinfo($template, PATHINFO_DIRNAME);
 
            if (! is_dir($dirname)) {
-               @mkdir($dirname, 0777, true);
+               mkdir($dirname, 0777, true);
            }
 
-           return touch($path) ? file_put_contents($path, $content) : false;
+           return touch($template) ? file_put_contents($template, $content) : false;
       }
 
 

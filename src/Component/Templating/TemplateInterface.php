@@ -3,11 +3,14 @@ namespace Laventure\Component\Templating;
 
 interface TemplateInterface
 {
+
+
       /**
        * @param $path
        * @return mixed
       */
       public function withPath($path);
+
 
 
 

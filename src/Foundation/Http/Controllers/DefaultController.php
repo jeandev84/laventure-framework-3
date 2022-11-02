@@ -14,7 +14,7 @@ class DefaultController extends Controller
       */
       public function __construct(Renderer $renderer)
       {
-           $renderer->layout(null);
+           $renderer->withLayout(null);
            $renderer->basePath(__DIR__ . '/Resources/views');
       }
 

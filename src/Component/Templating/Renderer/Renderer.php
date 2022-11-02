@@ -2,13 +2,18 @@
 namespace Laventure\Component\Templating\Renderer;
 
 
-use Laventure\Component\Templating\Renderer\Exception\RenderException;
+use Laventure\Component\Templating\Renderer\Cache\RenderCache;
+use Laventure\Component\Templating\Renderer\Compressor\RenderCompressor;
+use Laventure\Component\Templating\Renderer\Layout\RenderLayoutInterface;
+use Laventure\Component\Templating\Renderer\Tag\RenderTag;
 use Laventure\Component\Templating\Template;
+
+
 
 /**
  * Renderer
 */
-class Renderer implements RendererInterface
+class Renderer implements RendererInterface, RenderLayoutInterface
 {
 
 
@@ -77,7 +82,6 @@ class Renderer implements RendererInterface
     {
           $this->basePath($root);
           $this->cache      = new RenderCache($root);
-          $this->compressor = new RenderCompressor();
           $this->contentTag = new RenderTag();
     }
 
@@ -91,22 +95,6 @@ class Renderer implements RendererInterface
     public function basePath(string $root): self
     {
          $this->root = rtrim($root, '\\/');
-
-         return $this;
-    }
-
-
-
-
-
-
-    /**
-     * @param bool $compressed
-     * @return $this
-    */
-    public function compressed(bool $compressed): self
-    {
-         $this->compressed = $compressed;
 
          return $this;
     }
@@ -148,7 +136,7 @@ class Renderer implements RendererInterface
      * @param $layout
      * @return $this
     */
-    public function layout($layout): self
+    public function withLayout($layout): self
     {
          $this->layout = $this->resolvePath($layout);
 
@@ -170,16 +158,6 @@ class Renderer implements RendererInterface
 
 
 
-    /**
-     * @return bool
-    */
-    public function cacheable(): bool
-    {
-         return $this->extension !== 'php';
-    }
-
-
-
 
     /**
      * @inheritDoc
@@ -192,15 +170,7 @@ class Renderer implements RendererInterface
               $content = $this->wrap($content);
          }
 
-         if ($this->cacheable()) {
-              $content = $this->renderCache($template, $content, $arguments);
-         }
-
-         if ($this->compressed) {
-             $content = $this->compressor->compress($content);
-         }
-
-         return $content;
+         return $this->renderCache($template, $content, $arguments);
     }
 
 
@@ -208,11 +178,11 @@ class Renderer implements RendererInterface
 
 
     /**
-     * @param string $path
+     * @param $path
      * @param array $arguments
      * @return false|string
     */
-    public function renderTemplate(string $path, array $arguments = [])
+    public function renderTemplate($path, array $arguments = [])
     {
          return (new Template($path, $arguments))->render();
     }
@@ -260,7 +230,7 @@ class Renderer implements RendererInterface
     */
     public function renderCache($template, $content, $arguments): string
     {
-          $content = $this->contentTag->make($content);
+          $content = $this->contentTag->replaceTags($content);
 
           if (! $this->cache->cacheTemplate($template, $content)) {
               $this->cacheTemplateException($template);
@@ -284,7 +254,7 @@ class Renderer implements RendererInterface
     {
          $content = $this->renderTemplate($this->locate($template), $data);
 
-         $content = $this->contentTag->make($content);
+         $content = $this->contentTag->replaceTags($content);
 
          if (! $this->cache->cacheTemplate($template, $content)) {
               $this->cacheTemplateException($template);
@@ -298,7 +268,7 @@ class Renderer implements RendererInterface
 
 
     /**
-     * @return false|string
+     * @inheritdoc
     */
     public function renderLayout()
     {
