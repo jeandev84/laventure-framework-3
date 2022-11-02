@@ -38,7 +38,10 @@ class Form
        *
        * @var string[]
       */
-      protected $attributes;
+      protected $attributes = [
+          'method' => 'POST',
+          'action' => ''
+      ];
 
 
 
@@ -204,11 +207,13 @@ class Form
       */
       public function open(array $attributes)
       {
-           $attributes = array_merge(['method' => 'POST', 'action' => ''], $attributes);
+           foreach ($attributes as $name => $value) {
+               $this->attributes[$name] = $value;
+           }
 
-           $this->setAttributes($attributes);
+           $attrs = $this->resolveAttributes($this->attributes);
 
-           $this->templates['open'] = "<form>"; // resolve open form attributes
+           $this->templates['open'] = "<form {$attrs}>";
       }
 
 
