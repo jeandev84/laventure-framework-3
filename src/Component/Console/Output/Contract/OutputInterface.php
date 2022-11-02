@@ -46,6 +46,19 @@ interface OutputInterface
 
 
      /**
+      * Print specific message
+      *
+      * @param $message
+      * @return mixed
+     */
+     public function print($message);
+
+
+
+
+
+
+     /**
       * @param $command
       * @return mixed
      */

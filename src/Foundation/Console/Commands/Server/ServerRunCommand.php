@@ -38,7 +38,9 @@ class ServerRunCommand extends ServerCommand
       */
       public function execute(InputInterface $input, OutputInterface $output): int
       {
-            $output->write($this->exec($this->makeCommand($input), $this->getHeaderMessage($input)));
+            $output->print($this->getHeaderMessage($input));
+
+            $output->write($this->exec($this->makeCommand($input)));
 
             return Command::SUCCESS;
       }

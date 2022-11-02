@@ -1,7 +1,6 @@
 <?php
 namespace Laventure\Foundation\Console\Commands\Server\Common;
 
-use Laventure\Component\Console\Command\Command;
 use Laventure\Component\Console\Command\ShellCommand;
 
 

@@ -90,16 +90,23 @@ class ConsoleOutput implements OutputInterface
 
 
     /**
+     * @param array|string $message
+     * @return void
+    */
+    public function print($message)
+    {
+         print(join("\n", (array) $message). "\n\n");
+    }
+
+
+
+
+    /**
      * @param $command
-     * @param array $messages
      * @return false|string|null
     */
-    public function exec($command, array $messages = [])
+    public function exec($command)
     {
-        if ($messages) {
-            print(implode(PHP_EOL, $messages) . PHP_EOL. PHP_EOL);
-        }
-
         return shell_exec($command);
     }
 

@@ -13,15 +13,10 @@ class ShellCommand extends Command implements ShellCommandInterface
 {
       /**
        * @param $command
-       * @param array $headers
        * @return false|string|null
       */
-      public function exec($command, array $headers = [])
+      public function exec($command)
       {
-           if ($headers) {
-               print(join("\n", $headers). "\n\n");
-           }
-
            return shell_exec($command);
       }
 }
