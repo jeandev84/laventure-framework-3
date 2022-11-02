@@ -1,5 +1,5 @@
 <?php
-namespace Laventure\Foundation\Service\Generator;
+namespace Laventure\Foundation\Service\Generator\File;
 
 /**
  * ClassGenerator

@@ -2,7 +2,7 @@
 namespace Laventure\Foundation\Service\Generator\Route;
 
 
-use Laventure\Foundation\Service\Generator\StubGenerator;
+use Laventure\Foundation\Service\Generator\File\StubGenerator;
 
 
 /**

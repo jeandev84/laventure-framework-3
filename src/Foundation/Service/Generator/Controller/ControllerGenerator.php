@@ -3,9 +3,8 @@ namespace Laventure\Foundation\Service\Generator\Controller;
 
 
 use Laventure\Component\FileSystem\FileSystem;
-use Laventure\Component\Routing\Resource\ApiResource;
 use Laventure\Component\Routing\Resource\WebResource;
-use Laventure\Foundation\Service\Generator\ClassGenerator;
+use Laventure\Foundation\Service\Generator\File\ClassGenerator;
 
 /**
  * ControllerGenerator

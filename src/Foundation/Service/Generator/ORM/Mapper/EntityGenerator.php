@@ -2,7 +2,7 @@
 namespace Laventure\Foundation\Service\Generator\ORM\Mapper;
 
 
-use Laventure\Foundation\Service\Generator\ClassGenerator;
+use Laventure\Foundation\Service\Generator\File\ClassGenerator;
 
 /**
  *
@@ -17,7 +17,7 @@ class EntityGenerator extends ClassGenerator
       public function generateEntityClass(array $credentials): ?string
       {
            $credentials = array_merge([
-               "DummyStubPath"  => "database/orm/mapper/template/entity",
+               "DummyStubPath"  => "database/orm/mapper/entity/template",
                "DummyNamespace" => "App\\Entity",
                "DummyPath"      => "app/Entity"
            ], $credentials);

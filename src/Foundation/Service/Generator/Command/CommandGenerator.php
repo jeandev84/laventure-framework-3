@@ -3,7 +3,7 @@ namespace Laventure\Foundation\Service\Generator\Command;
 
 
 use Laventure\Component\Console\Command\Command;
-use Laventure\Foundation\Service\Generator\ClassGenerator;
+use Laventure\Foundation\Service\Generator\File\ClassGenerator;
 
 
 /**
@@ -13,8 +13,8 @@ class CommandGenerator extends ClassGenerator
 {
 
 
-    const defaultCommand = 'defaultName';
-    const nameCommand    = 'name';
+    const defaultCommand = "defaultName";
+    const nameCommand    = "name";
 
 
 
@@ -27,13 +27,13 @@ class CommandGenerator extends ClassGenerator
         [$commandClass, $commandProperty] = $this->makeCommandCredentials($commandName);
 
         $credentials = [
-            'DummyStubPath'          => "command/template",
-            'DummyNamespace'         => "App\\Console\\Commands",
-            'DummyClass'             => $commandClass,
-            'DummyPath'              => "app/Console/Commands",
-            'CommandProperty'        => $commandProperty,
-            'commandName'            => $commandName,
-            'commandDescription'     => 'describe your command here...'
+            "DummyStubPath"          => "command/template",
+            "DummyNamespace"         => "App\\Console\\Commands",
+            "DummyClass"             => $commandClass,
+            "DummyPath"              => "app/Console/Commands",
+            "CommandProperty"        => $commandProperty,
+            "commandName"            => $commandName,
+            "commandDescription"     => "describe your command here..."
         ];
 
         return $this->generateClass($credentials);
@@ -54,7 +54,7 @@ class CommandGenerator extends ClassGenerator
         $commandProperty = self::defaultCommand;
 
         if (Command::validateName($name)) {
-            $parses = explode(':', $name);
+            $parses = explode(":", $name);
             $commandProperty = self::nameCommand;
         }
 
@@ -77,6 +77,6 @@ class CommandGenerator extends ClassGenerator
             $items[] = ucfirst($part);
         }
 
-        return sprintf('%sCommand', implode($items));
+        return sprintf("%sCommand", implode($items));
     }
 }

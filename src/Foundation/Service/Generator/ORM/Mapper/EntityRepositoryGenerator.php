@@ -2,7 +2,7 @@
 namespace Laventure\Foundation\Service\Generator\ORM\Mapper;
 
 
-use Laventure\Foundation\Service\Generator\ClassGenerator;
+use Laventure\Foundation\Service\Generator\File\ClassGenerator;
 
 
 /**
@@ -22,7 +22,7 @@ class EntityRepositoryGenerator extends ClassGenerator
          [$entityNamespace, $entityClass] = $this->resolveEntityNamespace($credentials["DummyClass"]);
 
          $credentials = array_merge([
-              "DummyStubPath"   => "database/orm/mapper/template/repository",
+              "DummyStubPath"   => "database/orm/mapper/repository/template",
               "DummyNamespace"  => "App\\Repository",
               "DummyClass"      => sprintf("%sRepository", $credentials["DummyClass"]),
               "DummyPath"       => "app/Repository",

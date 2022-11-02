@@ -7,9 +7,9 @@ use Laventure\Component\Http\Middleware\Middleware;
 use Laventure\Component\Http\Request\Request;
 use Laventure\Component\Http\Response\Response;
 use Laventure\Foundation\Provider\ApplicationServiceProvider;
-use Laventure\Foundation\Provider\ConfigurationServiceProvider;
 use Laventure\Foundation\Provider\ConsoleServiceProvider;
 use Laventure\Foundation\Provider\DatabaseServiceProvider;
+use Laventure\Foundation\Provider\FileGeneratorServiceProvider;
 use Laventure\Foundation\Provider\RouteServiceProvider;
 use Laventure\Foundation\Provider\StorageServiceProvider;
 use Laventure\Foundation\Provider\ViewServiceProvider;
@@ -377,10 +377,10 @@ class Application extends Container
          $this->addProviders([
              ApplicationServiceProvider::class,
              StorageServiceProvider::class,
-             ConfigurationServiceProvider::class,
              DatabaseServiceProvider::class,
              RouteServiceProvider::class,
              ViewServiceProvider::class,
+             FileGeneratorServiceProvider::class,
              ConsoleServiceProvider::class
          ]);
       }

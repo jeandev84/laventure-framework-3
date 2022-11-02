@@ -1,5 +1,5 @@
 <?php
-namespace Laventure\Foundation\Service\Generator;
+namespace Laventure\Foundation\Service\Generator\File;
 
 
 use Laventure\Component\FileSystem\FileSystem;
@@ -10,6 +10,27 @@ use Laventure\Component\FileSystem\FileSystem;
 */
 class StubGenerator extends FileGenerator
 {
+
+
+    /**
+     * @var array
+    */
+    protected $replacements = [];
+
+
+
+    /**
+     * @param array $replacements
+     * @return void
+    */
+    public function replacements(array $replacements)
+    {
+         $this->replacements = $replacements;
+    }
+
+
+
+
 
      /**
       * @return string
@@ -33,6 +54,8 @@ class StubGenerator extends FileGenerator
          $replacements['ApplicationName'] =  app()->getName();
 
          $template = sprintf('%s.%s', trim($template, "\\/"), $this->stubExtension());
+
+         $replacements = array_merge($this->replacements, $replacements);
 
          return $this->stub()->replace($template, $replacements);
      }

@@ -51,7 +51,9 @@ class ListCommand extends Command implements ListableCommandInterface
     */
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->write($this->listCommands());
+        /* $output->success($this->listCommands()); */
+
+        $output->writeln($this->listCommands());
 
         return Command::SUCCESS;
     }
@@ -96,25 +98,5 @@ class ListCommand extends Command implements ListableCommandInterface
         }
 
         return join($output);
-    }
-
-
-
-
-    public function listCommandsTest(): string
-    {
-        echo "List Commands\n".__METHOD__."\n";
-
-        $commandInfos = [];
-
-        foreach ($this->commands as $command) {
-            if ($command->getDefaultName()) {
-                $commandInfos['defaults'][] = $command->getDefaultName();
-            } elseif($command->getName()) {
-                $commandInfos['names'][] = $command->getName();
-            }
-        }
-
-        dd($commandInfos);
     }
 }

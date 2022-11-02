@@ -1,7 +1,7 @@
 <?php
 namespace Laventure\Foundation\Service\Generator\ORM\Model;
 
-use Laventure\Foundation\Service\Generator\ClassGenerator;
+use Laventure\Foundation\Service\Generator\File\ClassGenerator;
 
 class ModelGenerator extends ClassGenerator
 {

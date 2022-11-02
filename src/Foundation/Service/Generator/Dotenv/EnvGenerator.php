@@ -1,8 +1,7 @@
 <?php
 namespace Laventure\Foundation\Service\Generator\Dotenv;
 
-use Laventure\Foundation\Service\Generator\FileGenerator;
-use Laventure\Foundation\Service\Generator\StubGenerator;
+use Laventure\Foundation\Service\Generator\File\StubGenerator;
 
 
 /**

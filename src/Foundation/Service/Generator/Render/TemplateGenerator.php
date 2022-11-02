@@ -1,7 +1,7 @@
 <?php
-namespace Laventure\Foundation\Service\Generator\Template;
+namespace Laventure\Foundation\Service\Generator\Render;
 
-use Laventure\Foundation\Service\Generator\StubGenerator;
+use Laventure\Foundation\Service\Generator\File\StubGenerator;
 
 /**
  * @class TemplateGenerator

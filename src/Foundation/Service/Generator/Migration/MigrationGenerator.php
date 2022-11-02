@@ -2,7 +2,7 @@
 namespace Laventure\Foundation\Service\Generator\Migration;
 
 
-use Laventure\Foundation\Service\Generator\ClassGenerator;
+use Laventure\Foundation\Service\Generator\File\ClassGenerator;
 
 
 /**

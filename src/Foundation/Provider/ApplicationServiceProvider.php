@@ -2,6 +2,8 @@
 namespace Laventure\Foundation\Provider;
 
 
+use Laventure\Component\Config\Config;
+use Laventure\Component\Config\Loaders\ArrayLoader;
 use Laventure\Component\Container\Container;
 use Laventure\Component\Container\Provider\Contract\BootableServiceProvider;
 use Laventure\Component\Container\Provider\ServiceProvider;
@@ -42,8 +44,9 @@ class ApplicationServiceProvider extends ServiceProvider implements BootableServ
     */
     protected $provides = [
         FileSystem::class   => ['filesystem'],
+        Config::class       => ['config'],
         Router::class       => ['router', RouterInterface::class],
-        UrlGenerator::class => ['url', UrlGeneratorInterface::class]
+        UrlGenerator::class => ['url', UrlGeneratorInterface::class],
     ];
 
 
@@ -58,7 +61,10 @@ class ApplicationServiceProvider extends ServiceProvider implements BootableServ
         $this->loadEnvironments();
         $this->loadHelpers();
         $this->loadNamespaces();
+
+        $this->app->instances($this->configurations());
     }
+
 
 
 
@@ -126,10 +132,6 @@ class ApplicationServiceProvider extends ServiceProvider implements BootableServ
 
 
 
-    private function loadBasePaths() {}
-
-
-
 
 
     /**
@@ -140,6 +142,21 @@ class ApplicationServiceProvider extends ServiceProvider implements BootableServ
         $this->app->singleton(FileSystem::class, function () {
             return $this->app->make(FileSystem::class, ['root' => $this->app['path']]);
         });
+
+
+        $this->app->singleton(Config::class, function (FileSystem $fs) {
+
+            /** @var Config $config */
+            $config = $this->app->factory(Config::class);
+            $arrays = $fs->collection('/config/params/*.php')->configs();
+
+            $config->load([
+                new ArrayLoader($arrays)
+            ]);
+
+            return $config;
+        });
+
 
 
         $this->app->singleton(Router::class, function () {
@@ -165,5 +182,58 @@ class ApplicationServiceProvider extends ServiceProvider implements BootableServ
     public function terminate()
     {
         $this->loadFacades();
+    }
+
+
+
+    /**
+     * @return \string[][]
+    */
+    private function configNamespaces(): array
+    {
+        return [
+            "controllers"         => "App\\Http\\Controllers",
+            "middlewares"         => "App\\Middlewares",
+            "entities"            => "App\\ORM\\Mapper\\Entity",
+            "repositories"        => "App\\ORM\\Mapper\\Repository",
+            "fixtures"            => "App\\ORM\\Mapper\\Fixtures",
+            "models"              => "App\\ORM\\Model",
+            "commands"            => "App\\Console\\Commands",
+            "events"              => "App\\Events",
+            "providers"           => "App\\Service\\Providers",
+            "forms"               => "App\\Service\\Form",
+            "migrations.mapper"   => "App\\ORM\\Mapper\\Migrations",
+            "migration.model"     => "App\\ORM\\Model\\Migrations",
+        ];
+    }
+
+
+
+
+    /**
+     * @return array
+    */
+    private function configPaths(): array
+    {
+         $paths = [];
+
+         foreach ($this->configNamespaces() as $name => $namespace) {
+             $paths[$name] = str_replace(["App", "\\"], ['app', DIRECTORY_SEPARATOR], $namespace);
+         }
+
+         return $paths;
+    }
+
+
+
+    /**
+     * @return array
+    */
+    private function configurations(): array
+    {
+         return [
+            "app.namespaces" => $this->configNamespaces(),
+            "app.paths"      => $this->configPaths()
+         ];
     }
 }

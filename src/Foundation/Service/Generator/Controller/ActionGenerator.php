@@ -1,9 +1,7 @@
 <?php
 namespace Laventure\Foundation\Service\Generator\Controller;
 
-use Laventure\Component\FileSystem\FileSystem;
-use Laventure\Foundation\Service\Generator\StubGenerator;
-
+use Laventure\Foundation\Service\Generator\File\StubGenerator;
 
 
 /**

@@ -2,12 +2,20 @@
 namespace Laventure\Foundation\Console\Commands\Dotenv;
 
 use Laventure\Component\Console\Command\Command;
+use Laventure\Component\Console\Input\Contract\InputInterface;
+use Laventure\Component\Console\Output\Contract\OutputInterface;
 
 class GenerateEnvCommand extends Command
 {
 
       public function __construct()
       {
-          parent::__construct('generate:env');
+          parent::__construct('gen:env');
+      }
+
+
+      public function execute(InputInterface $input, OutputInterface $output): int
+      {
+          return Command::SUCCESS;
       }
 }
