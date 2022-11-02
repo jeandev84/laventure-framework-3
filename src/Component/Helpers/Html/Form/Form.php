@@ -209,10 +209,21 @@ class Form
                'action' => ''
            ], $attributes);
 
-           $this->attributes = array_merge($this->attributes, $attributes);
+           $this->setAttributes($attributes);
       }
 
 
+      /**
+       * @param array $attributes
+       * @return void
+     */
+      public function setAttributes(array $attributes)
+      {
+          $this->attributes = array_merge(
+              $this->attributes,
+              $this->resolveAttributes($attributes)
+          );
+      }
 
 
       /**
@@ -270,10 +281,19 @@ class Form
 
 
       /**
-       * @return void
+       * @param array $attributes
+       * @return string
       */
-      public function resolveAttributes(array $attributes)
+      public function resolveAttributes(array $attributes): string
       {
+            $str = [];
 
+            foreach ($attributes as $key => $value) {
+              if (is_string($key)) {
+                  $str[] = sprintf(' %s="%s"', $key, $value);
+              }
+            }
+
+            return join('', $str);
       }
 }
