@@ -233,6 +233,10 @@ class Form
 
 
 
+
+
+
+
       /**
        * @return string
       */
@@ -240,7 +244,7 @@ class Form
 
            $attrs  = $this->resolveAttributes($this->attributes);
            $html[] = $this->templates['open'] ?: "<form {$attrs}>";
-           $html[] = $this->templates;
+           $html[] = join(PHP_EOL, array_values($this->templates));
 
            if (! isset($this->templates['close'])) {
                $html[] = "</form>";
