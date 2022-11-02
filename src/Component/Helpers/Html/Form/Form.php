@@ -220,22 +220,6 @@ class Form
 
 
 
-      /**
-       * @param array $attributes
-       * @return void
-      */
-      public function setAttributes(array $attributes)
-      {
-          $this->attributes = array_merge(
-              $this->attributes,
-              $this->resolveAttributes($attributes)
-          );
-      }
-
-
-
-
-
 
       /**
        * @return string
