@@ -1,6 +1,7 @@
 <?php
 namespace Laventure\Foundation\Console;
 
+use Exception;
 use Laventure\Component\Console\Command\Command;
 use Laventure\Component\Console\Console;
 use Laventure\Component\Console\Input\Contract\InputInterface;
@@ -71,11 +72,9 @@ abstract class ConsoleKernel implements Kernel
 
              return $this->console->run($input, $output);
 
-         } catch (\Exception $e) {
+         } catch (Exception $e) {
 
-               // console logger
-               echo "ConsoleLogger\n";
-               exit($e->getMessage()."\n");
+             $this->console->log($e);
          }
      }
 
