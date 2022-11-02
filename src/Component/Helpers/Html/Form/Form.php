@@ -269,12 +269,7 @@ class Form
       */
       public function createView(): string
       {
-            $formOpen = sprintf('<form %s>', $this->resolveAttributes($this->attributes));
-            $html[]   = $this->templates['open'] ?: $formOpen;
-            $html[]   = $this->close();
-
-            return join("", $html);
-
+           return $this->__toString();
       }
 
 
