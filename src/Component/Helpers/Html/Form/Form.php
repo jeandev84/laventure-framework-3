@@ -169,7 +169,7 @@ class Form
        * @param FormType $children
        * @return FormType
       */
-      public function addElement(FormType $children): FormType
+      public function add(FormType $children): FormType
       {
            $name = $children->getName();
 
@@ -194,27 +194,6 @@ class Form
            return $this->children;
       }
 
-
-
-
-
-      /**
-       * @param $name
-       * @param $type
-       * @param array $options
-       * @return $this
-      */
-      public function add($name, $type = null, array $options = []): self
-      {
-            $class   = $type ?: TextType::class;
-            $element = new $class($name, $options);
-
-            if ($element instanceof FormType) {
-                $this->addElement($element);
-            }
-
-            return $this;
-      }
 
 
 

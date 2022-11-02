@@ -2,6 +2,8 @@
 namespace Laventure\Foundation\Service\Builder;
 
 use Laventure\Component\Helpers\Html\Form\Form;
+use Laventure\Component\Helpers\Html\Form\FormType;
+use Laventure\Component\Helpers\Html\Form\Types\TextType;
 use Laventure\Component\Http\Request\Request;
 use Laventure\Component\Validation\Contract\ValidatorInterface;
 use Laventure\Component\Validation\Validation;
@@ -48,9 +50,14 @@ class FormBuilder
        */
        public function add($name, $type = null, array $options = []): self
        {
-             $this->form->add($name, $type, $options);
+            $class   = $type ?: TextType::class;
+            $element = new $class($name, $options);
 
-             return $this;
+            if ($element instanceof FormType) {
+                $this->form->add($element);
+            }
+
+            return $this;
        }
 
 
