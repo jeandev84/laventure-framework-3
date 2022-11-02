@@ -423,13 +423,13 @@ class File
         * Rewrite into file
         *
         * @param string $newContext
-        * @return void
+        * @return false|int
        */
        public function rewrite(string $newContext)
        {
             $this->remove();
 
-            $this->write($newContext);
+            return $this->write($newContext);
        }
 
 

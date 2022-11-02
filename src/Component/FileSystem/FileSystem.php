@@ -191,6 +191,18 @@ class FileSystem
 
 
 
+       /**
+        * @param $target
+        * @param $content
+        * @return false|int
+       */
+       public function rewrite($target, $content)
+       {
+            return $this->file($target)->rewrite($content);
+       }
+
+
+
 
 
        /**

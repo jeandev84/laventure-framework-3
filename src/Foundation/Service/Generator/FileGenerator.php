@@ -19,13 +19,6 @@ class FileGenerator
 
 
 
-    /**
-     * @var string[]
-    */
-    private $message = [];
-
-
-
 
 
     /**
@@ -35,6 +28,9 @@ class FileGenerator
     {
          $this->filesystem = $filesystem;
     }
+
+
+
 
 
     /**
@@ -59,34 +55,21 @@ class FileGenerator
 
 
 
+
+
     /**
      * Regenerate existent file
      *
      * @param $targetPath
      * @param $content
-     * @return false|mixed
+     * @return false
     */
-    public function regenerate($targetPath, $content)
+    public function regenerate($targetPath, $content): bool
     {
-         if ($this->generated($targetPath)) {
-              $this->fs()->remove($targetPath);
-         }
-
-         return $this->generate($targetPath, $content);
+         return $this->fs()->rewrite($targetPath, $content);
     }
 
 
-
-
-
-
-    /**
-     * @return string[]
-    */
-    public function getMessages(): array
-    {
-         return $this->message;
-    }
 
 
 
