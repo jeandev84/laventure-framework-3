@@ -1,5 +1,5 @@
 <?php
-namespace Laventure\Component\Event\Subscriber;
+namespace Laventure\Component\Events\Subscriber;
 
 
 /**

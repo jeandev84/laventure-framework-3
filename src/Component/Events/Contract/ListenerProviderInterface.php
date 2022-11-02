@@ -1,7 +1,7 @@
 <?php
-namespace Laventure\Component\Event\Contract;
+namespace Laventure\Component\Events\Contract;
 
-use Laventure\Component\Event\Event;
+use Laventure\Component\Events\Event;
 
 
 

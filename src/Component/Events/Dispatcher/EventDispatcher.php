@@ -1,7 +1,7 @@
 <?php
-namespace Laventure\Component\Event\Dispatcher;
+namespace Laventure\Component\Events\Dispatcher;
 
-use Laventure\Component\Event\Event;
+use Laventure\Component\Events\Event;
 
 class EventDispatcher extends EventDispatcherContract
 {

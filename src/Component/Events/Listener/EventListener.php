@@ -1,10 +1,10 @@
 <?php
-namespace Laventure\Component\Event\Listener;
+namespace Laventure\Component\Events\Listener;
 
 
-use Laventure\Component\Event\Contract\EventListenerInterface;
-use Laventure\Component\Event\Dispatcher\EventDispatcherContract;
-use Laventure\Component\Event\Event;
+use Laventure\Component\Events\Contract\EventListenerInterface;
+use Laventure\Component\Events\Dispatcher\EventDispatcherContract;
+use Laventure\Component\Events\Event;
 
 
 /**
@@ -21,7 +21,7 @@ abstract class EventListener implements EventListenerInterface
 
 
     /**
-     * @param \Laventure\Component\Event\Dispatcher\EventDispatcherContract $dispatcher
+     * @param \Laventure\Component\Events\Dispatcher\EventDispatcherContract $dispatcher
      * @return void
      */
     public function setDispatcher(EventDispatcherContract $dispatcher)

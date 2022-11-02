@@ -1,10 +1,10 @@
 <?php
-namespace Laventure\Component\Event\Dispatcher;
+namespace Laventure\Component\Events\Dispatcher;
 
 
-use Laventure\Component\Event\Contract\EventDispatcherInterface;
-use Laventure\Component\Event\Event;
-use Laventure\Component\Event\Listener\EventListener;
+use Laventure\Component\Events\Contract\EventDispatcherInterface;
+use Laventure\Component\Events\Event;
+use Laventure\Component\Events\Listener\EventListener;
 
 
 /**
