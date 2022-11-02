@@ -20,6 +20,15 @@ class FileGenerator
 
 
     /**
+     * @var string[]
+    */
+    private $message = [];
+
+
+
+
+
+    /**
      * @param FileSystem $filesystem
     */
     public function __construct(FileSystem $filesystem)
@@ -28,23 +37,54 @@ class FileGenerator
     }
 
 
+    /**
+     * Generate new file if that is not exist
+     *
+     * @param $targetPath
+     * @param $content
+     * @return false|mixed
+    */
+    public function generate($targetPath, $content)
+    {
+        if ($this->generated($targetPath)) {
+            $this->createGeneratorException("File '$targetPath' already generated.");
+        }
+
+        if(! $this->fs()->write($targetPath, $content)) {
+            return false;
+        }
+
+        return $targetPath;
+    }
+
+
 
 
     /**
+     * @return string[]
+    */
+    public function getMessages(): array
+    {
+         return $this->message;
+    }
+
+
+
+
+
+    /**
+     * Write to existent file ( Append new content to file )
+     *
      * @param $targetPath
      * @param $content
-     * @return string|null
+     * @return false|int
     */
-    public function generate($targetPath, $content): ?string
+    public function writeTo($targetPath, $content)
     {
-        if (! $this->generated($targetPath)) {
-            if($this->fs()->write($targetPath, $content)) {
-                return $targetPath;
-            }
-        }
-
-        return null;
+         return $this->fs()->write($targetPath, $content, true);
     }
+
+
 
 
 

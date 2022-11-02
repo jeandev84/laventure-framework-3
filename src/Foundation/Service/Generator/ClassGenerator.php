@@ -4,7 +4,7 @@ namespace Laventure\Foundation\Service\Generator;
 /**
  * ClassGenerator
 */
-abstract class ClassGenerator extends StubGenerator
+class ClassGenerator extends StubGenerator
 {
 
 
@@ -68,15 +68,5 @@ abstract class ClassGenerator extends StubGenerator
         $template = trim($template, "\\/");
 
         return sprintf('%s/%s', $basePath, $template);
-    }
-
-
-
-    /**
-     * @return string
-    */
-    protected function dummyStubPath(): string
-    {
-         return "";
     }
 }

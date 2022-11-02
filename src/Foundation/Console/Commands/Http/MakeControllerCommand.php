@@ -7,6 +7,7 @@ use Laventure\Component\Console\Output\Contract\OutputInterface;
 use Laventure\Component\Routing\Resource\ApiResource;
 use Laventure\Component\Routing\Resource\WebResource;
 use Laventure\Foundation\Service\Generator\Controller\ControllerGenerator;
+use Laventure\Foundation\Service\Generator\Route\RouteGenerator;
 use Laventure\Foundation\Service\Generator\Template\TemplateGenerator;
 
 
@@ -28,15 +29,31 @@ class MakeControllerCommand extends Command
      protected $templateGenerator;
 
 
-      /**
+
+
+
+     /**
+      * @var RouteGenerator
+     */
+     protected $routeGenerator;
+
+
+
+
+     /**
        * @param ControllerGenerator $controllerGenerator
        * @param TemplateGenerator $templateGenerator
      */
-     public function __construct(ControllerGenerator $controllerGenerator, TemplateGenerator $templateGenerator)
+     public function __construct(
+         ControllerGenerator $controllerGenerator,
+         TemplateGenerator $templateGenerator,
+         RouteGenerator $routeGenerator
+     )
      {
            parent::__construct('make:controller');
            $this->controllerGenerator = $controllerGenerator;
            $this->templateGenerator   = $templateGenerator;
+           $this->routeGenerator      = $routeGenerator;
      }
 
 
@@ -62,20 +79,26 @@ class MakeControllerCommand extends Command
      */
      public function execute(InputInterface $input, OutputInterface $output): int
      {
-         if ($path = $this->makeController($input)) {
+         if ($controllerPath = $this->makeController($input)) {
 
-              $output->success("Controller '$path' successfully generated.");
+              $output->success("Controller '$controllerPath' successfully generated.");
 
               if ($input->flag('resource')) {
+
                   if ($layout = $this->makeLayout()) {
                       $output->success("Layout '{$layout}' successfully generated.");
                   }
+
                   if ($views = $this->makeResourceViews($input->getArgument())) {
                        $output->success("View files successfully generated:");
                        foreach ($views as $view) {
                             $output->success($view);
                        }
                   }
+              }
+
+              if ($routePath = $this->makeRouteResource($input)) {
+                   $output->success("New route resource added to '{$routePath}'");
               }
          }
 
@@ -124,9 +147,28 @@ class MakeControllerCommand extends Command
      /**
       * @return string|null
      */
-     public function makeLayout(): ?string
+     protected function makeLayout(): ?string
      {
           return $this->templateGenerator->generateLayout();
      }
 
+
+
+
+     /**
+      * @param InputInterface $input
+      * @return string|false
+     */
+     protected function makeRouteResource(InputInterface $input)
+     {
+          $controller = $input->getArgument();
+
+          if ($input->flag('api')) {
+               return $this->routeGenerator->generateResourceApi($controller);
+          } elseif($input->flag('resource')) {
+               return $this->routeGenerator->generateResourceWeb($controller);
+          }
+
+          return false;
+     }
 }

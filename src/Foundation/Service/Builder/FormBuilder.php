@@ -42,11 +42,11 @@ class FormBuilder
 
 
 
-      /**
-       * @param $name
-       * @param $type
-       * @param array $options
-       * @return $this
+       /**
+        * @param $name
+        * @param $type
+        * @param array $options
+        * @return $this
        */
        public function add($name, $type = null, array $options = []): self
        {

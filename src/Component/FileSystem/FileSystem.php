@@ -180,11 +180,12 @@ class FileSystem
         *
         * @param $filename
         * @param $content
+        * @param bool $append
         * @return false|int
        */
-       public function write($filename, $content)
+       public function write($filename, $content, bool $append = false)
        {
-            return $this->file($filename)->write($content);
+            return $this->file($filename)->write($content, $append);
        }
 
 
