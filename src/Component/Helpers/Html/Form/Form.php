@@ -187,7 +187,7 @@ class Form
 
 
       /**
-       * @return array
+       * @return FormType[]
       */
       public function getChildren(): array
       {
