@@ -36,7 +36,7 @@ class Form
       /**
        * Form attributes
        *
-       * @var string
+       * @var string[]
       */
       protected $attributes;
 
@@ -175,9 +175,9 @@ class Form
 
            $children->parseOptions(['value'  => $this->getValue($name)]);
 
-           $this->children[$children->getName()] = $children;
+           $this->children[$name] = $children;
 
-           $this->templates[] = $children->__toString();
+           $this->templates[$name] = $children->__toString();
 
            return $children;
       }
@@ -204,19 +204,21 @@ class Form
       */
       public function open(array $attributes)
       {
-           $attributes = array_merge([
-               'method' => 'POST',
-               'action' => ''
-           ], $attributes);
+           $attributes = array_merge(['method' => 'POST', 'action' => ''], $attributes);
 
            $this->setAttributes($attributes);
+
+           $this->templates['open'] = "<form>"; // resolve open form attributes
       }
+
+
+
 
 
       /**
        * @param array $attributes
        * @return void
-     */
+      */
       public function setAttributes(array $attributes)
       {
           $this->attributes = array_merge(
@@ -226,16 +228,19 @@ class Form
       }
 
 
+
+
+
+
       /**
        * @return string
       */
       public function close(): string
       {
-           $this->templates[] = "</form>";
+           $this->templates['close'] = "</form>";
 
-           return $this->createView();
+           return $this->__toString();
       }
-
 
 
 
@@ -243,7 +248,16 @@ class Form
        * @return string
       */
       public function __toString() {
-           return $this->createView();
+
+           $attrs  = $this->resolveAttributes($this->attributes);
+           $html[] = $this->templates['open'] ?: "<form {$attrs}>";
+           $html[] = $this->templates;
+
+           if (! isset($this->templates['close'])) {
+               $html[] = "</form>";
+           }
+
+           return join(PHP_EOL, $html);
       }
 
 
@@ -255,7 +269,12 @@ class Form
       */
       public function createView(): string
       {
-           return join(PHP_EOL, $this->templates);
+            $formOpen = sprintf('<form %s>', $this->resolveAttributes($this->attributes));
+            $html[]   = $this->templates['open'] ?: $formOpen;
+            $html[]   = $this->close();
+
+            return join("", $html);
+
       }
 
 
