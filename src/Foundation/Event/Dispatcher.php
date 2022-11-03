@@ -90,10 +90,10 @@ class Dispatcher extends EventDispatcher
         public function dispatch(Event $event = null)
         {
                 if ($event) {
-                    $this->callEvent($event);
+                    $this->dispatchEvent($event);
                 } else {
                     foreach ($this->events as $event) {
-                        $this->callEvent($event);
+                        $this->dispatchEvent($event);
                     }
                 }
         }
@@ -108,7 +108,7 @@ class Dispatcher extends EventDispatcher
          * @param Event $event
          * @return void
         */
-        private function callEvent(Event $event)
+        public function dispatchEvent(Event $event)
         {
              $listeners = $this->getListenersByEvent($event->getName());
 

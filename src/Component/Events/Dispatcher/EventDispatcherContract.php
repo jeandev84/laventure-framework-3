@@ -55,12 +55,4 @@ abstract class EventDispatcherContract implements EventDispatcherInterface
     {
         return isset($this->listeners[$eventName]);
     }
-
-
-
-    /**
-     * @param Event $event
-     * @return void
-     */
-    abstract public function dispatch(Event $event);
 }

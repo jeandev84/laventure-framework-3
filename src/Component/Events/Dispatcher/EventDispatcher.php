@@ -49,7 +49,7 @@ class EventDispatcher extends EventDispatcherContract
     /**
      * @inheritDoc
     */
-    public function dispatch(Event $event)
+    public function dispatchEvent(Event $event)
     {
         foreach ($this->getListenersByEvent($event->getName()) as $listener) {
              $listener->handle($event);

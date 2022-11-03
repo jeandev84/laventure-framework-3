@@ -16,8 +16,9 @@ interface EventDispatcherInterface
      * @param Event $event
      *   The object to process.
      *
-     * @return object
+     * @return mixed
      *   The Event that was passed, now modified by listeners.
+     *    May be to return object or null
     */
-    public function dispatch(Event $event): object;
+    public function dispatchEvent(Event $event);
 }
