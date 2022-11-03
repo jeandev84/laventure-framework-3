@@ -12,7 +12,38 @@ class StubGenerator extends FileGenerator
 {
 
 
-     /**
+
+    /**
+     * @var array
+     */
+    protected $config = [];
+
+
+
+
+    /**
+     * @param array $config
+     * @return void
+     */
+    public function configs(array $config)
+    {
+        $this->config = $config;
+    }
+
+
+
+
+    /**
+     * @param $name
+     * @return mixed|null
+    */
+    public function config($name)
+    {
+        return $this->config[$name] ?? $name;
+    }
+
+
+    /**
       * @return string
      */
      protected function stubPath(): string

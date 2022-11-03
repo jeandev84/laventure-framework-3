@@ -9,22 +9,35 @@ use Laventure\Foundation\Service\Generator\File\StubGenerator;
 class TemplateGenerator extends StubGenerator
 {
 
+
+       /**
+        * @param $path
+        * @return string
+      */
+      public function getTemplatePath($path): string
+      {
+           return trim($this->config("TemplatePath"), "\\/") . "/" . $path;
+      }
+
+
+
+
       /**
        * @param array $views
-       * @param string $stubPath
+       *
        * @return string[]
      */
-     public function generateViews(array $views, string $stubPath = 'template/view'): array
+     public function generateViews(array $views): array
      {
            $resources = [];
 
            foreach ($views as $view) {
 
-               $stub = $this->generateStub($stubPath, [
+               $stub = $this->generateStub("template/view", [
 
                ]);
 
-               if (! $this->generated($viewPath = "resources/views/{$view}")) {
+               if (! $this->generated($viewPath = $this->getTemplatePath($view))) {
                    $resources[] = $this->generate($viewPath, $stub);
                }
            }
@@ -36,19 +49,29 @@ class TemplateGenerator extends StubGenerator
 
 
      /**
-      * @param string $stubPath
       * @return string|null
      */
-     public function generateLayout(string $stubPath = "template/layout"): ?string
+     public function generateLayout(): ?string
      {
-         $stub = $this->generateStub($stubPath, [
+         $stub = $this->generateStub("template/layout", [
 
          ]);
 
-         if ($this->generated($layoutPath = 'resources/views/layouts/default.tpl.php')) {
+         if ($this->generated($layoutPath = $this->getLayoutPath('default.tpl.php'))) {
                 return false;
          }
 
          return $this->generate($layoutPath, $stub);
+     }
+
+
+
+     /**
+      * @param $path
+      * @return string
+     */
+     public function getLayoutPath($path): string
+     {
+          return $this->getTemplatePath("layouts/{$path}");
      }
 }

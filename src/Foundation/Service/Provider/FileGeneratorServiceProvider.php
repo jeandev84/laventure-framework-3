@@ -10,6 +10,7 @@ use Laventure\Foundation\Service\Generator\ORM\Mapper\EntityGenerator;
 use Laventure\Foundation\Service\Generator\ORM\Mapper\EntityRepositoryGenerator;
 use Laventure\Foundation\Service\Generator\ORM\Mapper\FixtureGenerator;
 use Laventure\Foundation\Service\Generator\ORM\Model\ModelGenerator;
+use Laventure\Foundation\Service\Generator\Render\TemplateGenerator;
 
 
 /**
@@ -102,6 +103,15 @@ class FileGeneratorServiceProvider extends ServiceProvider
             $generator->configs([
                 "DummyNamespace"  => config()->get('namespaces.models'),
                 "DummyPath"       => config()->get('paths.models')
+            ]);
+            return $generator;
+        });
+
+
+        $this->app->singleton(TemplateGenerator::class, function () {
+            $generator = $this->app->make(TemplateGenerator::class);
+            $generator->configs([
+                "TemplatePath" => config()->get('view.root')
             ]);
             return $generator;
         });
