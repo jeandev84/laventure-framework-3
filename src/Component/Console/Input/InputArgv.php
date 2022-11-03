@@ -239,6 +239,10 @@ abstract class InputArgv implements InputInterface
      */
      public function getOption($name)
      {
+//         if (isset($this->shortcuts[$name])) {
+//              return $this->shortcuts[$name];
+//         }
+
          return $this->options[$name] ?? '';
      }
 
