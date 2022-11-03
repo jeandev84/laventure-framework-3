@@ -6,13 +6,13 @@ use Laventure\Component\Container\Contract\ContainerInterface;
 use Laventure\Component\Http\Middleware\Middleware;
 use Laventure\Component\Http\Request\Request;
 use Laventure\Component\Http\Response\Response;
-use Laventure\Foundation\Provider\ApplicationServiceProvider;
-use Laventure\Foundation\Provider\ConsoleServiceProvider;
-use Laventure\Foundation\Provider\DatabaseServiceProvider;
-use Laventure\Foundation\Provider\FileGeneratorServiceProvider;
-use Laventure\Foundation\Provider\RouteServiceProvider;
-use Laventure\Foundation\Provider\StorageServiceProvider;
-use Laventure\Foundation\Provider\ViewServiceProvider;
+use Laventure\Foundation\Service\Provider\ApplicationServiceProvider;
+use Laventure\Foundation\Service\Provider\ConsoleServiceProvider;
+use Laventure\Foundation\Service\Provider\DatabaseServiceProvider;
+use Laventure\Foundation\Service\Provider\FileGeneratorServiceProvider;
+use Laventure\Foundation\Service\Provider\RouteServiceProvider;
+use Laventure\Foundation\Service\Provider\StorageServiceProvider;
+use Laventure\Foundation\Service\Provider\ViewServiceProvider;
 
 
 /**

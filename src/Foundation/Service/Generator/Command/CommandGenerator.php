@@ -28,9 +28,7 @@ class CommandGenerator extends ClassGenerator
 
         $credentials = [
             "DummyStubPath"          => "command/template",
-            "DummyNamespace"         => "App\\Console\\Commands",
             "DummyClass"             => $commandClass,
-            "DummyPath"              => "app/Console/Commands",
             "CommandProperty"        => $commandProperty,
             "commandName"            => $commandName,
             "commandDescription"     => "describe your command here..."

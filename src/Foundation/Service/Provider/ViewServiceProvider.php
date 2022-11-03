@@ -1,5 +1,5 @@
 <?php
-namespace Laventure\Foundation\Provider;
+namespace Laventure\Foundation\Service\Provider;
 
 
 use Laventure\Component\Container\Provider\Contract\BootableServiceProvider;

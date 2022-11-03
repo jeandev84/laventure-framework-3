@@ -2,9 +2,6 @@
 namespace Laventure\Component\Console\Input;
 
 use Laventure\Component\Console\Input\Contract\InputInterface;
-use Laventure\Component\Console\Input\Validators\Common\InputParameterValidator;
-use Laventure\Component\Console\Input\Validators\InputArgumentValidator;
-use Laventure\Component\Console\Input\Validators\InputOptionValidator;
 
 /**
  * InputBag
@@ -23,15 +20,6 @@ class InputDefinition
       * @var InputOption[]
      */
      protected $options = [];
-
-
-
-
-
-     /**
-      * @var array
-     */
-     protected $errors = [];
 
 
 
@@ -185,21 +173,10 @@ class InputDefinition
 
 
 
-
-     /**
-      * @return array
-     */
-     public function getErrors(): array
-     {
-          return $this->errors;
-     }
-
-
-
-
-     /**
-      * @param InputInterface $input
-      * @return bool
+    /**
+     * @param InputInterface $input
+     * @return bool
+     * @throws \Exception
      */
      public function validateArguments(InputInterface $input): bool
      {
@@ -211,13 +188,13 @@ class InputDefinition
                      if (is_int($name)) {
                         $message = "May be you forgot to assign [{$argument}] like [{$argument}=something]  ?";
                      }
-                     return $this->addErrors("Invalid argument. {$message}");
+                     $this->abortIf("Invalid argument. {$message}");
                  }
              }
 
              foreach ($this->getArguments() as $name => $argument) {
                  if (! $input->hasArgument($name) && $argument->isRequired()) {
-                     return $this->addErrors("Argument '{$name}' is required");
+                     $this->abortIf("Argument '{$name}' is required");
                  }
              }
          }
@@ -240,13 +217,13 @@ class InputDefinition
 
              foreach ($input->getOptions() as $name => $option) {
                  if (! $this->hasOption($name)) {
-                     return $this->addErrors("Invalid option name : '{$name}'");
+                    $this->abortIf("Invalid option name : '{$name}'");
                  }
              }
 
              foreach ($this->getOptions() as $name => $option) {
                  if (! $input->hasOption($name) && $option->isRequired()) {
-                     return $this->addErrors("Option '{$name}' is required");
+                    $this->abortIf("Option '{$name}' is required");
                  }
              }
          }
@@ -258,16 +235,14 @@ class InputDefinition
 
 
 
-
-
-    /**
-     * @param $errorMessage
-     * @return false
-    */
-    private function addErrors($errorMessage): bool
-    {
-        $this->errors[] = $errorMessage;
-
-        return false;
-    }
+     /**
+      * @param $message
+      * @return mixed
+     */
+     public function abortIf($message)
+     {
+          return (function () use ($message) {
+               throw new \Exception($message);
+          })();
+     }
 }

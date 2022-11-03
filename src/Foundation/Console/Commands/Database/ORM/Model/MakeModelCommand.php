@@ -23,12 +23,12 @@ class MakeModelCommand extends Command
 
 
        /**
-        * @param ModelGenerator $controllerGenerator
+        * @param ModelGenerator $webGenerator
        */
-       public function __construct(ModelGenerator $controllerGenerator)
+       public function __construct(ModelGenerator $webGenerator)
        {
            parent::__construct('make:model');
-           $this->generator = $controllerGenerator;
+           $this->generator = $webGenerator;
        }
 
 
@@ -59,9 +59,7 @@ class MakeModelCommand extends Command
        */
        protected function make(InputInterface $input): ?string
        {
-             $credentials = ['DummyClass' => $input->getArgument()];
-
-             return $this->generator->generateModelClass($credentials);
+             return $this->generator->generateModelClass($input->getArgument());
        }
 
 }

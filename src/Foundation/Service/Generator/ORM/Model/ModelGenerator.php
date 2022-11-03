@@ -6,17 +6,16 @@ use Laventure\Foundation\Service\Generator\File\ClassGenerator;
 class ModelGenerator extends ClassGenerator
 {
 
-       /**
-        * @param array $credentials
-        * @return string|null
-       */
-       public function generateModelClass(array $credentials): ?string
+        /**
+         * @param $model
+         * @return string|null
+        */
+       public function generateModelClass($model): ?string
        {
              $credentials = array_merge([
                  "DummyStubPath"  => "database/orm/model/template",
-                 "DummyNamespace" => "App\\Model",
-                 "DummyPath"      => 'app/Model'
-             ], $credentials);
+                 "DummyClass"     => $model
+             ]);
 
              return $this->generateClass($credentials);
        }

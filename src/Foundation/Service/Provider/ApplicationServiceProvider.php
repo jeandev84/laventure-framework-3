@@ -1,10 +1,9 @@
 <?php
-namespace Laventure\Foundation\Provider;
+namespace Laventure\Foundation\Service\Provider;
 
 
 use Laventure\Component\Config\Config;
 use Laventure\Component\Config\Loaders\ArrayLoader;
-use Laventure\Component\Container\Container;
 use Laventure\Component\Container\Provider\Contract\BootableServiceProvider;
 use Laventure\Component\Container\Provider\ServiceProvider;
 use Laventure\Component\Dotenv\Dotenv;
@@ -20,7 +19,6 @@ use Laventure\Foundation\Facade\Routing\Route;
 use Laventure\Foundation\Facade\Routing\Url;
 use Laventure\Foundation\Facade\Templating\Asset;
 use Laventure\Foundation\Facade\Templating\View;
-use Laventure\Foundation\Http\Controllers\DefaultController;
 use Laventure\Foundation\Routing\Router;
 
 
@@ -61,8 +59,6 @@ class ApplicationServiceProvider extends ServiceProvider implements BootableServ
         $this->loadEnvironments();
         $this->loadHelpers();
         $this->loadNamespaces();
-
-        $this->app->instances($this->configurations());
     }
 
 
@@ -91,7 +87,7 @@ class ApplicationServiceProvider extends ServiceProvider implements BootableServ
     */
     private function loadHelpers()
     {
-         require_once realpath(__DIR__.'/../helpers.php');
+         require_once realpath(__DIR__.'/../../helpers.php');
     }
 
 
@@ -149,6 +145,7 @@ class ApplicationServiceProvider extends ServiceProvider implements BootableServ
             /** @var Config $config */
             $config = $this->app->factory(Config::class);
             $arrays = $fs->collection('/config/params/*.php')->configs();
+            $arrays = array_merge($arrays, $this->configurations());
 
             $config->load([
                 new ArrayLoader($arrays)
@@ -192,7 +189,10 @@ class ApplicationServiceProvider extends ServiceProvider implements BootableServ
     private function configNamespaces(): array
     {
         return [
-            "controllers"         => "App\\Http\\Controllers",
+            "controllers"         => [
+                "web" => "App\\Http\\Controllers",
+                "api" => "App\\Http\\Controllers\\Api",
+            ],
             "middlewares"         => "App\\Middlewares",
             "entities"            => "App\\ORM\\Mapper\\Entity",
             "repositories"        => "App\\ORM\\Mapper\\Repository",
@@ -202,8 +202,10 @@ class ApplicationServiceProvider extends ServiceProvider implements BootableServ
             "events"              => "App\\Events",
             "providers"           => "App\\Service\\Providers",
             "forms"               => "App\\Service\\Form",
-            "migrations.mapper"   => "App\\ORM\\Mapper\\Migrations",
-            "migration.model"     => "App\\ORM\\Model\\Migrations",
+            "migrations"          => [
+                "mapper" => "App\\ORM\\Mapper\\Migrations",
+                "model"  => "App\\ORM\\Model\\Migrations",
+            ]
         ];
     }
 
@@ -232,8 +234,8 @@ class ApplicationServiceProvider extends ServiceProvider implements BootableServ
     private function configurations(): array
     {
          return [
-            "app.namespaces" => $this->configNamespaces(),
-            "app.paths"      => $this->configPaths()
+            "namespaces" => $this->configNamespaces(),
+            "paths"      => $this->configPaths()
          ];
     }
 }

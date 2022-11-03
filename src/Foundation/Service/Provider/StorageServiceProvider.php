@@ -1,11 +1,10 @@
 <?php
-namespace Laventure\Foundation\Provider;
+namespace Laventure\Foundation\Service\Provider;
 
 use Laventure\Component\Cache\CacheInterface;
 use Laventure\Component\Container\Provider\ServiceProvider;
 use Laventure\Foundation\Service\Cache\Cache;
 use Laventure\Foundation\Service\Cache\Cacheable;
-use Laventure\Foundation\Service\Cache\Types\FileCache;
 use Laventure\Foundation\Service\Storage;
 
 /**

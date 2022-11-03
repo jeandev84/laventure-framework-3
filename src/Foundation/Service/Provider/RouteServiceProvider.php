@@ -1,12 +1,10 @@
 <?php
-namespace Laventure\Foundation\Provider;
+namespace Laventure\Foundation\Service\Provider;
 
 
 use Laventure\Component\Container\Provider\ServiceProvider;
-use Laventure\Component\FileSystem\FileSystem;
 use Laventure\Foundation\Application;
 use Laventure\Foundation\Routing\Router;
-
 
 
 class RouteServiceProvider extends ServiceProvider

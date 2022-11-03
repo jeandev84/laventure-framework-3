@@ -6,6 +6,7 @@ use Laventure\Component\Console\Input\Contract\InputInterface;
 use Laventure\Component\Console\Output\Contract\OutputInterface;
 use Laventure\Component\Routing\Resource\ApiResource;
 use Laventure\Component\Routing\Resource\WebResource;
+use Laventure\Foundation\Service\Generator\Controller\ApiControllerGenerator;
 use Laventure\Foundation\Service\Generator\Controller\ControllerGenerator;
 use Laventure\Foundation\Service\Generator\Route\RouteGenerator;
 use Laventure\Foundation\Service\Generator\Render\TemplateGenerator;
@@ -18,7 +19,17 @@ class MakeControllerCommand extends Command
      /**
       * @var ControllerGenerator
      */
-     protected $controllerGenerator;
+     protected $webGenerator;
+
+
+
+
+
+     /**
+      * @var ApiControllerGenerator
+     */
+     protected $apiGenerator;
+
 
 
 
@@ -41,17 +52,21 @@ class MakeControllerCommand extends Command
 
 
      /**
-       * @param ControllerGenerator $controllerGenerator
-       * @param TemplateGenerator $templateGenerator
+      * @param ControllerGenerator $webGenerator
+      * @param ApiControllerGenerator $apiGenerator
+      * @param TemplateGenerator $templateGenerator
+      * @param RouteGenerator $routeGenerator
      */
      public function __construct(
-         ControllerGenerator $controllerGenerator,
-         TemplateGenerator $templateGenerator,
-         RouteGenerator $routeGenerator
+         ControllerGenerator    $webGenerator,
+         ApiControllerGenerator $apiGenerator,
+         TemplateGenerator      $templateGenerator,
+         RouteGenerator         $routeGenerator
      )
      {
            parent::__construct('make:controller');
-           $this->controllerGenerator = $controllerGenerator;
+           $this->webGenerator        = $webGenerator;
+           $this->apiGenerator        = $apiGenerator;
            $this->templateGenerator   = $templateGenerator;
            $this->routeGenerator      = $routeGenerator;
      }
@@ -109,7 +124,6 @@ class MakeControllerCommand extends Command
 
 
 
-
      /**
       * @param InputInterface $input
       * @return string
@@ -119,12 +133,12 @@ class MakeControllerCommand extends Command
            $controller = $input->getArgument();
 
            if($input->flag('resource')) {
-               return $this->controllerGenerator->generateResourceController($controller);
+               return $this->webGenerator->generateResource($controller);
            } elseif ($input->flag('api')) {
-               return $this->controllerGenerator->generateApiController($controller);
+               return $this->apiGenerator->generateApiResource($controller);
            }
 
-           return $this->controllerGenerator->generateController($controller);
+           return $this->webGenerator->generateController($controller);
      }
 
 
@@ -136,7 +150,7 @@ class MakeControllerCommand extends Command
      */
      public function makeResourceViews($controller): array
      {
-           $views = $this->controllerGenerator->generateResourcePaths($controller);
+           $views = $this->webGenerator->generateResourcePaths($controller);
 
            return $this->templateGenerator->generateViews($views);
      }

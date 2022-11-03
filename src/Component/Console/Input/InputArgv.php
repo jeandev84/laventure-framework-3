@@ -171,9 +171,9 @@ abstract class InputArgv implements InputInterface
 
          if (! $this->hasDefaultArgument()) {
               if (isset($this->tokens[2]) && stripos($this->tokens[2], '=') !== false) {
-                  $this->createInputArgvException("Invalid default argument. '{$this->tokens[2]}'");
+                  $this->abortIf("Invalid default argument. '{$this->tokens[2]}'");
               } else {
-                  $this->createInputArgvException("Default argument is required.");
+                  $this->abortIf("Default argument is required.");
               }
          }
 
@@ -306,7 +306,7 @@ abstract class InputArgv implements InputInterface
       * @param $message
       * @return InputArgvException
      */
-     protected function createInputArgvException($message): InputArgvException
+     protected function abortIf($message): InputArgvException
      {
           return (function () use ($message) {
                throw new InputArgvException($message);

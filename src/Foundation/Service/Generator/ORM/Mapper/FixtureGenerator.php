@@ -23,9 +23,7 @@ class FixtureGenerator extends ClassGenerator
 
             $credentials = [
                 "DummyStubPath"  => "database/orm/mapper/fixtures/template",
-                "DummyNamespace" => "App\\Fixtures",
                 "DummyClass"     => $fixture,
-                "DummyPath"      => "app/Fixtures",
             ];
 
             return $this->generateClass($credentials);

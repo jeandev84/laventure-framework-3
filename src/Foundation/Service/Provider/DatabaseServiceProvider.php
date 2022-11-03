@@ -1,5 +1,5 @@
 <?php
-namespace Laventure\Foundation\Provider;
+namespace Laventure\Foundation\Service\Provider;
 
 use Laventure\Component\Config\Config;
 use Laventure\Component\Container\Provider\ServiceProvider;
@@ -13,7 +13,6 @@ use Laventure\Component\Database\ORM\Mapper\Manager\EntityManager;
 use Laventure\Component\Database\ORM\Mapper\Manager\Event\Contract\EntityEventManagerInterface;
 use Laventure\Component\Database\ORM\Mapper\Manager\Event\EntityEventManager;
 use Laventure\Component\Database\ORM\Mapper\Repository\Factory\EntityRepositoryFactory;
-use Laventure\Component\Database\ORM\OrmType;
 use Laventure\Component\Database\Schema\Schema;
 use Laventure\Foundation\Database\ORM\Mapper\Repository\Factory\RepositoryFactory;
 

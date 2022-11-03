@@ -13,19 +13,17 @@ class EntityRepositoryGenerator extends ClassGenerator
 
 
     /**
-     * @param array $credentials
+     * @param $name
      * @return string|null
     */
-    public function generateRepository(array $credentials): ?string
+    public function generateRepository($name): ?string
     {
-         $credentials["DummyClass"]       = str_replace('Repository', '', $credentials["DummyClass"]);
+         $credentials["DummyClass"]   = str_replace('Repository', '', $name);
          [$entityNamespace, $entityClass] = $this->resolveEntityNamespace($credentials["DummyClass"]);
 
          $credentials = array_merge([
               "DummyStubPath"   => "database/orm/mapper/repository/template",
-              "DummyNamespace"  => "App\\Repository",
               "DummyClass"      => sprintf("%sRepository", $credentials["DummyClass"]),
-              "DummyPath"       => "app/Repository",
               "EntityNamespace" => $entityNamespace,
               "EntityClass"     => $entityClass
          ]);
@@ -42,7 +40,8 @@ class EntityRepositoryGenerator extends ClassGenerator
     */
     private function resolveEntityNamespace($className): array
     {
-        $entityNamespace = sprintf("App\\Entity\\%s", $className);
+        $namespace = trim($this->config("EntityNamespace"), "\\");
+        $entityNamespace = sprintf("%s\\%s", $namespace, $className);
         $entityNamespace = str_replace("/", '\\', $entityNamespace);
         $entityParts     = explode("\\", $entityNamespace);
         $entityClass     = end($entityParts);

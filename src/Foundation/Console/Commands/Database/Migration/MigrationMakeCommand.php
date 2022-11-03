@@ -3,6 +3,8 @@ namespace Laventure\Foundation\Console\Commands\Database\Migration;
 
 use Laventure\Component\Console\Command\Command;
 use Laventure\Component\Console\Input\Contract\InputInterface;
+use Laventure\Component\Console\Input\InputArgument;
+use Laventure\Component\Console\Input\InputParameter;
 use Laventure\Component\Console\Output\Contract\OutputInterface;
 use Laventure\Foundation\Service\Generator\Migration\MigrationGenerator;
 
@@ -30,7 +32,7 @@ class MigrationMakeCommand extends Command
       /**
        * @var MigrationGenerator
       */
-      protected $generator;
+      protected $migrationGenerator;
 
 
 
@@ -38,14 +40,24 @@ class MigrationMakeCommand extends Command
 
 
       /**
-       * @param MigrationGenerator $controllerGenerator
+       * @param MigrationGenerator $webGenerator
       */
-      public function __construct(MigrationGenerator $controllerGenerator)
+      public function __construct(MigrationGenerator $webGenerator)
       {
           parent::__construct('make:migration');
-          $this->generator = $controllerGenerator;
+          $this->migrationGenerator = $webGenerator;
       }
 
+
+
+
+
+      protected function configure()
+      {
+           $this->addOption('table', 'Specify table name you want to create', '', [
+               InputParameter::REQUIRED
+           ]);
+      }
 
 
 
@@ -89,10 +101,7 @@ class MigrationMakeCommand extends Command
             $entityName = $input->getOption('entity');
             $modelName  = $input->getOption('model');
 
-            $credentials = compact('tableName');
-
-
             // By default
-            return $this->generator->generateMapperMigrationClass($credentials);
+            return $this->migrationGenerator->generateMigrationClass($tableName);
       }
 }

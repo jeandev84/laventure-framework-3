@@ -42,7 +42,7 @@ class DummyClass extends Command
     {
            // put your logic here
 
-           $output->writeln('You are ready for execution commandName');
+           $output->success('You are ready for execution commandName');
 
            return Command::SUCCESS;
     }

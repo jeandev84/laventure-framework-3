@@ -11,16 +11,15 @@ class EntityGenerator extends ClassGenerator
 {
 
       /**
-       * @param array $credentials
+       * @param $name
        * @return string|null
       */
-      public function generateEntityClass(array $credentials): ?string
+      public function generateEntityClass($name): ?string
       {
            $credentials = array_merge([
                "DummyStubPath"  => "database/orm/mapper/entity/template",
-               "DummyNamespace" => "App\\Entity",
-               "DummyPath"      => "app/Entity"
-           ], $credentials);
+               "DummyClass"     => $name
+           ]);
 
            return $this->generateClass($credentials);
       }

@@ -43,9 +43,7 @@ class ControllerGenerator extends ClassGenerator
       {
            $credentials = array_merge([
                "DummyStubPath"  => "controller/template",
-               "DummyNamespace" => "App\\Http\\Controllers",
                "DummyClass"     => $controller,
-               "DummyPath"      => "app/Http/Controllers",
                "DummyActions"   => $this->generateActions($actions, $options)
            ], $options);
 
@@ -59,25 +57,7 @@ class ControllerGenerator extends ClassGenerator
        * @param $controller
        * @return string
       */
-      public function generateApiController($controller): string
-      {
-           $controller = preg_replace('#Api/#', '', $controller);
-
-           return $this->generateController($controller, [], [
-               "DummyNamespace" => "App\\Http\\Controllers\\Api",
-               "DummyPath"      => "app/Http/Controllers/Api",
-               "DummyStubPath"  => "controller/resource/api/template"
-           ]);
-      }
-
-
-
-
-      /**
-       * @param $controller
-       * @return string
-      */
-      public function generateResourceController($controller): string
+      public function generateResource($controller): string
       {
           return $this->generateController($controller, [], [
               "DummyStubPath"     => "controller/resource/web/template",
