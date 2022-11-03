@@ -7,6 +7,7 @@ use Laventure\Component\Console\Command\Command;
 use Laventure\Component\Console\Command\Contract\ListableCommandInterface;
 use Laventure\Component\Console\Command\Defaults\HelpCommand;
 use Laventure\Component\Console\Command\Defaults\ListCommand;
+use Laventure\Component\Console\Command\ShellCommand;
 use Laventure\Component\Console\Input\Contract\InputInterface;
 use Laventure\Component\Console\Logger\ConsoleLogger;
 use Laventure\Component\Console\Output\Contract\OutputInterface;
@@ -77,15 +78,18 @@ class Console implements ConsoleInterface
 
 
 
+
+
+
      /**
       * Configure command
       *
-      * @param string $name
+      * @param $name
       * @param Closure $configure
       * @param string|null $description
       * @return Command
      */
-     public function command(string $name, Closure $configure, string $description = null): Command
+     public function command($name, Closure $configure, string $description = null): Command
      {
             $command = new Command($name);
             $configure($command);
@@ -93,6 +97,17 @@ class Console implements ConsoleInterface
             $this->addCommand($command);
 
             return $command;
+     }
+
+
+
+
+     /**
+      * @return ShellCommand
+     */
+     public function shell(): ShellCommand
+     {
+          return new ShellCommand();
      }
 
 

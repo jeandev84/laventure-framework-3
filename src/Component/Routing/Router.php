@@ -681,9 +681,9 @@ class Router implements RouterInterface
         /**
          * @inheritDoc
         */
-        public function generate(string $name, array $parameters = [])
+        public function generate($name, array $parameters = [])
         {
-             return $this->collection->generate($name, $parameters);
+             return (string) $this->collection->generate($name, $parameters);
         }
 
 

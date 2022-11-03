@@ -21,13 +21,13 @@ interface RouterInterface
 
 
       /**
-       * Generate URI
+       * Generate URI by given name
        *
-       * @param string $name
+       * @param $name
        * @param array $parameters
        * @return mixed
       */
-      public function generate(string $name, array $parameters = []);
+      public function generate($name, array $parameters = []);
 
 
 

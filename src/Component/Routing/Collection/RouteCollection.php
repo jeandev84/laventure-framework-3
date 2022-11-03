@@ -284,21 +284,27 @@ class RouteCollection
 
 
 
+
+
        /**
         * Generate URI
         *
         * @param string $name
         * @param array $parameters
-        * @return string|null
+        * @return false|string
        */
-       public function generate(string $name, array $parameters = []): ?string
+       public function generate(string $name, array $parameters = [])
        {
             if (! $this->hasName($name)) {
-                return null;
+                return false;
             }
 
             return $this->getRoute($name)->generatePath($parameters);
        }
+
+
+
+
 
 
 

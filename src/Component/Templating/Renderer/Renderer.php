@@ -49,22 +49,6 @@ class Renderer implements RendererInterface, RenderLayoutInterface
 
 
 
-    /**
-     * @var RenderCompressor
-    */
-    private $compressor;
-
-
-
-
-    /**
-     * @var bool
-    */
-    private $compressed = false;
-
-
-
-
 
     /**
      * @var RenderTag
@@ -76,14 +60,16 @@ class Renderer implements RendererInterface, RenderLayoutInterface
 
 
     /**
-     * @param string|null $root
+     * @param $root
     */
-    public function __construct(string $root = null)
+    public function __construct($root = null)
     {
           $this->basePath($root);
           $this->cache      = new RenderCache($root);
           $this->contentTag = new RenderTag();
     }
+
+
 
 
 
@@ -138,7 +124,7 @@ class Renderer implements RendererInterface, RenderLayoutInterface
     */
     public function withLayout($layout): self
     {
-         $this->layout = $this->resolvePath($layout);
+         $this->layout = $layout;
 
          return $this;
     }
@@ -277,11 +263,13 @@ class Renderer implements RendererInterface, RenderLayoutInterface
 
 
 
+
+
     /**
      * @param string $message
      * @return mixed
     */
-    public function createRenderException(string $message)
+    public function abortIf(string $message)
     {
         return (function () use ($message) {
             throw new RenderException($message);
@@ -297,7 +285,7 @@ class Renderer implements RendererInterface, RenderLayoutInterface
     */
     private function cacheTemplateException($template)
     {
-          $this->createRenderException("Something went wrong during caching {$this->locate($template)}");
+          $this->abortIf("Something went wrong during caching {$this->locate($template)}");
     }
 
 
@@ -310,6 +298,7 @@ class Renderer implements RendererInterface, RenderLayoutInterface
     private function resolvePath($path): string
     {
         $path = str_replace('.'. $this->getExtension(), '', $path);
+
         return trim(sprintf('%s.%s', $path, $this->getExtension()), '\\/');
     }
 }

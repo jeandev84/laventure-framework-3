@@ -73,11 +73,11 @@ class Template implements TemplateInterface
     */
     public function render()
     {
-        extract($this->data, EXTR_SKIP);
-
         if (! $this->exist()) {
-            $this->createException("Template file {$this->path} does not exist.");
+             $this->abortIf("Template file [ $this->path ] does not exist.");
         }
+
+        extract($this->data, EXTR_SKIP);
 
         ob_start();
         require $this->path;
@@ -93,7 +93,7 @@ class Template implements TemplateInterface
     */
     public function exist(): bool
     {
-         return is_file($this->path);
+         return file_exists($this->path);
     }
 
 
@@ -115,7 +115,7 @@ class Template implements TemplateInterface
      * @param string $message
      * @return mixed
     */
-    public function createException(string $message)
+    public function abortIf(string $message)
     {
          return (function () use ($message) {
               throw new TemplateException($message);
