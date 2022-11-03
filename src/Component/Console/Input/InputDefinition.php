@@ -169,7 +169,7 @@ class InputDefinition
      */
      public function hasOption($name): bool
      {
-          return isset($this->options[$name]);
+          return isset($this->options[$name]) || in_array($name, $this->shortcuts);
      }
 
 
@@ -239,6 +239,7 @@ class InputDefinition
 
              foreach ($this->getOptions() as $name => $option) {
 
+                 // if has shortcuts and has option defined, we will be set value this option name
                  if (isset($this->shortcuts[$name]) && $input->hasOption($name)) {
                        $input->setOption($this->shortcuts[$name], $input->getOption($name));
                  }
