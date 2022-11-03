@@ -274,7 +274,7 @@ abstract class InputArgv implements InputInterface
       * @param $value
       * @return void
      */
-     public function setShortcut($name, $value)
+     public function setOptionShortcut($name, $value)
      {
           $this->shortcuts[$name] = $value;
      }

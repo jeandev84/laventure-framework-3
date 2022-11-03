@@ -100,7 +100,7 @@ interface InputInterface
        * @param $value
        * @return mixed
       */
-      public function setShortcut($name, $value);
+      public function setOptionShortcut($name, $value);
 
 
 

@@ -242,6 +242,7 @@ class InputDefinition
                  // if has shortcuts and has option defined, we will be set value this option name
                  if (isset($this->shortcuts[$name]) && $input->hasOption($name)) {
                        $input->setOption($this->shortcuts[$name], $input->getOption($name));
+                       $input->setOptionShortcut($this->shortcuts[$name], $name);
                  }
 
                  if (! $input->hasOption($name) && $option->isRequired()) {
