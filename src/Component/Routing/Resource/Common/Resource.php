@@ -2,7 +2,7 @@
 namespace Laventure\Component\Routing\Resource\Common;
 
 use Laventure\Component\Routing\Collection\Route;
-use Laventure\Component\Routing\Router;
+use Laventure\Component\Routing\LaventureRouter;
 
 
 /**
@@ -51,10 +51,10 @@ abstract class Resource
 
 
       /**
-       * @param Router $router
+       * @param LaventureRouter $router
        * @return void
       */
-      public function map(Router $router)
+      public function map(LaventureRouter $router)
       {
            foreach ($this->configureRoutes() as $route) {
 
@@ -192,10 +192,10 @@ abstract class Resource
 
 
      /**
-      * @param Router $router
+      * @param LaventureRouter $router
       * @return array
      */
-     public function makeRoutes(Router $router): array
+     public function makeRoutes(LaventureRouter $router): array
      {
             $routes = [];
 

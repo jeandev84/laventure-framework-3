@@ -2,7 +2,7 @@
 namespace Laventure\Foundation\Facade\Routing;
 
 use Laventure\Component\Container\Facade\Facade;
-use Laventure\Component\Routing\Router;
+use Laventure\Foundation\Routing\Router;
 
 
 /**

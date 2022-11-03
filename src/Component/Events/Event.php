@@ -8,6 +8,15 @@ namespace Laventure\Component\Events;
 abstract class Event
 {
 
+
+       /**
+        * @var string
+       */
+       protected $name;
+
+
+
+
       /**
        * Return event name
        *
@@ -15,6 +24,6 @@ abstract class Event
       */
       public function getName(): string
       {
-           return (new \ReflectionClass(get_called_class()))->getShortName();
+           return $this->name ?? (new \ReflectionClass(get_called_class()))->getShortName();
       }
 }

@@ -6,15 +6,14 @@ namespace Laventure\Foundation\Routing;
 use Laventure\Component\FileSystem\FileSystem;
 use Laventure\Component\Http\Request\Request;
 use Laventure\Component\Http\Response\Response;
-use Laventure\Foundation\Application;
 use Laventure\Component\Routing\Collection\Route;
-use Laventure\Foundation\Routing\Dispatcher\RouteDispatcher;
-use Laventure\Component\Routing\Router as LaventureRouter;
+use Laventure\Component\Routing\LaventureRouter;
+use Laventure\Foundation\Application;
 
 
 
 /**
- * Router
+ * @inheritdoc
 */
 class Router extends LaventureRouter
 {
@@ -84,9 +83,9 @@ class Router extends LaventureRouter
 
      /**
       * @param array $middlewares
-      * @return Router
+      * @return LaventureRouter
      */
-     public function middlewares(array $middlewares): Router
+     public function middlewares(array $middlewares): LaventureRouter
      {
           $this->routeMiddlewares = $middlewares;
 

@@ -2,7 +2,7 @@
 namespace Laventure\Foundation\Http\Response;
 
 use Laventure\Component\Http\Response\RedirectResponse as Redirect;
-use Laventure\Foundation\Routing\Router;
+use Laventure\Foundation\Routing\LaventureRouter;
 
 
 /**
@@ -12,7 +12,7 @@ class RedirectResponse extends Redirect
 {
 
       /**
-       * @var Router
+       * @var LaventureRouter
       */
       protected $router;
 
@@ -28,10 +28,10 @@ class RedirectResponse extends Redirect
 
 
       /**
-       * @param Router $router
+       * @param LaventureRouter $router
        * @param string|null $refererPath
       */
-      public function __construct(Router $router, string $refererPath = null)
+      public function __construct(LaventureRouter $router, string $refererPath = null)
       {
            parent::__construct(null, 301, []);
            $this->router      = $router;

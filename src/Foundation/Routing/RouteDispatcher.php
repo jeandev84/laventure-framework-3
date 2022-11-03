@@ -1,11 +1,11 @@
 <?php
-namespace Laventure\Foundation\Routing\Dispatcher;
+namespace Laventure\Foundation\Routing;
 
 
 
 use Laventure\Component\Http\Response\JsonResponse;
 use Laventure\Component\Http\Response\Response;
-use Laventure\Component\Routing\Collection\BadControllerException;
+use Laventure\Component\Routing\Collection\Exception\BadControllerException;
 use Laventure\Component\Routing\Collection\Route;
 use Laventure\Component\Routing\Dispatcher\RouteDispatcherInterface;
 use Laventure\Foundation\Application;

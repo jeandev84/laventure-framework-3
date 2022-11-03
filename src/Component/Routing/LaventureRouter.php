@@ -15,10 +15,15 @@ use Laventure\Component\Routing\Resource\Types\ResourceType;
 
 
 
+
 /**
- * Router
+ * @class LaventureRouter
+ *
+ * @package Laventure\Component\Routing
+ *
+ * @author Yao Kouassi Jean-Claude <jeanyao@ymail.com php>
 */
-class Router implements RouterInterface
+class LaventureRouter implements RouterInterface
 {
 
 
