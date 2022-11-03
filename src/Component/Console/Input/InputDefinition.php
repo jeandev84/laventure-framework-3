@@ -24,6 +24,14 @@ class InputDefinition
 
 
 
+     /**
+      * @var array
+     */
+     protected $shortcuts = [];
+
+
+
+
 
      /**
       * Add new input argument
@@ -100,7 +108,14 @@ class InputDefinition
      */
      public function addOption(InputOption $option): self
      {
-          $this->options[$option->getName()] = $option;
+          $name = $option->getName();
+
+          if ($shortcut = $option->getShortcut()) {
+               $name = $shortcut;
+               $this->shortcuts[$shortcut] = $option->getName();
+          }
+
+          $this->options[$name] = $option;
 
           return $this;
      }
@@ -160,15 +175,17 @@ class InputDefinition
 
 
 
-
      /**
       * @param InputInterface $input
       * @return bool
      */
      public function validate(InputInterface $input): bool
      {
-         return $this->validateArguments($input) && $this->validateOptions($input);
+          return $this->validateArguments($input) && $this->validateOptions($input);
      }
+
+
+
 
 
 
@@ -176,9 +193,8 @@ class InputDefinition
     /**
      * @param InputInterface $input
      * @return bool
-     * @throws \Exception
      */
-     public function validateArguments(InputInterface $input): bool
+     private function validateArguments(InputInterface $input): bool
      {
          if ($this->hasArguments()) {
 
@@ -211,17 +227,22 @@ class InputDefinition
       * @param InputInterface $input
       * @return bool
      */
-     public function validateOptions(InputInterface $input): bool
+     private function validateOptions(InputInterface $input): bool
      {
          if ($this->hasOptions()) {
 
-             foreach ($input->getOptions() as $name => $option) {
+             foreach ($input->getOptions() as $name => $value) {
                  if (! $this->hasOption($name)) {
                     $this->abortIf("Invalid option name : '{$name}'");
                  }
              }
 
              foreach ($this->getOptions() as $name => $option) {
+
+                 if (isset($this->shortcuts[$name]) && $input->hasOption($name)) {
+                       $input->setOption($this->shortcuts[$name], $input->getOption($name));
+                 }
+
                  if (! $input->hasOption($name) && $option->isRequired()) {
                     $this->abortIf("Option '{$name}' is required");
                  }

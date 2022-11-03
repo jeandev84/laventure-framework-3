@@ -44,6 +44,16 @@ class ConsoleInputArgv extends InputArgv
          foreach ($tokens as $token) {
              $this->parsedToken($token);
          }
+
+
+         //echo __METHOD__."\n";
+//         dd([
+//            "firstArgument" => $this->firstArgument,
+//            "arguments" => $this->arguments,
+//            "options"   => $this->options,
+//            "shortcuts" => $this->shortcuts,
+//            "flags"     => $this->flags
+//         ]);
     }
 
 
@@ -61,20 +71,22 @@ class ConsoleInputArgv extends InputArgv
          if (! empty($matches)) {
 
              if (preg_match('#^--([^=]+)=(.*)$#i', $token,$params)) {
-                 $this->options[$params[1]] = $params[2];
-             }else {
+                 $this->setOption($params[1], $params[2]);
+             }elseif(preg_match('#^-([^=]+)=(.*)$#i', $token,$params)) {
+                 $this->setOption($params[1], $params[2]);
+             } else {
                  list($tokenName, $tokenValue) = explode('=', $token, 2);
-                 $this->arguments[$tokenName] = $tokenValue;
+                 $this->setArgument($tokenName, $tokenValue);
              }
 
          } else {
 
              if (preg_match('#^--([^=]+)$#i', $token,$params)) {
-                 $this->flags[$params[1]] = true;
+                 $this->setFlag($params[1], true);
              } elseif (preg_match('#^-([^=]+)$#i', $token,$params)) {
-                 $this->flags[$params[1]] = true;
+                 $this->setFlag($params[1], true);
              }else {
-                 $this->arguments[] = $token;
+                 $this->addArguments($token);
              }
          }
     }

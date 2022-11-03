@@ -248,8 +248,7 @@ class Command implements CommandInterface
     */
     public function addArgument(string $name, $description, string $default = null, array $rules = []): self
     {
-           $this->inputs->addArgument($argument = new InputArgument($name, $description, $default, $rules));
-
+           $this->inputs->addArgument(new InputArgument($name, $description, $default, $rules));
 
            return $this;
     }
@@ -278,15 +277,16 @@ class Command implements CommandInterface
     /**
      * Add new input option
      *
-     * @param string $name
+     * @param $name
      * @param $description
-     * @param string|null $default
+     * @param $shortcut
+     * @param null $default
      * @param array $rules
      * @return $this
     */
-    public function addOption(string $name, $description, string $default = null, array $rules = []): self
+    public function addOption($name, $description, $shortcut = null, $default = null, array $rules = []): self
     {
-          $this->inputs->addOption($option = new InputOption($name, $description, $default, $rules));
+          $this->inputs->addOption(new InputOption($name, $description, $shortcut, $default, $rules));
 
           return $this;
     }

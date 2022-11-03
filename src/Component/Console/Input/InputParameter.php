@@ -30,13 +30,6 @@ abstract class InputParameter
     /**
      * @var string
     */
-    protected $shortcut;
-
-
-
-    /**
-     * @var string
-    */
     protected $default;
 
 
@@ -63,12 +56,12 @@ abstract class InputParameter
     /**
      * InputArgument constructor.
      *
-     * @param string $name
+     * @param $name
      * @param $description
-     * @param string|null $default
+     * @param $default
      * @param array $rules
     */
-    public function __construct(string $name, $description, string $default = null, array $rules = [])
+    public function __construct($name, $description, $default = null, array $rules = [])
     {
           $this->name         = $name;
           $this->description  = $description;
@@ -84,8 +77,20 @@ abstract class InputParameter
     */
     public function isRequired(): bool
     {
-         return in_array(self::REQUIRED, $this->rules);
+         return in_array(static::REQUIRED, $this->rules);
     }
+
+
+
+    /**
+     * @return bool
+    */
+    public function isOptional(): bool
+    {
+         return in_array(static::OPTIONAL, $this->rules);
+    }
+
+
 
 
     /**

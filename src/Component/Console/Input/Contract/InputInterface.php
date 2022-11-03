@@ -83,6 +83,29 @@ interface InputInterface
 
 
 
+      /**
+       * @param $name
+       * @param $value
+       * @return mixed
+      */
+      public function setOption($name, $value);
+
+
+
+
+
+
+      /**
+       * @param $name
+       * @param $value
+       * @return mixed
+      */
+      public function setShortcut($name, $value);
+
+
+
+
+
 
       /**
        * Return parsed option

@@ -148,6 +148,19 @@ abstract class InputArgv implements InputInterface
 
      /**
       * @param $name
+      * @param $value
+      * @return void
+     */
+     public function setArgument($name, $value)
+     {
+          $this->arguments[$name] = $value;
+     }
+
+
+
+
+     /**
+      * @param $name
       * @return bool
      */
      public function hasArgument($name = null): bool
@@ -195,6 +208,30 @@ abstract class InputArgv implements InputInterface
 
 
 
+     /**
+      * @param $arguments
+      * @return void
+     */
+     public function addArguments($arguments)
+     {
+           $this->arguments = array_merge($this->arguments, (array) $arguments);
+     }
+
+
+
+
+
+     /**
+      * @param $name
+      * @param $value
+      * @return void
+     */
+     public function setOption($name, $value)
+     {
+         $this->options[$name] = $value;
+     }
+
+
 
 
      /**
@@ -228,6 +265,60 @@ abstract class InputArgv implements InputInterface
      {
          return $this->options;
      }
+
+
+
+
+     /**
+      * @param $name
+      * @param $value
+      * @return void
+     */
+     public function setShortcut($name, $value)
+     {
+          $this->shortcuts[$name] = $value;
+     }
+
+
+
+
+
+     /**
+      * @param $name
+      * @return mixed|string
+     */
+     public function getShortcut($name)
+     {
+         return $this->shortcuts[$name] ?? '';
+     }
+
+
+
+
+     /**
+      * @param $name
+      * @return bool
+     */
+     public function hasShortcut($name): bool
+     {
+           return isset($this->shortcuts[$name]);
+     }
+
+
+
+
+
+     /**
+      * @param $name
+      * @param $value
+      * @return void
+     */
+     public function setFlag($name, $value)
+     {
+         $this->flags[$name] = $value;
+     }
+
+
 
 
 
