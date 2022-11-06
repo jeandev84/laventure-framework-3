@@ -40,12 +40,12 @@ class MigrationMakeCommand extends Command
 
 
       /**
-       * @param MigrationGenerator $webGenerator
+       * @param MigrationGenerator $migrationGenerator
       */
-      public function __construct(MigrationGenerator $webGenerator)
+      public function __construct(MigrationGenerator $migrationGenerator)
       {
           parent::__construct('make:migration');
-          $this->migrationGenerator = $webGenerator;
+          $this->migrationGenerator = $migrationGenerator;
       }
 
 

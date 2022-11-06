@@ -24,12 +24,12 @@ class MakeCommand extends Command
 
 
       /**
-       * @param CommandGenerator $webGenerator
+       * @param CommandGenerator $generator
       */
-      public function __construct(CommandGenerator $webGenerator)
+      public function __construct(CommandGenerator $generator)
       {
             parent::__construct('make:command');
-            $this->generator = $webGenerator;
+            $this->generator = $generator;
       }
 
 

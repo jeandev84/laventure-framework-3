@@ -317,19 +317,14 @@ class Command implements CommandInterface
     */
     public function run(InputInterface $input, OutputInterface $output): int
     {
-         if ($input->hasFlag('h') || $input->hasFlag('help')) {
+         if ($input->hasOption('h') || $input->hasOption('help')) {
              $output->write($this->help);
-             return Command::INFO;
+             return Command::SUCCESS;
          }
 
-         if (! $this->inputs->validate($input)) {
-             foreach ($this->inputs->getErrors() as $errorMessage) {
-                $output->writeln($errorMessage);
-             }
-             return Command::INVALID;
-         }
+         $this->inputs->validate($input);
 
-        return $this->execute($input, $output);
+         return $this->execute($input, $output);
     }
 
 
@@ -352,6 +347,7 @@ class Command implements CommandInterface
 
 
 
+
     /**
      * @param $name
      * @return bool
@@ -360,6 +356,8 @@ class Command implements CommandInterface
     {
         return ! is_null($name) && stripos($name, ':') !== false;
     }
+
+
 
 
 

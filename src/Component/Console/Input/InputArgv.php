@@ -181,7 +181,6 @@ abstract class InputArgv implements InputInterface
               return $this->arguments[$name];
          }
 
-
          if (! $this->hasDefaultArgument()) {
               if (isset($this->tokens[2]) && stripos($this->tokens[2], '=') !== false) {
                   $this->abortIf("Invalid default argument. '{$this->tokens[2]}'");
@@ -212,7 +211,7 @@ abstract class InputArgv implements InputInterface
       * @param $arguments
       * @return void
      */
-     public function addArguments($arguments)
+     public function addArgument($arguments)
      {
            $this->arguments = array_merge($this->arguments, (array) $arguments);
      }
@@ -228,8 +227,10 @@ abstract class InputArgv implements InputInterface
      */
      public function setOption($name, $value)
      {
-         $this->options[$name] = $value;
+          $this->options[$name] = $value;
      }
+
+
 
 
 
@@ -269,66 +270,16 @@ abstract class InputArgv implements InputInterface
 
 
 
+
+
      /**
       * @param $name
       * @param $value
       * @return void
      */
-     public function setOptionShortcut($name, $value)
+     public function shortcutOption($name, $value)
      {
           $this->shortcuts[$name] = $value;
-     }
-
-
-
-
-
-     /**
-      * @param $name
-      * @return mixed|string
-     */
-     public function getShortcut($name)
-     {
-         return $this->shortcuts[$name] ?? '';
-     }
-
-
-
-
-     /**
-      * @param $name
-      * @return bool
-     */
-     public function hasShortcut($name): bool
-     {
-           return isset($this->shortcuts[$name]);
-     }
-
-
-
-
-
-     /**
-      * @param $name
-      * @param $value
-      * @return void
-     */
-     public function setFlag($name, $value)
-     {
-         $this->flags[$name] = $value;
-     }
-
-
-
-
-
-
-     /**
-      * @inheritDoc
-     */
-     public function flag($name)
-     {
-          return $this->flags[$name] ?? null;
      }
 
 
@@ -340,18 +291,7 @@ abstract class InputArgv implements InputInterface
      */
      public function hasFlag($name): bool
      {
-          return isset($this->flags[$name]);
-     }
-
-
-
-
-    /**
-      * @inheritdoc
-     */
-     public function getFlags()
-     {
-         return $this->flags;
+          return $this->getOption($name) === $name;
      }
 
 
@@ -364,6 +304,8 @@ abstract class InputArgv implements InputInterface
      {
          return $this->tokens;
      }
+
+
 
 
 
@@ -385,7 +327,7 @@ abstract class InputArgv implements InputInterface
      */
      public function hasDefaultArgument(): bool
      {
-        return isset($this->arguments[0]);
+         return isset($this->arguments[0]);
      }
 
 

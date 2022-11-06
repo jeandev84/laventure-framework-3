@@ -19,7 +19,7 @@ class MakeControllerCommand extends Command
      /**
       * @var ControllerGenerator
      */
-     protected $webGenerator;
+     protected $entityGenerator;
 
 
 
@@ -52,7 +52,7 @@ class MakeControllerCommand extends Command
 
 
      /**
-      * @param ControllerGenerator $webGenerator
+      * @param ControllerGenerator $entityGenerator
       * @param ApiControllerGenerator $apiGenerator
       * @param TemplateGenerator $templateGenerator
       * @param RouteGenerator $routeGenerator
@@ -98,7 +98,7 @@ class MakeControllerCommand extends Command
 
               $output->success("Controller '$controllerPath' successfully generated.");
 
-              if ($input->flag('resource')) {
+              if ($input->hasOption('resource')) {
 
                   if ($layout = $this->makeLayout()) {
                       $output->success("Layout '{$layout}' successfully generated.");
@@ -132,9 +132,9 @@ class MakeControllerCommand extends Command
      {
            $controller = $input->getArgument();
 
-           if($input->flag('resource')) {
+           if($input->hasOption('resource')) {
                return $this->webGenerator->generateResource($controller);
-           } elseif ($input->flag('api')) {
+           } elseif ($input->hasOption('api')) {
                return $this->apiGenerator->generateApiResource($controller);
            }
 
@@ -177,9 +177,9 @@ class MakeControllerCommand extends Command
      {
           $controller = $input->getArgument();
 
-          if ($input->flag('api')) {
+          if ($input->hasOption('api')) {
                return $this->routeGenerator->generateResourceApi($controller);
-          } elseif($input->flag('resource')) {
+          } elseif($input->hasOption('resource')) {
                return $this->routeGenerator->generateResourceWeb($controller);
           }
 

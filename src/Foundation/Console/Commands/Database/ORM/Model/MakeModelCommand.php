@@ -17,18 +17,19 @@ class MakeModelCommand extends Command
        /**
         * @var ModelGenerator
        */
-       protected $generator;
+       protected $modelGenerator;
+
 
 
 
 
        /**
-        * @param ModelGenerator $webGenerator
+        * @param ModelGenerator $modelGenerator
        */
-       public function __construct(ModelGenerator $webGenerator)
+       public function __construct(ModelGenerator $modelGenerator)
        {
            parent::__construct('make:model');
-           $this->generator = $webGenerator;
+           $this->modelGenerator = $modelGenerator;
        }
 
 
@@ -59,7 +60,31 @@ class MakeModelCommand extends Command
        */
        protected function make(InputInterface $input): ?string
        {
-             return $this->generator->generateModelClass($input->getArgument());
+             return $this->modelGenerator->generateModelClass($input->getArgument());
+       }
+
+
+
+       private function makeOptions(InputInterface $input)
+       {
+            if($options = $input->getOptions()) {
+                 foreach ($options as $option) {
+
+                 }
+            }
+       }
+
+
+
+
+       // make : mfs
+       private function makeMigrationFactorySeeder($model, $action)
+       {
+             return [
+                 'm' => '',
+                 'f' => '',
+                 's' => ''
+             ][$action];
        }
 
 }

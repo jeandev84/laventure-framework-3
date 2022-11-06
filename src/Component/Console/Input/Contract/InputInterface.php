@@ -83,6 +83,8 @@ interface InputInterface
 
 
 
+
+
       /**
        * @param $name
        * @param $value
@@ -96,11 +98,13 @@ interface InputInterface
 
 
       /**
+       * Set option shortcut
+       *
        * @param $name
        * @param $value
        * @return mixed
       */
-      public function setOptionShortcut($name, $value);
+      public function shortcutOption($name, $value);
 
 
 
@@ -132,35 +136,11 @@ interface InputInterface
 
 
 
-      /**
-       * Return all parsed options
-       *
-       *
-       * @return mixed
-      */
-      public function getOptions();
-
-
-
-
-
 
       /**
-       * Return value of parsed flag
-       *
-       *
-       * @param $name
-       * @return mixed
-      */
-      public function flag($name);
-
-
-
-
-
-      /**
-       * Determine if the given flag name exist.
-       *
+       * Determine if given argument is flag
+       * Example :
+       *  $ php console -shortFlag --longFlag
        *
        * @param $name
        * @return mixed
@@ -173,11 +153,13 @@ interface InputInterface
 
 
       /**
-       * Return all flags
+       * Return all parsed options
+       *
        *
        * @return mixed
       */
-      public function getFlags();
+      public function getOptions();
+
 
 
 

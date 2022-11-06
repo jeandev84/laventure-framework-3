@@ -96,7 +96,7 @@ class ServerRunCommand extends ServerCommand
                 $host = implode(":", [$ip, $port]);
            }
 
-           $errorStatus = $input->hasFlag('no-exception') ? 0 : 1;
+           $errorStatus = $input->hasOption('no-exception') ? 0 : 1;
 
            return $this->printCommand($host, array_filter([
                "-display_errors={$errorStatus}"

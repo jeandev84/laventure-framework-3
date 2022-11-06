@@ -44,16 +44,6 @@ class ConsoleInputArgv extends InputArgv
          foreach ($tokens as $token) {
              $this->parsedToken($token);
          }
-
-
-         //echo __METHOD__."\n";
-//         dd([
-//            "firstArgument" => $this->firstArgument,
-//            "arguments" => $this->arguments,
-//            "options"   => $this->options,
-//            "shortcuts" => $this->shortcuts,
-//            "flags"     => $this->flags
-//         ]);
     }
 
 
@@ -66,28 +56,48 @@ class ConsoleInputArgv extends InputArgv
     */
     private function parsedToken($token)
     {
-         preg_match("/^(.+)=(.+)$/", $token, $matches);
-
-         if (! empty($matches)) {
-
-             if (preg_match('#^--([^=]+)=(.*)$#i', $token,$params)) {
-                 $this->setOption($params[1], $params[2]);
-             }elseif(preg_match('#^-([^=]+)=(.*)$#i', $token,$params)) {
-                 $this->setOption($params[1], $params[2]);
-             } else {
-                 list($tokenName, $tokenValue) = explode('=', $token, 2);
-                 $this->setArgument($tokenName, $tokenValue);
+         if (preg_match("/^(.+)=(.+)$/", $token)) {
+             if ($options = $this->matchOption($token)) {
+                 $this->setOption($options[1], $options[2]);
+             } else{
+                 list($name, $value) = explode('=', $token, 2);
+                 $this->setArgument($name, $value);
              }
-
-         } else {
-
-             if (preg_match('#^--([^=]+)$#i', $token,$params)) {
-                 $this->setFlag($params[1], true);
-             } elseif (preg_match('#^-([^=]+)$#i', $token,$params)) {
-                 $this->setFlag($params[1], true);
-             }else {
-                 $this->addArguments($token);
-             }
+         }elseif($flags = $this->matchFlag($token)) {
+             $this->setOption($flags[1], $flags[1]);
+         }else{
+             $this->addArgument($token);
          }
+    }
+
+
+
+    /**
+     * @param $token
+     * @return mixed
+    */
+    private function matchOption($token)
+    {
+        preg_match('#^--([^=]+)=(.*)$#i', $token,$options) ||
+        preg_match('#^-([^=]+)=(.*)$#i', $token,$options);
+
+        return $options;
+    }
+
+
+
+
+
+
+    /**
+     * @param $token
+     * @return mixed
+    */
+    private function matchFlag($token)
+    {
+        preg_match('#^--([^=]+)$#i', $token,$flags) ||
+        preg_match('#^-([^=]+)$#i', $token,$flags);
+
+        return $flags;
     }
 }

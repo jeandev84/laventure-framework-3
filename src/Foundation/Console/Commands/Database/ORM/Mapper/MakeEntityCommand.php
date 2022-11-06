@@ -18,6 +18,8 @@ class MakeEntityCommand extends Command
       protected $entityGenerator;
 
 
+
+
       /**
        * @var EntityRepositoryGenerator
       */
@@ -28,13 +30,16 @@ class MakeEntityCommand extends Command
 
 
       /**
-       * @param EntityGenerator $webGenerator
+       * @param EntityGenerator $entityGenerator
        * @param EntityRepositoryGenerator $repositoryGenerator
       */
-      public function __construct(EntityGenerator $webGenerator, EntityRepositoryGenerator $repositoryGenerator)
+      public function __construct(
+          EntityGenerator $entityGenerator,
+          EntityRepositoryGenerator $repositoryGenerator
+      )
       {
            parent::__construct('make:entity');
-           $this->entityGenerator     = $webGenerator;
+           $this->entityGenerator     = $entityGenerator;
            $this->repositoryGenerator = $repositoryGenerator;
       }
 
