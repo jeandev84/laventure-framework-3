@@ -116,7 +116,10 @@ class DatabaseServiceProvider extends ServiceProvider implements BootableService
 
          if($files = fs()->collection("{$fixturePath}/*")->names()) {
              foreach ($files as $file) {
-                 $fixtures[] = $this->app->get("{$namespaces}\\{$file}");
+                 $fixture = $this->app->get("{$namespaces}\\{$file}");
+                 if ($fixture instanceof Fixture) {
+                     $fixtures[] = $fixture;
+                 }
              }
          }
 

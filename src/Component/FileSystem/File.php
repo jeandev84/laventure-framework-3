@@ -266,7 +266,7 @@ class File
         *
         * @return array
        */
-       public function loadArray(): array
+       public function config(): array
        {
             if (! $this->exists() || ! is_array($data = require $this->path)) {
                 return [];
@@ -281,7 +281,7 @@ class File
        /**
         * @return array|false
        */
-       public function contentToArray()
+       public function toArray()
        {
             return file($this->realpath(), FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
        }
@@ -295,9 +295,9 @@ class File
         *
         * @return false|string
        */
-       public function contentToJson()
+       public function toJson()
        {
-            return json_encode($this->loadArray(), JSON_PRETTY_PRINT);
+            return json_encode($this->config(), JSON_PRETTY_PRINT);
        }
 
 

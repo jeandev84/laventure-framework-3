@@ -32,14 +32,6 @@ class FixtureManager
 
 
 
-       /**
-        * @var string[]
-       */
-       protected $messages = [];
-
-
-
-
 
       /**
        * FixtureManager constructor.
@@ -106,39 +98,17 @@ class FixtureManager
       /**
        * Load all fixtures
        *
-       * @return void
+       * @return array
       */
-      public function loadFixtures()
+      public function loadFixtures(): array
       {
+           $fixtures = [];
+
            foreach ($this->fixtures as $fixture) {
                $fixture->load($this->em);
-               $this->log($fixture);
+               $fixtures[] = get_class($fixture);
            }
-      }
 
-
-
-
-
-      /**
-       * @return string[]
-      */
-      public function getLogFixtures(): array
-      {
-           return $this->messages;
-      }
-
-
-
-
-
-
-      /**
-       * @param Fixture $fixture
-       * @return void
-      */
-      private function log(Fixture $fixture)
-      {
-          $this->messages[] = sprintf("Fixture %s successfully loaded.", get_class($fixture));
+           return $fixtures;
       }
 }

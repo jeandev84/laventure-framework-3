@@ -55,7 +55,7 @@ class FileCollection
       {
            $this->files[$file->filename()] = $file;
            $this->paths[$file->filename()] = $file->path();
-           $this->items[$file->filename()] = $file->loadArray();
+           $this->items[$file->filename()] = $file->config();
 
            return $this;
       }

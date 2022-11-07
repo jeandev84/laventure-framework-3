@@ -13,12 +13,13 @@ class EnvGenerator extends StubGenerator
       /**
        * @return string
       */
-      public function generateEnvFile(): string
+      public function generateEnv(): string
       {
            $stub = $this->readStub('env/template.stub');
 
            return $this->generate('.env', $stub);
       }
+
 
 
 
@@ -30,10 +31,9 @@ class EnvGenerator extends StubGenerator
       */
       public function generateKey($key, $value): ?string
       {
-           $env = "{$key}={$value}";
-           $previousContent = $this->fs()->read('.env');
-           $newContent      = preg_replace("/{$key}=(.*)/", $env, $previousContent);
+           $previous = $this->fs()->read('.env'); // previous content
+           $content  = preg_replace("/{$key}=(.*)/", "{$key}={$value}", $previous); // new content
            $this->remove('.env');
-           return $this->generate('.env', $newContent);
+           return $this->generate('.env', $content); // generate new content
       }
 }

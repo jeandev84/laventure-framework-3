@@ -4,18 +4,34 @@ namespace Laventure\Foundation\Console\Commands\Dotenv;
 use Laventure\Component\Console\Command\Command;
 use Laventure\Component\Console\Input\Contract\InputInterface;
 use Laventure\Component\Console\Output\Contract\OutputInterface;
+use Laventure\Foundation\Console\Commands\Dotenv\Contract\EnvCommand;
+use Laventure\Foundation\Service\Generator\Dotenv\EnvGenerator;
 
-class GenerateEnvCommand extends Command
+
+class GenerateEnvCommand extends EnvCommand
 {
 
-      public function __construct()
+      /**
+       * @param EnvGenerator $envGenerator
+      */
+      public function __construct(EnvGenerator $envGenerator)
       {
-          parent::__construct('gen:env');
+          parent::__construct($envGenerator, 'env:gen');
       }
 
 
+
+
+
+      /**
+       * @param InputInterface $input
+       * @param OutputInterface $output
+       * @return int
+      */
       public function execute(InputInterface $input, OutputInterface $output): int
       {
-          return Command::SUCCESS;
+            $output->success("Generated file [ .env ]");
+
+            return Command::SUCCESS;
       }
 }

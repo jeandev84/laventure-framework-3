@@ -48,30 +48,12 @@ class LoadFixtureCommand extends Command
        */
        public function execute(InputInterface $input, OutputInterface $output): int
        {
+            if ($fixtures = $this->fixtureManager->loadFixtures()) {
+                 foreach ($fixtures as $fixture) {
+                      $output->success(sprintf("Fixture '%s' successfully loaded.", $fixture));
+                 }
+            }
 
+            return Command::SUCCESS;
        }
-
-
-
-//
-//
-//       /**
-//        * @return Fixture[]
-//       */
-//       private function loadFixtures(): array
-//       {
-//           $fixturePath      = config()->get("namespaces.fixtures");
-//           $fixtureNamespace = config()->get("paths.fixtures");
-//
-//           $fixtures = [];
-//
-//           foreach ($this->filesystem->collection("$fixturePath/*")->names() as $class) {
-//               $class = $this->app->get("$fixtureNamespace\\$class");
-//               if ($class instanceof Fixture) {
-//                   $fixtures[] = $class;
-//               }
-//           }
-//
-//           return $fixtures;
-//       }
 }
