@@ -2,7 +2,7 @@
 namespace Laventure\Component\Console\Input\Contract;
 
 
-use Laventure\Component\Console\Input\InputDefinition;
+use Laventure\Component\Console\Input\InputCollection;
 
 /**
  * InputInterface
@@ -159,8 +159,8 @@ interface InputInterface
        * Validate parsed inputs
        *
        *
-       * @param InputDefinition $inputs
+       * @param InputCollection $inputs
        * @return mixed
       */
-      public function validate(InputDefinition $inputs);
+      public function validate(InputCollection $inputs);
 }

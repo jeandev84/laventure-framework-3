@@ -5,7 +5,7 @@ use Laventure\Component\Console\Command\Contract\CommandInterface;
 use Laventure\Component\Console\Command\Exception\CommandException;
 use Laventure\Component\Console\Input\Contract\InputInterface;
 use Laventure\Component\Console\Input\InputArgument;
-use Laventure\Component\Console\Input\InputDefinition;
+use Laventure\Component\Console\Input\InputCollection;
 use Laventure\Component\Console\Input\InputOption;
 use Laventure\Component\Console\Output\Contract\OutputInterface;
 
@@ -70,7 +70,7 @@ class Command implements CommandInterface
     /**
      * Input definition
      *
-     * @var InputDefinition
+     * @var InputCollection
     */
     protected $inputs;
 
@@ -85,7 +85,7 @@ class Command implements CommandInterface
     */
     public function __construct($name = null)
     {
-         $this->inputs  = new InputDefinition();
+         $this->inputs  = new InputCollection();
 
          if ($name) {
              $this->name($name);
@@ -262,9 +262,9 @@ class Command implements CommandInterface
     /**
      * Return input bag
      *
-     * @return InputDefinition
+     * @return InputCollection
     */
-    public function getInputBag(): InputDefinition
+    public function getInputBag(): InputCollection
     {
          return $this->inputs;
     }

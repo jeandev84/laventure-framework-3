@@ -326,7 +326,7 @@ abstract class InputArgv implements InputInterface
      /**
       * @inheritdoc
      */
-     public function validate(InputDefinition $inputs)
+     public function validate(InputCollection $inputs)
      {
          return $this->validateArguments($inputs->getArguments()) && $this->validateOptions($inputs->getOptions());
      }
