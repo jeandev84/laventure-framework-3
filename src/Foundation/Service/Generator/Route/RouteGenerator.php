@@ -24,7 +24,7 @@ class RouteGenerator extends StubGenerator
                  'ResourceController' =>  $controller
              ]);
 
-             if(! $this->writeTo($routePath = 'config/routes/api.php', $stub)) {
+             if(! $this->writeTo($routePath = $this->config("ApiRoutePath"), $stub)) {
                  return false;
              }
 
@@ -47,7 +47,7 @@ class RouteGenerator extends StubGenerator
                'ResourceController' => $controller
            ]);
 
-           if(! $this->writeTo($routePath = 'config/routes/web.php', $stub)) {
+           if(! $this->writeTo($routePath = $this->config("WebRoutePath"), $stub)) {
                  return false;
            }
 

@@ -10,6 +10,7 @@ use Laventure\Foundation\Service\Generator\ORM\Mapper\EntityGenerator;
 use Laventure\Foundation\Service\Generator\ORM\Mapper\EntityRepositoryGenerator;
 use Laventure\Foundation\Service\Generator\ORM\Mapper\FixtureGenerator;
 use Laventure\Foundation\Service\Generator\ORM\Model\ModelGenerator;
+use Laventure\Foundation\Service\Generator\Route\RouteGenerator;
 use Laventure\Foundation\Service\Generator\View\TemplateGenerator;
 
 
@@ -114,6 +115,17 @@ class FileGeneratorServiceProvider extends ServiceProvider
                 "TemplatePath" => config()->get('view.root')
             ]);
             return $generator;
+        });
+
+
+
+        $this->app->singleton(RouteGenerator::class, function () {
+             $generator = $this->app->make(RouteGenerator::class);
+             $generator->configs([
+                 "WebRoutePath" => config()->get("paths.routes.web"),
+                 "ApiRoutePath" => config()->get("paths.routes.api") ,
+             ]);
+             return $generator;
         });
     }
 }
