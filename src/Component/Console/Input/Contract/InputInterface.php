@@ -88,18 +88,6 @@ interface InputInterface
 
 
       /**
-       * @param $name
-       * @param $value
-       * @return mixed
-      */
-      public function setOption($name, $value);
-
-
-
-
-
-
-      /**
        * Return parsed option
        *
        *
