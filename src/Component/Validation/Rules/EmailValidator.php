@@ -32,4 +32,15 @@ class EmailValidator extends RuleContract
     {
         return "{$this->getField()} is not valid email.";
     }
+
+
+
+
+    /**
+     * @inheritdoc
+    */
+    public function getName()
+    {
+         return 'email';
+    }
 }

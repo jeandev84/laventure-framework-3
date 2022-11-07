@@ -26,4 +26,15 @@ class RequiredValidator extends RuleContract
     {
          return "{$this->getField()} is required.";
     }
+
+
+
+
+    /**
+     * @inheritdoc
+    */
+    public function getName()
+    {
+         return 'required';
+    }
 }

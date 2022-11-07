@@ -111,8 +111,7 @@ class InputDefinition
           $name = $option->getName();
 
           if ($shortcut = $option->getShortcut()) {
-               $name = $shortcut;
-               $this->shortcuts[$shortcut] = $option->getName();
+               $this->shortcuts[$name = $shortcut] = $option->getName();
           }
 
           $this->options[$name] = $option;
@@ -209,8 +208,12 @@ class InputDefinition
              }
 
              foreach ($this->getArguments() as $name => $argument) {
-                 if (! $input->hasArgument($name) && $argument->isRequired()) {
-                     $this->abortIf("Argument '{$name}' is required");
+                 if (! $argument->getDefault()) {
+                     if (! $input->hasArgument($name) && $argument->isRequired()) {
+                         $this->abortIf("Argument '{$name}' is required");
+                     }
+                 } else {
+
                  }
              }
          }

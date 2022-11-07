@@ -25,4 +25,15 @@ class UniqueValidator extends RuleContract
     {
         // TODO: Implement getMessage() method.
     }
+
+
+
+
+    /**
+     * @return string
+    */
+    public function getName(): string
+    {
+         return 'unique';
+    }
 }

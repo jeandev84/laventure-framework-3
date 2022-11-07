@@ -7,6 +7,16 @@ namespace Laventure\Component\Validation\Contract;
 interface ValidatorInterface
 {
 
+    /**
+     * Validator name
+     *
+     * @return mixed
+    */
+    public function getName();
+
+
+
+
 
     /**
      * Returns field name
@@ -26,6 +36,7 @@ interface ValidatorInterface
      * @return mixed
     */
     public function getValue();
+
 
 
 
