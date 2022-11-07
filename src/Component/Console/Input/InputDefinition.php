@@ -3,9 +3,9 @@ namespace Laventure\Component\Console\Input;
 
 
 /**
- * InputCollection
+ * InputDefinition
 */
-class InputCollection
+class InputDefinition
 {
 
      /**
