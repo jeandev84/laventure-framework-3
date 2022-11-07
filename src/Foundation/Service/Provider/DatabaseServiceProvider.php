@@ -69,9 +69,9 @@ class DatabaseServiceProvider extends ServiceProvider implements BootableService
     */
     public function register()
     {
-        // Sharing
-        $eventManager = $this->app->make(EntityEventManager::class);
-        $this->app->singleton(EntityEventManagerInterface::class, $eventManager);
+        $this->app->singleton(EntityEventManagerInterface::class, function () {
+             return $this->app->make(EntityEventManager::class);
+        });
 
         $this->app->singleton(EntityRepositoryFactory::class, function () {
             return $this->app->make(RepositoryFactory::class, [
