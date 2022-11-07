@@ -4,9 +4,6 @@ namespace Laventure\Component\Console\Input;
 
 class InputOption extends InputParameter
 {
-    const REQUIRED  =  5;
-    const OPTIONAL  =  6;
-
 
 
     /**

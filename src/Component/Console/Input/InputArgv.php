@@ -184,11 +184,7 @@ abstract class InputArgv implements InputInterface
          $argument = array_shift($this->arguments);
 
          if (! $argument) {
-             if ($this->isInvalidDefaultArgument()) {
-                 $this->abortIf("Invalid default argument. '{$this->tokens[2]}'");
-             } else {
-                 $this->abortIf("Default argument is required.");
-             }
+             $this->abortIf("Default argument is required.");
          }
 
          return $argument;
@@ -360,6 +356,13 @@ abstract class InputArgv implements InputInterface
                }
 
                foreach ($arguments as $index => $argument) {
+
+                    $default = $argument->getDefault();
+
+                    if ($default && $this->getArgument($index) === $index) {
+                       $this->setArgument($index, $default);
+                    }
+
                     if (! $argument->getDefault()) {
                         if (! $this->hasArgument($index) && $argument->isRequired()) {
                             $this->abortIf("Argument '{$index}' is required");
@@ -386,26 +389,33 @@ abstract class InputArgv implements InputInterface
      {
           if (! empty($options)) {
 
-              foreach ($this->options as $name => $value) {
-                   if (! isset($options[$name])) {
-                       $this->abortIf("Invalid option name : '{$name}'");
+              foreach ($this->options as $key => $value) {
+                   if (! isset($options[$key])) {
+                       $this->abortIf("Invalid option name : '{$key}'");
+                   } else {
+                       $default =  $options[$key]->getDefault();
+                       if($default && $key === $value) {
+                           $this->setOption($key, $default);
+                       }
                    }
               }
 
               foreach ($options as $index => $option) {
 
+                   $name     = $option->getName();
                    $shortcut = $option->getShortcut();
 
-                   if ($shortcut && $this->hasOption($shortcut)) {
-                        $this->setOption($option->getName(), $this->getOption($shortcut));
-                   }
-
                    if ($shortcut) {
-                       $this->setOption($shortcut, $this->getOption($option->getName()));
+
+                       if ($this->hasOption($shortcut)) {
+                           $this->setOption($name, $this->getOption($shortcut));
+                       }
+
+                       $this->setOption($shortcut, $this->getOption($name));
+                       $this->shortcutOption($shortcut, $name);
                    }
 
                    if ($option->isRequired()) {
-                       $name = $option->getName();
                        if (! $this->hasOption($index) || ! $this->hasOption($name)) {
                            $message = $shortcut ? "--{$name} or -{$shortcut}" : "--$name";
                            $this->abortIf("Option '$message' is required");
@@ -415,18 +425,6 @@ abstract class InputArgv implements InputInterface
           }
 
           return true;
-     }
-
-
-
-
-
-     /**
-      * @return bool
-     */
-     private function isInvalidDefaultArgument(): bool
-     {
-         return isset($this->tokens[2]) && stripos($this->tokens[2], '=') !== false;
      }
 
 

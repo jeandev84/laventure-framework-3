@@ -8,8 +8,8 @@ namespace Laventure\Component\Console\Input;
 abstract class InputParameter
 {
 
-    const REQUIRED  =  1;
-    const OPTIONAL  =  2;
+    const REQUIRED = 1;
+
 
 
     /**
