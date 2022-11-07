@@ -31,13 +31,15 @@ class FileSystem
        /**
         * Set base directory
         *
-        * @param string|null $root
+        * @param string $root
         * @return void
        */
        public function root(string $root)
        {
             $this->locator->root($root);
        }
+
+
 
 
 

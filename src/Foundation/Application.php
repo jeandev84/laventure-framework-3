@@ -174,6 +174,33 @@ final class Application extends Container
 
 
 
+      /**
+       * @param $timezone
+       * @return void
+      */
+      public function setTimezone($timezone)
+      {
+           date_default_timezone_set($timezone);
+
+           $this->bind('app.timezone', $timezone);
+      }
+
+
+
+
+      /**
+       * @return string
+      */
+      public function getTimezone(): string
+      {
+           return $this->get('app.timezone');
+      }
+
+
+
+
+
+
 
       /**
        * Get application version

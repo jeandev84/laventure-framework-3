@@ -17,10 +17,13 @@ use Laventure\Foundation\Routing\Router;
  * @method static Router name(string $name)
  * @method static Router middleware(string $middleware)
  * @method static string generate(string $name, array $parameters = [])
- * @method static string resource(string $name, string $controller)
- * @method static string resources(array $resources)
- * @method static string apiResource(string $name, string $controller)
- * @method static string apiResources(array $resources)
+ * @method static Router resource(string $name, string $controller)
+ * @method static Router resources(array $resources)
+ * @method static Router apiResource(string $name, string $controller)
+ * @method static Router apiResources(array $resources)
+ * @method static Router namespace(string $namespace)
+ * @method static Router paths(array $paths)
+ * @method static Router config(array $parameters)
  *
  * Route facade
 */

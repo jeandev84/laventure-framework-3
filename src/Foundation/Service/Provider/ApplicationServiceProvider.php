@@ -133,7 +133,9 @@ class ApplicationServiceProvider extends ServiceProvider implements BootableServ
     public function register()
     {
         $this->app->singleton(FileSystem::class, function () {
-            return $this->app->make(FileSystem::class, ['root' => $this->app['path']]);
+            return $this->app->make(FileSystem::class, [
+                'root' => $this->app['path']
+            ]);
         });
 
 
@@ -148,9 +150,11 @@ class ApplicationServiceProvider extends ServiceProvider implements BootableServ
                 new ArrayLoader($arrays)
             ]);
 
+
+            $this->app->setTimezone($config->get('app.timezone'));
+
             return $config;
         });
-
 
 
         $this->app->singleton(Router::class, function () {

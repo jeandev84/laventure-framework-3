@@ -4,6 +4,7 @@ namespace Laventure\Foundation\Service\Provider;
 
 use Laventure\Component\Container\Provider\ServiceProvider;
 use Laventure\Foundation\Application;
+use Laventure\Foundation\Facade\Routing\Route;
 use Laventure\Foundation\Routing\Router;
 
 
@@ -29,26 +30,14 @@ class RouteServiceProvider extends ServiceProvider
 
 
     /**
-     * @return Router
-    */
-    private function router(): Router
-    {
-         return $this->app['router'];
-    }
-
-
-
-
-
-    /**
      * @inheritDoc
     */
     public function register()
     {
-         $this->router()->namespace($this->namespace);
-         $this->router()->paths($this->routePaths());
-         $this->router()->config($this->configureApiRoutes())->loadApiRoutes();
-         $this->router()->config($this->configureWebRoutes())->loadWebRoutes();
+         Route::namespace($this->namespace);
+         Route::paths($this->routePaths());
+         Route::config($this->configureApiRoutes())->loadApiRoutes();
+         Route::config($this->configureWebRoutes())->loadWebRoutes();
     }
 
 
