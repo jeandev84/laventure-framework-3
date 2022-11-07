@@ -104,13 +104,15 @@ class FixtureManager
 
 
       /**
+       * Load all fixtures
+       *
        * @return void
       */
       public function loadFixtures()
       {
            foreach ($this->fixtures as $fixture) {
                $fixture->load($this->em);
-               $this->logFixture($fixture);
+               $this->log($fixture);
            }
       }
 
@@ -123,7 +125,7 @@ class FixtureManager
       */
       public function getLogFixtures(): array
       {
-          return $this->messages;
+           return $this->messages;
       }
 
 
@@ -135,10 +137,8 @@ class FixtureManager
        * @param Fixture $fixture
        * @return void
       */
-      private function logFixture(Fixture $fixture)
+      private function log(Fixture $fixture)
       {
-          $message = sprintf("Fixture %s successfully loaded.", get_class($fixture));
-
-          $this->messages[] = $message;
+          $this->messages[] = sprintf("Fixture %s successfully loaded.", get_class($fixture));
       }
 }

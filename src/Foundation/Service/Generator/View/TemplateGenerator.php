@@ -1,5 +1,5 @@
 <?php
-namespace Laventure\Foundation\Service\Generator\Render;
+namespace Laventure\Foundation\Service\Generator\View;
 
 use Laventure\Foundation\Service\Generator\File\StubGenerator;
 

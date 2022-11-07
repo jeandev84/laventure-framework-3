@@ -116,6 +116,19 @@ abstract class AbstractModel  implements \ArrayAccess
 
 
     /**
+     * @param array $data
+     * @return void
+    */
+    public function fill(array $data)
+    {
+         $this->fillable[] = $data;
+    }
+
+
+
+
+
+    /**
      * @return Manager
     */
     protected static function getDB(): Manager

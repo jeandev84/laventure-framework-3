@@ -10,7 +10,7 @@ use Laventure\Foundation\Service\Generator\ORM\Mapper\EntityGenerator;
 use Laventure\Foundation\Service\Generator\ORM\Mapper\EntityRepositoryGenerator;
 use Laventure\Foundation\Service\Generator\ORM\Mapper\FixtureGenerator;
 use Laventure\Foundation\Service\Generator\ORM\Model\ModelGenerator;
-use Laventure\Foundation\Service\Generator\Render\TemplateGenerator;
+use Laventure\Foundation\Service\Generator\View\TemplateGenerator;
 
 
 /**

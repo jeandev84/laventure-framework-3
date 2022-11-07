@@ -9,7 +9,7 @@ use Laventure\Component\Routing\Resource\WebResource;
 use Laventure\Foundation\Service\Generator\Controller\ApiControllerGenerator;
 use Laventure\Foundation\Service\Generator\Controller\ControllerGenerator;
 use Laventure\Foundation\Service\Generator\Route\RouteGenerator;
-use Laventure\Foundation\Service\Generator\Render\TemplateGenerator;
+use Laventure\Foundation\Service\Generator\View\TemplateGenerator;
 
 
 class MakeControllerCommand extends Command

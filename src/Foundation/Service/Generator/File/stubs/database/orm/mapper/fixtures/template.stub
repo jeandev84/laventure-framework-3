@@ -2,7 +2,7 @@
 namespace DummyNamespace;
 
 
-use Laventure\Component\Database\ORM\Mapper\Manager\Contact\ObjectManager;
+use Laventure\Component\Database\ORM\Mapper\Manager\EntityManager;
 use Laventure\Component\Database\ORM\Mapper\Manager\Fixtures\Contract\Fixture;
 
 
@@ -19,7 +19,7 @@ class DummyClass implements Fixture
       /**
        * @inheritDoc
       */
-      public function load(ObjectManager $manager)
+      public function load(EntityManager $manager)
       {
            // add your logic here
       }

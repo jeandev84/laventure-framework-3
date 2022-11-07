@@ -1,18 +1,22 @@
 <?php
 namespace Laventure\Component\Database\ORM\Mapper\Manager\Fixtures\Contract;
 
-use Laventure\Component\Database\ORM\Mapper\Manager\Contact\ObjectManager;
+
+use Laventure\Component\Database\ORM\Mapper\Manager\EntityManager;
+
+
 
 /**
  * Fixture
 */
 interface Fixture
 {
+
      /**
       * Load data
       *
-      * @param ObjectManager $manager
+      * @param EntityManager $manager
       * @return void
     */
-    public function load(ObjectManager $manager);
+    public function load(EntityManager $manager);
 }
