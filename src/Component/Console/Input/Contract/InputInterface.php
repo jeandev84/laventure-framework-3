@@ -2,6 +2,8 @@
 namespace Laventure\Component\Console\Input\Contract;
 
 
+use Laventure\Component\Console\Input\InputDefinition;
+
 /**
  * InputInterface
 */
@@ -185,4 +187,13 @@ interface InputInterface
        * @return bool
       */
       public function isInteractive(): bool;
+
+
+
+
+      /**
+       * @param InputDefinition $inputs
+       * @return mixed
+      */
+      public function validate(InputDefinition $inputs);
 }

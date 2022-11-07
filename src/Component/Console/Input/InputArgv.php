@@ -349,9 +349,28 @@ abstract class InputArgv implements InputInterface
 
 
 
+
+     /**
+      * @inheritdoc
+     */
+     public function validate(InputDefinition $inputs)
+     {
+
+     }
+
+
+
+
+     private function validateArguments(InputDefinition $inputs)
+     {
+
+     }
+
+
+
+
      /**
       * @inheritDoc
      */
      abstract public function parseTokens($tokens);
-
 }
