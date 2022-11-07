@@ -9,6 +9,7 @@ use Laventure\Component\Http\Response\Response;
 use Laventure\Foundation\Service\Provider\ApplicationServiceProvider;
 use Laventure\Foundation\Service\Provider\ConsoleServiceProvider;
 use Laventure\Foundation\Service\Provider\DatabaseServiceProvider;
+use Laventure\Foundation\Service\Provider\EventDispatcherServiceProvider;
 use Laventure\Foundation\Service\Provider\FileGeneratorServiceProvider;
 use Laventure\Foundation\Service\Provider\RouteServiceProvider;
 use Laventure\Foundation\Service\Provider\StorageServiceProvider;
@@ -171,10 +172,12 @@ class Application extends Container
 
 
       /**
+       * Add namespaces
+       *
        * @param string[] $namespaces
        * @return void
       */
-      public function addNamespaces(array $namespaces)
+      public function addClassAliases(array $namespaces)
       {
           foreach ($namespaces as $alias => $namespace) {
              $this->namespaces[$alias] = $namespace;
@@ -192,12 +195,13 @@ class Application extends Container
        * @param string[] $middlewares
        * @return void
       */
-      public function pipe(array $middlewares)
+      public function addMiddlewares(array $middlewares)
       {
           foreach ($middlewares as $middleware) {
               $this['middleware']->add($this->get($middleware));
           }
       }
+
 
 
 
@@ -303,7 +307,7 @@ class Application extends Container
       /**
        * Return Exception Handler
        *
-       * @return mixed|string
+       * @return mixed
       */
       public function getExceptionHandler()
       {
@@ -323,12 +327,13 @@ class Application extends Container
       public function terminate(Request $request, Response $response)
       {
              $this['middleware']->handle($request);
-             $response->attach($request);
-             $response->sendBody();
+             $response->sendBody($request);
       }
 
 
 
+      
+      
 
       /**
        * @return void
@@ -344,6 +349,7 @@ class Application extends Container
 
 
 
+      
       /**
        * @return void
       */
@@ -376,6 +382,7 @@ class Application extends Container
       {
          $this->addProviders([
              ApplicationServiceProvider::class,
+             EventDispatcherServiceProvider::class,
              StorageServiceProvider::class,
              DatabaseServiceProvider::class,
              RouteServiceProvider::class,

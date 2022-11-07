@@ -11,7 +11,7 @@ use Laventure\Component\Events\Listener\EventListener;
  *
  * @package Laventure\Component\Events\Dispatcher
  *
- * @author Yao Kouassi Jean-Claude <jeanyao@ymail.com php>
+ * @author Yao Kouassi Jean-Claude <jeanyao@ymail.com>
 */
 class EventDispatcher extends EventDispatcherContract
 {
@@ -25,23 +25,37 @@ class EventDispatcher extends EventDispatcherContract
 
 
 
+
+    /**
+     * @var Event[]
+    */
+    protected $events = [];
+
+
+
+
+
+    /**
+     * @var array
+    */
+    protected $dispatched = [];
+
+
+
+
+
     /**
      * Add Listeners
      *
      * @param $eventName
      * @param EventListener $listener
-     * @return mixed
     */
     public function addListener($eventName, EventListener $listener)
     {
          $listener->setDispatcher($this);
 
          $this->listeners[$eventName][] = $listener;
-
-         return $this;
     }
-
-
 
 
 

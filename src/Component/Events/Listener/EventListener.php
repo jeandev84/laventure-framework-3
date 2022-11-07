@@ -15,15 +15,17 @@ abstract class EventListener implements EventListenerInterface
 
     /**
      * @var EventDispatcherContract
-     */
+    */
     protected $dispatcher;
 
 
 
+
+
     /**
-     * @param \Laventure\Component\Events\Dispatcher\EventDispatcherContract $dispatcher
+     * @param EventDispatcherContract $dispatcher
      * @return void
-     */
+    */
     public function setDispatcher(EventDispatcherContract $dispatcher)
     {
          $this->dispatcher = $dispatcher;
@@ -31,14 +33,18 @@ abstract class EventListener implements EventListenerInterface
 
 
 
+
+
     /**
      * @param Event $event
      * @return iterable
-     */
+    */
     public function getListenersForEvent(Event $event): iterable
     {
-        return $this->dispatcher->getListenersByEvent($event);
+         return $this->dispatcher->getListenersByEvent($event);
     }
+
+
 
 
 

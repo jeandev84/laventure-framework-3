@@ -7,6 +7,7 @@ use Laventure\Component\Http\Middleware\Contract\RequestHandlerInterface;
 use Laventure\Component\Http\Request\Request;
 use Laventure\Component\Http\Response\Response;
 
+
 class Middleware
 {
 

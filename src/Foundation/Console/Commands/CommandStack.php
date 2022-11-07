@@ -28,6 +28,7 @@ class CommandStack
      public static function getDefaultCommands(): array
      {
           return [
+              ServerRunCommand::class,
               MakeCommand::class,
               DatabaseCreateCommand::class,
               DatabaseDropCommand::class,
@@ -44,7 +45,6 @@ class CommandStack
               LoadFixtureCommand::class,
               GenerateEnvCommand::class,
               GenerateKeyCommand::class,
-              ServerRunCommand::class,
           ];
      }
 }

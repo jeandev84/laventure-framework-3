@@ -69,6 +69,8 @@ class FixtureManager
 
 
 
+
+
       /**
        * Add fixture
        *
@@ -81,6 +83,8 @@ class FixtureManager
 
            return $this;
       }
+
+
 
 
 
@@ -121,6 +125,8 @@ class FixtureManager
       {
           return $this->messages;
       }
+
+
 
 
 

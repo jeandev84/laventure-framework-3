@@ -246,7 +246,7 @@ class Router extends LaventureRouter
              'current.route' => $route
          ]);
 
-         $this->app->pipe($route->getMiddlewares());
+         $this->app->addMiddlewares($route->getMiddlewares());
 
          return $route;
      }

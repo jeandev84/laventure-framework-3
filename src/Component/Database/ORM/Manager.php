@@ -48,25 +48,6 @@ class Manager
 
 
       /**
-       * @var string
-      */
-      protected $modelPath;
-
-
-
-
-
-
-      /**
-       * @var string
-      */
-      protected $ormType;
-
-
-
-
-
-      /**
        *  Constructor manager
       */
       public function __construct()
@@ -107,55 +88,6 @@ class Manager
 
                static::$instance = $this;
            }
-      }
-
-
-
-
-      /**
-       * @param $name
-       * @return void
-      */
-      public function orm($name)
-      {
-           $this->ormType = $name;
-      }
-
-
-
-
-
-      /**
-       * @return string
-      */
-      public function getOrmType(): string
-      {
-           return $this->ormType;
-      }
-
-
-
-
-
-      /**
-       * @return bool
-      */
-      public function hasOrmTypeModel(): bool
-      {
-          return $this->ormType === OrmType::MODEL;
-      }
-
-
-
-
-
-
-      /**
-       * @return bool
-      */
-      public function hasOrmTypeMapper(): bool
-      {
-          return $this->ormType === OrmType::MAPPER;
       }
 
 

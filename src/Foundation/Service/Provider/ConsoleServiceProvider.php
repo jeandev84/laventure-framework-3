@@ -73,6 +73,6 @@ class ConsoleServiceProvider extends ServiceProvider
     */
     private function getGeneratedCommands(FileSystem $fileSystem): array
     {
-        return  $fileSystem->collection('/app/Console/Commands/*Command.php')->getNames();
+        return  $fileSystem->collection('/app/Console/Commands/*Command.php')->names();
     }
 }

@@ -28,4 +28,22 @@ class FixtureGenerator extends ClassGenerator
 
             return $this->generateClass($credentials);
        }
+
+
+
+
+
+
+
+       public function loadFixtures()
+       {
+            $fixturePath      = $this->config("DummyPath");
+            $fixtureNamespace = $this->config("DummyNamespace");
+
+            $fixtures = [];
+
+            foreach ($this->fs()->collection("$fixturePath/*")->names() as $class) {
+                $fixtures[] = "";
+            }
+       }
 }

@@ -25,6 +25,7 @@ class Response implements ResponseInterface
 
 
 
+
       /**
        * @var string
       */
@@ -73,9 +74,9 @@ class Response implements ResponseInterface
       */
       public function __construct(string $content = null, int $statusCode = 200, array $headers = [])
       {
-           $this->content    = $content;
-           $this->statusCode = $statusCode;
-           $this->headers    = new ResponseHeaderBag($headers);
+             $this->content    = $content;
+             $this->statusCode = $statusCode;
+             $this->headers    = new ResponseHeaderBag($headers);
       }
 
 
@@ -262,11 +263,14 @@ class Response implements ResponseInterface
 
 
       /**
+       * @param Request $request
        * @return void
       */
-      public function sendBody()
+      public function sendBody(Request $request)
       {
-          echo $this->__toString();
+           $this->withProtocolVersion($request->getProtocolVersion());
+
+           echo $this->getBody();
       }
 
 

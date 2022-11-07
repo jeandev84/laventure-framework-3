@@ -15,15 +15,16 @@ abstract class EventDispatcherContract implements EventDispatcherInterface
 
     /**
      * @var mixed
-     */
+    */
     protected $listeners = [];
+
 
 
 
 
     /**
      * @return EventListener[]
-     */
+    */
     public function getListeners(): array
     {
         return $this->listeners;
@@ -31,27 +32,33 @@ abstract class EventDispatcherContract implements EventDispatcherInterface
 
 
 
+
+
+
     /**
      * Get listeners by event name
      * @param $eventName
      * @return EventListener[]
-     */
+    */
     public function getListenersByEvent($eventName): array
     {
-        if(! $this->hasListeners($eventName)) {
-            return [];
-        }
+         if(! $this->hasListeners($eventName)) {
+             return [];
+         }
 
-        return $this->listeners[$eventName];
+         return $this->listeners[$eventName];
     }
 
 
 
+
+
+
     /**
-     * @param string $eventName
+     * @param $eventName
      * @return bool
-     */
-    public function hasListeners(string $eventName): bool
+    */
+    public function hasListeners($eventName): bool
     {
         return isset($this->listeners[$eventName]);
     }

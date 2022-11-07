@@ -124,7 +124,7 @@ class FileCollection
        *
        * @return array
       */
-      public function getNames(): array
+      public function names(): array
       {
            return array_keys($this->files());
       }

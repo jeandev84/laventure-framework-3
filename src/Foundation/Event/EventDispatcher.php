@@ -1,18 +1,17 @@
 <?php
 namespace Laventure\Foundation\Event;
 
-use Laventure\Component\Events\Contract\EventDispatcherInterface;
-use Laventure\Component\Events\Dispatcher\EventDispatcher;
+
+use Laventure\Component\Events\Dispatcher\EventDispatcher as AbstractEventDispatcher;
 use Laventure\Component\Events\Event;
 use Laventure\Component\Events\Listener\EventListener;
 use Laventure\Foundation\Application;
-use Laventure\Foundation\Event\Dispatcher\AbstractEventDispatcher;
 
 
 /**
  * @inheritdoc
 */
-class Dispatcher extends EventDispatcher
+class EventDispatcher extends AbstractEventDispatcher
 {
 
 
@@ -21,14 +20,6 @@ class Dispatcher extends EventDispatcher
          */
          protected $app;
 
-
-
-
-
-         /**
-          * @var Event[]
-         */
-         protected $events = [];
 
 
 
@@ -46,12 +37,10 @@ class Dispatcher extends EventDispatcher
           * Dispatcher constructor.
           *
           * @param Application $app
-          * @param array $events
          */
-         public function __construct(Application $app, array $events)
+         public function __construct(Application $app)
          {
-               $this->app    = $app;
-               $this->events = $events;
+               $this->app = $app;
          }
 
 
@@ -92,9 +81,7 @@ class Dispatcher extends EventDispatcher
                 if ($event) {
                     $this->dispatchEvent($event);
                 } else {
-                    foreach ($this->events as $event) {
-                        $this->dispatchEvent($event);
-                    }
+                    $eventName = '';
                 }
         }
 
@@ -110,18 +97,33 @@ class Dispatcher extends EventDispatcher
         */
         public function dispatchEvent(Event $event)
         {
+             // todo refactoring
              $listeners = $this->getListenersByEvent($event->getName());
 
-             if (! isset($this->dispatched[$event->getName()])) {
+             if (! $this->dispatched($event->getName())) {
 
                  foreach ($listeners as $listener) {
                      if ($listener instanceof EventListener) {
                          $listener->handle($event);
-                     } elseif (is_callable($listener)){
+                     }elseif(is_callable($listener)){
                          $this->app->call($listener, [$event]);
                      }
                      $this->dispatched[$event->getName()] = $event;
                  }
              }
+        }
+
+
+
+
+
+
+        /**
+         * @param $name
+         * @return bool
+        */
+        public function dispatched($name): bool
+        {
+             return isset($this->dispatched[$name]);
         }
 }

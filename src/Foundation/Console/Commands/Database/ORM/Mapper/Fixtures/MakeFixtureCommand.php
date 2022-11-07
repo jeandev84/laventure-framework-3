@@ -43,8 +43,24 @@ class MakeFixtureCommand extends Command
        */
        public function execute(InputInterface $input, OutputInterface $output): int
        {
-           dd($this->generator);
+           if ($path = $this->make($input)) {
+                $output->success("Fixture '{$path}' successfully generated.");
+           }
 
            return Command::SUCCESS;
+       }
+
+
+
+
+
+
+       /**
+        * @param InputInterface $input
+        * @return string|null
+       */
+       private function make(InputInterface $input): ?string
+       {
+            return $this->generator->generateFixture($input->getArgument());
        }
 }

@@ -21,13 +21,13 @@ abstract class DatabaseCommand extends Command
 
 
     /**
-     * @param Manager $manager
+     * @param Manager $fixtureManager
      * @param null $name
     */
-    public function __construct(Manager $manager, $name = null)
+    public function __construct(Manager $fixtureManager, $name = null)
     {
         parent::__construct($name);
-        $this->manager = $manager;
+        $this->manager = $fixtureManager;
     }
 
 

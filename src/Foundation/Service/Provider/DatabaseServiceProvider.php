@@ -2,6 +2,7 @@
 namespace Laventure\Foundation\Service\Provider;
 
 use Laventure\Component\Config\Config;
+use Laventure\Component\Container\Provider\Contract\BootableServiceProvider;
 use Laventure\Component\Container\Provider\ServiceProvider;
 use Laventure\Component\Database\Connection\ConnectionInterface;
 use Laventure\Component\Database\Manager\Contact\DatabaseManagerInterface;
@@ -18,9 +19,11 @@ use Laventure\Foundation\Database\ORM\Mapper\Repository\Factory\RepositoryFactor
 
 
 /**
+ * @class DatabaseServiceProvider
  *
+ * @package Laventure\Foundation\Service\Provider
 */
-class DatabaseServiceProvider extends ServiceProvider
+class DatabaseServiceProvider extends ServiceProvider implements BootableServiceProvider
 {
 
 
@@ -38,6 +41,20 @@ class DatabaseServiceProvider extends ServiceProvider
 
 
 
+    public function boot()
+    {
+        $this->app->singleton(EntityEventManagerInterface::class, $this->app->make(EntityEventManager::class));
+
+        $this->app->singleton(EntityRepositoryFactory::class, function () {
+            return $this->app->make(RepositoryFactory::class, [
+                'namespace' => \config()->get("namespaces.repositories")
+            ]);
+        });
+    }
+
+
+
+
 
     /**
      * @inheritDoc
@@ -45,110 +62,18 @@ class DatabaseServiceProvider extends ServiceProvider
     public function register()
     {
          // Sharing
-         $this->shareDatabaseManager();
-         $this->shareConnection();
-         $this->shareEntityManager();
-         $this->shareSchema();
-         $this->shareMigrator();
-    }
+        $connection  = config()->get('database.connection');
+        $credentials = config()->get('database')[$connection] ?? [];
 
+        /** @var Manager $manager */
+        $manager = $this->app->factory(Manager::class);
+        $manager->addConnection($credentials);
+        $this->app->singleton(ConnectionInterface::class, $manager->connection());
+        $manager->setEntityManager($this->app->make(EntityManager::class));
 
-
-
-
-
-
-    /**
-     * @return void
-    */
-    private function shareDatabaseManager()
-    {
-        $this->app->singleton(Manager::class, function (Config $config) {
-
-            $connection  = $config->get('database.connection');
-            $credentials = $config->get('database')[$connection] ?? [];
-
-            /** @var Manager $manager */
-            $manager = $this->app->factory(Manager::class);
-            $manager->addConnection($credentials);
-            $manager->orm($config->get('database.orm'));
-
-            return $manager;
-
-        });
-    }
-
-
-
-
-
-    /**
-     * @return void
-    */
-    private function shareConnection()
-    {
-        $this->app->singleton(ConnectionInterface::class, function (Manager $manager) {
-               return $manager->connection();
-        });
-    }
-
-
-
-
-
-    /**
-     * @return void
-    */
-    private function shareSchema()
-    {
-         $this->app->singleton(Schema::class, function (Manager $manager) {
-              return $manager->schema();
-         });
-    }
-
-
-
-
-
-
-    /**
-     * @return void
-    */
-    private function shareMigrator()
-    {
-         $this->app->singleton(Migrator::class, function (Manager $manager) {
-             return  $manager->migration();
-         });
-    }
-
-
-
-
-    /**
-     * @return void
-    */
-    private function shareEntityManager()
-    {
-        $this->app->singleton(
-     EntityEventManagerInterface::class,
-            $this->app->make(EntityEventManager::class)
-        );
-
-
-        $this->app->singleton(EntityManager::class, function (Manager $manager) {
-
-            $factory = $this->app->make(RepositoryFactory::class, [
-                'namespace' => "App\\Repository"
-            ]);
-
-            $this->app->instance(EntityRepositoryFactory::class, $factory);
-
-            $em = $this->app->make(EntityManager::class);
-
-            $manager->setEntityManager($em);
-
-            return $em;
-
-        });
+        $this->app->singleton(Manager::class, $manager);
+        $this->app->singleton(EntityManager::class, $manager->getEntityManager());
+        $this->app->singleton(Schema::class, $manager->schema());
+        $this->app->singleton(Migrator::class, $manager->migration());
     }
 }

@@ -24,11 +24,13 @@ class StubGenerator extends FileGenerator
     /**
      * @param array $config
      * @return void
-     */
+    */
     public function configs(array $config)
     {
         $this->config = $config;
     }
+
+
 
 
 
@@ -43,13 +45,16 @@ class StubGenerator extends FileGenerator
     }
 
 
+
+
+
     /**
-      * @return string
-     */
-     protected function stubPath(): string
-     {
-          return realpath(__DIR__ . '/stubs/');
-     }
+     * @return string
+    */
+    protected function stubPath(): string
+    {
+        return realpath(__DIR__ . '/stubs/');
+    }
 
 
 

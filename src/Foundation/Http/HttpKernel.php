@@ -81,8 +81,8 @@ abstract class HttpKernel implements Kernel
      */
      public function __construct(Application $app, Router $router)
      {
-          $this->app    = $app;
-          $this->router = $router;
+           $this->app    = $app;
+           $this->router = $router;
      }
 
 
@@ -106,6 +106,9 @@ abstract class HttpKernel implements Kernel
 
              $response = $this->renderException($e);
          }
+
+         /* $this->app['events']->dispatch(); */
+
 
          return $response;
      }
@@ -165,6 +168,6 @@ abstract class HttpKernel implements Kernel
      */
      private function bootMiddlewares()
      {
-          $this->app->pipe($this->getPriorityMiddlewares());
+          $this->app->addMiddlewares($this->getPriorityMiddlewares());
      }
 }

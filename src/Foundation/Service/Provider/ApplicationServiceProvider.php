@@ -58,7 +58,7 @@ class ApplicationServiceProvider extends ServiceProvider implements BootableServ
     {
         $this->loadEnvironments();
         $this->loadHelpers();
-        $this->loadNamespaces();
+        $this->loadClassAlias();
     }
 
 
@@ -96,9 +96,9 @@ class ApplicationServiceProvider extends ServiceProvider implements BootableServ
     /**
      * @return void
     */
-    private function loadNamespaces()
+    private function loadClassAlias()
     {
-        $this->app->addNamespaces([
+        $this->app->addClassAliases([
             "Route"    => Route::class,
             "Schedule" => Schedule::class,
             "Url"      => Url::class,
@@ -159,7 +159,6 @@ class ApplicationServiceProvider extends ServiceProvider implements BootableServ
         $this->app->singleton(Router::class, function () {
             $router = $this->app->factory(Router::class);
             $router->domain(env('APP_URL'));
-            /* $router->get('/', [DefaultController::class, 'index'])->name('default'); */
             return $router;
         });
 
@@ -178,8 +177,10 @@ class ApplicationServiceProvider extends ServiceProvider implements BootableServ
     */
     public function terminate()
     {
-        $this->loadFacades();
+         $this->loadFacades();
     }
+
+
 
 
 
@@ -212,6 +213,7 @@ class ApplicationServiceProvider extends ServiceProvider implements BootableServ
 
 
 
+
     /**
      * @return array
     */
@@ -225,6 +227,8 @@ class ApplicationServiceProvider extends ServiceProvider implements BootableServ
 
          return $paths;
     }
+
+
 
 
 
