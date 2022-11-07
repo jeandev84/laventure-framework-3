@@ -18,13 +18,10 @@ class EntityEventManager implements EntityEventManagerInterface
         * @param string $eventName
         * @return object
        */
-       public function callEvent(object $object, string $eventName): object
+       private function callEvent(object $object, string $eventName): object
        {
              if (method_exists($object, $eventName)) {
-
                  call_user_func([$object, $eventName]);
-
-                 return $object;
              }
 
              return $object;
