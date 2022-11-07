@@ -382,15 +382,17 @@ class Container implements ContainerContract
 
       /**
        * @param string $abstract
-       * @param $concrete
+       * @param object $instance
        * @return $this
       */
-      public function instance(string $abstract, $concrete): self
+      public function instance(string $abstract, object $instance): self
       {
-           $this->instances[$abstract] = $concrete;
+           $this->instances[$abstract] = $instance;
 
            return $this;
       }
+
+
 
 
 

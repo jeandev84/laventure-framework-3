@@ -73,7 +73,7 @@ class ApplicationServiceProvider extends ServiceProvider implements BootableServ
     {
          Dotenv::create($this->app->path())->load();
 
-         $this->app->instances([
+         $this->app->binds([
              'app.env'   => getenv('APP_ENV'),
              'app.debug' => getenv('APP_DEBUG')
          ]);

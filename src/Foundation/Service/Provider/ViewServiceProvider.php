@@ -32,7 +32,7 @@ class ViewServiceProvider extends ServiceProvider implements BootableServiceProv
     */
     public function boot()
     {
-        $this->app->instance('view.layout', \config()->get('view.layout'));
+        $this->app->bind('view.layout', \config()->get('view.layout'));
     }
 
 

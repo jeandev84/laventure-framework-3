@@ -89,7 +89,7 @@ class Application extends Container
       {
           $path = rtrim(realpath($path), '\\/');
 
-          $this->instances(compact('path'));
+          $this->binds(compact('path'));
 
           $this->basePath = $path;
 
@@ -363,10 +363,7 @@ class Application extends Container
               'app' => $this
            ]);
 
-           $this->singletons([
-               get_class() => $this,
-               'middleware' => $this->factory(Middleware::class)
-           ]);
+           $this->singletons([get_class() => $this, 'middleware' => $this->factory(Middleware::class)]);
       }
 
 
