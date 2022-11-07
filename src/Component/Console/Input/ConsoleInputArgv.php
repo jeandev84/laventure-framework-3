@@ -66,7 +66,7 @@ class ConsoleInputArgv extends InputArgv
          }elseif($flags = $this->matchFlag($token)) {
              $this->setOption($flags[1], $flags[1]);
          }else{
-             $this->addArgument($token);
+             $this->setArgument($token, $token);
          }
     }
 

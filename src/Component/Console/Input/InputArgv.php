@@ -163,7 +163,7 @@ abstract class InputArgv implements InputInterface
       * @param $name
       * @return bool
      */
-     public function hasArgument($name = null): bool
+     public function hasArgument($name): bool
      {
           return isset($this->arguments[$name]);
      }
@@ -177,19 +177,21 @@ abstract class InputArgv implements InputInterface
      */
      public function getArgument($name = null)
      {
-         if ($this->hasArgument($name)) {
+         if ($name && $this->hasArgument($name)) {
               return $this->arguments[$name];
          }
 
-         if (! $this->hasDefaultArgument()) {
-              if (isset($this->tokens[2]) && stripos($this->tokens[2], '=') !== false) {
-                  $this->abortIf("Invalid default argument. '{$this->tokens[2]}'");
-              } else {
-                  $this->abortIf("Default argument is required.");
-              }
+         $argument = array_shift($this->arguments);
+
+         if (! $argument) {
+             if ($this->isInvalidDefaultArgument()) {
+                 $this->abortIf("Invalid default argument. '{$this->tokens[2]}'");
+             } else {
+                 $this->abortIf("Default argument is required.");
+             }
          }
 
-         return $this->arguments[0];
+         return $argument;
      }
 
 
@@ -202,18 +204,6 @@ abstract class InputArgv implements InputInterface
      public function getArguments(): array
      {
           return $this->arguments;
-     }
-
-
-
-
-     /**
-      * @param $arguments
-      * @return void
-     */
-     public function addArgument($arguments)
-     {
-           $this->arguments = array_merge($this->arguments, (array) $arguments);
      }
 
 
@@ -323,19 +313,6 @@ abstract class InputArgv implements InputInterface
 
 
      /**
-      * @return bool
-     */
-     public function hasDefaultArgument(): bool
-     {
-         return isset($this->arguments[0]);
-     }
-
-
-
-
-
-
-     /**
       * @param $message
       * @return InputArgvException
      */
@@ -355,16 +332,103 @@ abstract class InputArgv implements InputInterface
      */
      public function validate(InputDefinition $inputs)
      {
-
+         return $this->validateArguments($inputs->getArguments()) && $this->validateOptions($inputs->getOptions());
      }
 
 
 
 
-     private function validateArguments(InputDefinition $inputs)
+
+
+     /**
+      * Validate arguments
+      *
+      * @param InputArgument[] $arguments
+      * @return bool
+     */
+     private function validateArguments(array $arguments): bool
      {
+          if (! empty($arguments)) {
+               foreach ($this->arguments as $name => $value) {
+                    if (! isset($arguments[$name])) {
+                        $message = "What does it mean [{$name}={$value}] ?";
+                        if (is_int($name)) {
+                            $message = "May be you forgot to assign [{$value}] like [{$value}=something]  ?";
+                        }
+                        $this->abortIf("Invalid argument. {$message}");
+                    }
+               }
 
+               foreach ($arguments as $index => $argument) {
+                    if (! $argument->getDefault()) {
+                        if (! $this->hasArgument($index) && $argument->isRequired()) {
+                            $this->abortIf("Argument '{$index}' is required");
+                        }
+                    }
+               }
+          }
+
+          return true;
      }
+
+
+
+
+
+
+     /**
+      * Validate options
+      *
+      * @param InputOption[] $options
+      * @return bool
+     */
+     private function validateOptions(array $options): bool
+     {
+          if (! empty($options)) {
+
+              foreach ($this->options as $name => $value) {
+                   if (! isset($options[$name])) {
+                       $this->abortIf("Invalid option name : '{$name}'");
+                   }
+              }
+
+              foreach ($options as $index => $option) {
+
+                   $shortcut = $option->getShortcut();
+
+                   if ($shortcut && $this->hasOption($shortcut)) {
+                        $this->setOption($option->getName(), $this->getOption($shortcut));
+                   }
+
+                   if ($shortcut) {
+                       $this->setOption($shortcut, $this->getOption($option->getName()));
+                   }
+
+                   if ($option->isRequired()) {
+                       $name = $option->getName();
+                       if (! $this->hasOption($index) || ! $this->hasOption($name)) {
+                           $message = $shortcut ? "--{$name} or -{$shortcut}" : "--$name";
+                           $this->abortIf("Option '$message' is required");
+                       }
+                   }
+              }
+          }
+
+          return true;
+     }
+
+
+
+
+
+     /**
+      * @return bool
+     */
+     private function isInvalidDefaultArgument(): bool
+     {
+         return isset($this->tokens[2]) && stripos($this->tokens[2], '=') !== false;
+     }
+
 
 
 

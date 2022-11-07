@@ -322,7 +322,7 @@ class Command implements CommandInterface
              return Command::SUCCESS;
          }
 
-         $this->inputs->validate($input);
+         $input->validate($this->inputs);
 
          return $this->execute($input, $output);
     }
