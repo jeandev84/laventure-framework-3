@@ -36,8 +36,8 @@ class RouteServiceProvider extends ServiceProvider
     {
          Route::namespace($this->namespace);
          Route::paths($this->routePaths());
-         Route::config($this->configureApiRoutes())->loadApiRoutes();
-         Route::config($this->configureWebRoutes())->loadWebRoutes();
+         Route::config($this->apiPrefixes())->loadApiRoutes();
+         Route::config($this->webPrefixes())->loadWebRoutes();
     }
 
 
@@ -47,11 +47,11 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * @return array
     */
-    protected function routePaths(): array
+    private function routePaths(): array
     {
         return [
-           'api' => '/config/routes/api.php',
-           'web' => '/config/routes/web.php'
+           'api' => config()->get("paths.routes.api"),
+           'web' => config()->get("paths.routes.web")
         ];
     }
 
@@ -61,7 +61,7 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * @return array
     */
-    protected function configureApiRoutes(): array
+    protected function apiPrefixes(): array
     {
         return [
             'prefix' => 'api',
@@ -75,7 +75,7 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * @return array
     */
-    protected function configureWebRoutes(): array
+    protected function webPrefixes(): array
     {
          return [];
     }

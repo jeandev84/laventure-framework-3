@@ -221,7 +221,12 @@ class ApplicationServiceProvider extends ServiceProvider implements BootableServ
              $paths[$name] = str_replace(["App", "\\"], ['app', DIRECTORY_SEPARATOR], $namespace);
          }
 
-         return $paths;
+         return array_merge($paths, [
+             "routes" => [
+                 "api" => "/config/routes/api.php",
+                 "web" => "/config/routes/web.php",
+             ]
+         ]);
     }
 
 
