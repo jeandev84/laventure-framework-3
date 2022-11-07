@@ -13,13 +13,14 @@ use Laventure\Foundation\Service\Provider\EventDispatcherServiceProvider;
 use Laventure\Foundation\Service\Provider\FileGeneratorServiceProvider;
 use Laventure\Foundation\Service\Provider\RouteServiceProvider;
 use Laventure\Foundation\Service\Provider\StorageServiceProvider;
+use Laventure\Foundation\Service\Provider\UrlGeneratorServiceProvider;
 use Laventure\Foundation\Service\Provider\ViewServiceProvider;
 
 
 /**
  * Application
 */
-class Application extends Container
+final class Application extends Container
 {
 
       /**
@@ -51,10 +52,22 @@ class Application extends Container
 
 
 
+
+      /**
+       * @var Middleware
+      */
+      protected $middleware;
+
+
+
+
+
       /**
        * @var array
       */
       protected $namespaces = [];
+
+
 
 
 
@@ -73,6 +86,8 @@ class Application extends Container
             $this->registerBaseBindings();
             $this->registerBaseProviders();
             $this->loadNamespaces();
+
+            $this->middleware = $this->make(Middleware::class);
       }
 
 
@@ -143,6 +158,9 @@ class Application extends Container
 
 
 
+
+
+
       /**
        * Get application name
        *
@@ -166,6 +184,8 @@ class Application extends Container
       {
            return $this->version;
       }
+
+
 
 
 
@@ -198,7 +218,7 @@ class Application extends Container
       public function addMiddlewares(array $middlewares)
       {
           foreach ($middlewares as $middleware) {
-              $this['middleware']->add($this->get($middleware));
+              $this->middleware->add($this->get($middleware));
           }
       }
 
@@ -217,6 +237,9 @@ class Application extends Container
 
           return $this;
       }
+
+
+
 
 
 
@@ -326,7 +349,7 @@ class Application extends Container
       */
       public function terminate(Request $request, Response $response)
       {
-             $this['middleware']->handle($request);
+             $this->middleware->handle($request);
              $response->sendBody($request);
       }
 
@@ -363,7 +386,7 @@ class Application extends Container
               'app' => $this
            ]);
 
-           $this->singletons([get_class() => $this, 'middleware' => $this->factory(Middleware::class)]);
+           $this->singleton(get_class(), $this);
       }
 
 
@@ -383,6 +406,7 @@ class Application extends Container
              StorageServiceProvider::class,
              DatabaseServiceProvider::class,
              RouteServiceProvider::class,
+             UrlGeneratorServiceProvider::class,
              ViewServiceProvider::class,
              FileGeneratorServiceProvider::class,
              ConsoleServiceProvider::class

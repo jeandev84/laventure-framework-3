@@ -8,8 +8,6 @@ use Laventure\Component\Container\Provider\Contract\BootableServiceProvider;
 use Laventure\Component\Container\Provider\ServiceProvider;
 use Laventure\Component\Dotenv\Dotenv;
 use Laventure\Component\FileSystem\FileSystem;
-use Laventure\Component\Routing\Generator\UrlGenerator;
-use Laventure\Component\Routing\Generator\UrlGeneratorInterface;
 use Laventure\Component\Routing\RouterInterface;
 use Laventure\Foundation\Application;
 use Laventure\Foundation\Facade\Console\Schedule;
@@ -43,8 +41,7 @@ class ApplicationServiceProvider extends ServiceProvider implements BootableServ
     protected $provides = [
         FileSystem::class   => ['filesystem'],
         Config::class       => ['config'],
-        Router::class       => ['router', RouterInterface::class],
-        UrlGenerator::class => ['url', UrlGeneratorInterface::class],
+        Router::class       => ['router', RouterInterface::class]
     ];
 
 
@@ -161,14 +158,9 @@ class ApplicationServiceProvider extends ServiceProvider implements BootableServ
             $router->domain(env('APP_URL'));
             return $router;
         });
-
-
-        $this->app->singleton(UrlGenerator::class, function () {
-             return $this->app->make(UrlGenerator::class, [
-                 'networkDomain' => env('APP_URL')
-             ]);
-        });
     }
+
+
 
 
 

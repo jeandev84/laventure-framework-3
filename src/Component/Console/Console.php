@@ -218,7 +218,7 @@ class Console implements ConsoleInterface
      public function run(InputInterface $input, OutputInterface $output): int
      {
             $command = $this->getCommand($input->getFirstArgument());
-
+            $command->help('h|help');
             $status = $command->run($input, $output);
 
             print($output);

@@ -41,6 +41,32 @@ class InputCollection
 
 
      /**
+      * @param $name
+      * @return bool
+     */
+     public function hasArgument($name): bool
+     {
+          return isset($this->arguments[$name]);
+     }
+
+
+
+
+
+
+     /**
+      * @param $name
+      * @return InputArgument|null
+     */
+     public function getArgument($name): ?InputArgument
+     {
+          return $this->arguments[$name] ?? null;
+     }
+
+
+
+
+     /**
       * Return all input arguments
       *
       * @return InputArgument[]
@@ -49,6 +75,7 @@ class InputCollection
      {
           return $this->arguments;
      }
+
 
 
 
@@ -70,6 +97,34 @@ class InputCollection
           $this->options[$name] = $option;
 
           return $this;
+     }
+
+
+
+
+
+     /**
+      * @param $name
+      * @return bool
+     */
+     public function hasOption($name): bool
+     {
+         return isset($this->options[$name]);
+     }
+
+
+
+
+
+
+
+     /**
+      * @param $name
+      * @return InputOption|null
+     */
+     public function getOption($name): ?InputOption
+     {
+          return $this->options[$name] ?? null;
      }
 
 

@@ -59,9 +59,9 @@ class Command implements CommandInterface
     /**
      * Help command name
      *
-     * @var string
+     * @var mixed
     */
-    protected $help = '';
+    protected $help;
 
 
 
@@ -167,12 +167,12 @@ class Command implements CommandInterface
     /**
      * Set command help name
      *
-     * @param string $name
+     * @param array|string $name
      * @return $this
     */
-    public function help(string $name): self
+    public function help($name): self
     {
-         $this->help = $name;
+         $this->help = is_string($name) ? explode('|', $name) : (array) $name;
 
          return $this;
     }
@@ -317,10 +317,40 @@ class Command implements CommandInterface
     */
     public function run(InputInterface $input, OutputInterface $output): int
     {
-         if ($input->hasOption('h') || $input->hasOption('help')) {
-             $output->write($this->help);
-             return Command::SUCCESS;
+         $help = false;
+
+         foreach ($input->getOptions() as $name => $value) {
+              if (in_array($name, $this->help)) {
+                   $help = $name;
+                   break;
+              }
          }
+
+
+         if ($help) {
+
+             if ($this->inputs->getArguments()) {
+                  foreach ($input->getArguments() as $name => $value) {
+                       if ($this->inputs->hasArgument($name)) {
+                           $output->writeln($this->inputs->getArgument($name)->getDescription());
+                           return Command::INFO;
+                       }
+                  }
+             }
+
+             if ($this->inputs->getOptions()) {
+                  foreach ($input->getOptions() as $name => $value) {
+                       if ($this->inputs->hasOption($name)) {
+                            $output->writeln($this->inputs->getOption($name)->getDescription());
+                            return Command::INFO;
+                       }
+                  }
+             }
+
+             $output->writeln($this->getDescription());
+             return Command::INFO;
+         }
+
 
          $input->validate($this->inputs);
 
