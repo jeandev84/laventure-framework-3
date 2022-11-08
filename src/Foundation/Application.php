@@ -53,14 +53,6 @@ final class Application extends Container
 
 
 
-      /**
-       * @var Middleware
-      */
-      protected $middleware;
-
-
-
-
 
       /**
        * @var array
@@ -86,8 +78,6 @@ final class Application extends Container
             $this->registerBaseBindings();
             $this->registerBaseProviders();
             $this->loadNamespaces();
-
-            $this->middleware = $this->make(Middleware::class);
       }
 
 
@@ -184,6 +174,8 @@ final class Application extends Container
 
            $this->bind('app.timezone', $timezone);
       }
+
+
 
 
 
@@ -388,7 +380,7 @@ final class Application extends Container
       /**
        * @return void
       */
-      protected function loadNamespaces()
+      private function loadNamespaces()
       {
           foreach ($this->namespaces as $alias => $namespace) {
                \class_alias($namespace, $alias);
@@ -403,7 +395,7 @@ final class Application extends Container
       /**
        * @return void
       */
-      protected function registerBaseBindings()
+      private function registerBaseBindings()
       {
            self::setInstance($this);
 
@@ -413,7 +405,10 @@ final class Application extends Container
               'app' => $this
            ]);
 
-           $this->singleton(get_class(), $this);
+           $this->singletons([
+              get_class()  => $this,
+              'middleware' => $this->make(Middleware::class)
+           ]);
       }
 
 
@@ -425,7 +420,7 @@ final class Application extends Container
        *
        * @return void
       */
-      protected function registerBaseProviders()
+      private function registerBaseProviders()
       {
          $this->addProviders([
              ApplicationServiceProvider::class,

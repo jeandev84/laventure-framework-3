@@ -1,7 +1,7 @@
 <?php
 namespace Laventure\Component\Console\Output;
 
-use Laventure\Component\Console\Helpers\QuestionHelper;
+
 use Laventure\Component\Console\Output\Contract\OutputInterface;
 use Laventure\Component\Console\Output\Style\ConsoleStyle;
 
@@ -110,17 +110,6 @@ class ConsoleOutput implements OutputInterface
         return shell_exec($command);
     }
 
-
-
-
-
-    /**
-     * @return QuestionHelper
-    */
-    public function ask(): QuestionHelper
-    {
-         return new QuestionHelper();
-    }
 
 
 
