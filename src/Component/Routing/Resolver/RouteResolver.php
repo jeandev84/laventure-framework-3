@@ -181,7 +181,7 @@ class RouteResolver
        {
            if ($this->isStringAction($action)) {
                $action = explode('@', $action, 2);
-               return [$this->getControllerNamespace($action[0]), $action[1]];
+               return [$this->getController($action[0]), $action[1]];
            }
 
            return $action;
@@ -194,10 +194,12 @@ class RouteResolver
         * @param string $name
         * @return string
        */
-       public function getControllerNamespace(string $name): string
+       public function getController(string $name): string
        {
-           return sprintf('%s\\%s', $this->resolveNamespace(), $name);
+           return sprintf('%s\\%s', $this->getNamespace(), $name);
        }
+
+
 
 
 
@@ -205,7 +207,7 @@ class RouteResolver
        /**
         * @return string
        */
-       public function resolveNamespace(): string
+       public function getNamespace(): string
        {
             if (! $this->namespace) {
                 return '';

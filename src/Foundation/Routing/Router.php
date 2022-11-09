@@ -7,7 +7,7 @@ use Laventure\Component\FileSystem\FileSystem;
 use Laventure\Component\Http\Request\Request;
 use Laventure\Component\Http\Response\Response;
 use Laventure\Component\Routing\Collection\Route;
-use Laventure\Component\Routing\LaventureRouter;
+use Laventure\Component\Routing\Router as LaventureRouter;
 use Laventure\Foundation\Application;
 
 
@@ -83,9 +83,9 @@ class Router extends LaventureRouter
 
      /**
       * @param array $middlewares
-      * @return LaventureRouter
+      * @return $this
      */
-     public function middlewares(array $middlewares): LaventureRouter
+     public function middlewares(array $middlewares): self
      {
           $this->routeMiddlewares = $middlewares;
 
@@ -229,6 +229,13 @@ class Router extends LaventureRouter
      */
      protected function matchRoute(Request $request): Route
      {
+         // Middleware
+         if ($request->post()) {
+             if($method = $request->request->get('_method')) {
+                 $request->withMethod($method);
+             }
+         }
+
          if (! $route = $this->match($request->getMethod(), $path = $request->getRequestUri())) {
               $this->createRouteNotFoundException($path);
          }

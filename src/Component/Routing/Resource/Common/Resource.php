@@ -2,7 +2,7 @@
 namespace Laventure\Component\Routing\Resource\Common;
 
 use Laventure\Component\Routing\Collection\Route;
-use Laventure\Component\Routing\LaventureRouter;
+use Laventure\Component\Routing\Router;
 
 
 /**
@@ -50,11 +50,28 @@ abstract class Resource
 
 
 
+
+
+
       /**
-       * @param LaventureRouter $router
+       * @param $controller
        * @return void
       */
-      public function map(LaventureRouter $router)
+      public function setController($controller)
+      {
+           $this->controller = $controller;
+      }
+
+
+
+
+
+
+      /**
+       * @param Router $router
+       * @return void
+      */
+      public function map(Router $router)
       {
            foreach ($this->configureRoutes() as $route) {
 
@@ -84,19 +101,6 @@ abstract class Resource
            $this->routes[] = $route;
 
            return $route;
-      }
-
-
-
-      /**
-       * @param Route[] $routes
-       * @return $this
-      */
-      public function withRoutes(array $routes): self
-      {
-            $this->routes = $routes;
-            
-            return $this;
       }
 
 
@@ -143,9 +147,11 @@ abstract class Resource
       */
       protected function routeParameter(): string
       {
-           $parameter = strtolower($this->getName());
+           // $parameter = strtolower($this->getName());
 
-           return trim($parameter, 's');
+           // return trim($parameter, 's');
+
+           return 'id';
       }
 
 
@@ -166,11 +172,11 @@ abstract class Resource
 
       /**
        * @param string $action
-       * @return array
+       * @return string
       */
-      protected function routeAction(string $action): array
+      protected function routeAction(string $action): string
       {
-          return [$this->getController(), $action];
+          return $this->getController(). "@$action";
       }
 
 
@@ -192,10 +198,10 @@ abstract class Resource
 
 
      /**
-      * @param LaventureRouter $router
+      * @param Router $router
       * @return array
      */
-     public function makeRoutes(LaventureRouter $router): array
+     public function makeRoutes(Router $router): array
      {
             $routes = [];
 

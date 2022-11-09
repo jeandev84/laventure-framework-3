@@ -420,7 +420,7 @@ class Request extends ServerRequest
      */
      public function getMethod(): string
      {
-          return $this->method = $this->server->method();
+          return $this->method ?: $this->server->method();
      }
 
 

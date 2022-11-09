@@ -2,6 +2,7 @@
 namespace Laventure\Foundation\Database\ORM\Mapper\Repository\Factory;
 
 use Laventure\Component\Database\ORM\Mapper\Repository\Contract\EntityRepositoryInterface;
+use Laventure\Component\Database\ORM\Mapper\Repository\EntityRepository;
 use Laventure\Component\Database\ORM\Mapper\Repository\Factory\EntityRepositoryFactory;
 use Laventure\Component\Container\Contract\ContainerInterface;
 use ReflectionClass;
@@ -60,7 +61,7 @@ class RepositoryFactory extends EntityRepositoryFactory
     /**
      * @inheritDoc
     */
-    public function createRepository(string $class): EntityRepositoryInterface
+    public function createRepository(string $class): EntityRepository
     {
          return $this->app->get($this->make($class));
     }

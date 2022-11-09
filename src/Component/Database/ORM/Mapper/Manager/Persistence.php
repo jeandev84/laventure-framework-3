@@ -15,7 +15,7 @@ class Persistence
       /**
        * @var string
       */
-      protected $identity = 'id';
+      protected $primaryKey = 'id';
 
 
 
@@ -93,6 +93,17 @@ class Persistence
       protected $eventManager;
 
 
+
+
+
+      /**
+       * @var int
+      */
+      protected $id;
+
+
+
+
       /**
        * Persistence constructor.
        *
@@ -113,20 +124,37 @@ class Persistence
        * @param $name
        * @return void
       */
-      public function identity($name)
+      public function setPrimaryKey($name)
       {
-            $this->identity = $name;
+            $this->primaryKey = $name;
       }
+
+
+
 
 
 
       /**
        * @return string
       */
-      public function getIdentity(): string
+      public function primaryKey(): string
       {
-           return $this->identity;
+           return $this->primaryKey;
       }
+
+
+
+
+
+      /**
+       * @return int
+      */
+      public function getId(): ?int
+      {
+           return $this->id;
+      }
+
+
 
 
 
@@ -135,7 +163,7 @@ class Persistence
        * @param object $object
        * @return int|null
       */
-      public function getId(object $object): ?int
+      public function getObjectID($object): ?int
       {
             return $this->dataMapper->getId($object);
       }
@@ -144,10 +172,10 @@ class Persistence
 
 
       /**
-       * @param $object
+       * @param object $object
        * @return $this
       */
-      public function persist($object): self
+      public function persist(object $object): self
       {
             $this->persists[] = $object;
 
@@ -157,27 +185,12 @@ class Persistence
 
 
 
-      /**
-       * @param array $objects
-       * @return $this
-      */
-      public function persists(array $objects): self
-      {
-          foreach ($objects as $object) {
-               $this->persist($object);
-          }
-
-          return $this;
-      }
-
-
-
 
       /**
-       * @param $object
+       * @param object $object
        * @return $this
       */
-      public function remove($object): self
+      public function remove(object $object): self
       {
            $this->deletions[] = $object;
 
@@ -185,16 +198,6 @@ class Persistence
       }
 
 
-
-
-      /**
-       * @param array $objects
-       * @return void
-      */
-      public function removes(array $objects)
-      {
-            $this->deletions = array_merge($this->deletions, $objects);
-      }
 
 
 
@@ -212,6 +215,8 @@ class Persistence
 
 
 
+
+
       /**
        * @return void
       */
@@ -219,17 +224,17 @@ class Persistence
       {
            foreach ($this->persists as $object) {
 
-                 $className = $this->getClassName($object);
+                 $this->em->registerClass($name = $this->className($object));
 
-                 if ($id = $this->getId($object)) {
-                     $attributes = $this->getAttributesToUpdate($object);
-                     $this->em->update($attributes, [$this->getIdentity() => $id]);
-                     $this->updated[$className][] = $id;
+                 if ($id = $this->getObjectID($object)) {
+                     $attributes = $this->updateAttributes($object);
+                     $this->em->update($attributes, [$this->primaryKey() => $id]);
+                     $this->updated[$name][] = $id;
                  }else{
-                     $attributes = $this->getAttributesToPersist($object);
-                     $this->em->insert($attributes);
-
-                     /* $this->inserted[$className][] = $this->em->lastInsertId(); */
+                     $attributes = $this->insertAttributes($object);
+                     $id = $this->em->insert($attributes);
+                     $this->inserted[$name][] = $id;
+                     $this->id = $id;
                  }
            }
       }
@@ -243,13 +248,19 @@ class Persistence
       public function delete()
       {
           foreach ($this->deletions as $object) {
-              if ($id = $this->getId($object)) {
-                   $object = $this->preRemove($object);
-                   $this->em->delete([$this->getIdentity() => $id]);
-                   $this->deleted[$this->getClassName($object)][] = $id;
+
+              $this->em->registerClass($name = $this->className($object));
+
+              $object = $this->preRemove($object);
+
+              if ($id = $this->getObjectID($object)) {
+                   $this->em->delete([$this->primaryKey() => $id]);
+                   $this->deleted[$name][] = $id;
               }
           }
       }
+
+
 
 
 
@@ -257,11 +268,11 @@ class Persistence
        * @param object $object
        * @return array
       */
-      public function getPersistenceAttributes(object $object): array
+      public function getAttributesToSave(object $object): array
       {
             $attributes = $this->dataMapper->map($object);
 
-            unset($attributes[$this->getIdentity()]);
+            unset($attributes[$this->primaryKey()]);
 
             return $attributes;
       }
@@ -273,11 +284,11 @@ class Persistence
        * @param object $object
        * @return array
       */
-      public function getAttributesToUpdate(object $object): array
+      public function updateAttributes(object $object): array
       {
             $object = $this->eventManager->preUpdate($object);
 
-            return $this->getPersistenceAttributes($object);
+            return $this->getAttributesToSave($object);
       }
 
 
@@ -287,11 +298,11 @@ class Persistence
        * @param object $object
        * @return array
       */
-      public function getAttributesToPersist(object $object): array
+      public function insertAttributes(object $object): array
       {
           $object = $this->eventManager->prePersist($object);
 
-          return $this->getPersistenceAttributes($object);
+          return $this->getAttributesToSave($object);
       }
 
 
@@ -308,12 +319,15 @@ class Persistence
 
 
 
+
       /**
        * @param $object
        * @return string
       */
-      public function getClassName($object): string
+      public function className($object): string
       {
-           return $this->dataMapper->getClassName($object);
+           return $this->em->classMap()
+                           ->map($object)
+                           ->className();
       }
 }

@@ -11,43 +11,27 @@ class ClassMapper
 {
 
       /**
-       * @var string
+       * @var object|string
       */
-      protected $table;
+      protected $mapped;
+
+
+
 
 
 
       /**
-       * @var string
-      */
-      protected $className;
-
-
-
-      /**
-       * @param string $className
+       * @param $mapped
        * @return $this
       */
-      public function mapClass(string $className): self
+      public function map($mapped): self
       {
-           $this->className = $className;
+           $this->mapped = $mapped;
 
            return $this;
       }
 
 
-
-
-      /**
-       * @param string $table
-       * @return $this
-      */
-      public function withTable(string $table): self
-      {
-           $this->table = $table;
-
-           return $this;
-      }
 
 
 
@@ -56,31 +40,32 @@ class ClassMapper
       */
       public function createTableName(): string
       {
-          if($this->table) {
-               return $this->table;
-          }
-
-          if (! $this->className) {
-               $this->createClassMapperException("Empty class name inside : ". __METHOD__);
+          if (! $this->mapped) {
+               $this->createClassMapperException(
+                   "Could not create table name because unknown class name :". __METHOD__
+               );
           }
 
           return (function () {
-
-              $shortName = (new \ReflectionClass($this->className))->getShortName();
-
-              return mb_strtolower(trim($shortName, 's')) . 's';
-
+              $shortname = (new \ReflectionClass($this->mapped))->getShortName();
+              return mb_strtolower(trim($shortname, 's')) . 's';
           })();
       }
 
 
-      
+
+
+
       /**
        * @return string
       */
-      public function getClassName(): string
+      public function className(): string
       {
-          return $this->className;
+           if (is_object($this->mapped)) {
+                return get_class($this->mapped);
+           }
+
+           return $this->mapped;
       }
 
 

@@ -19,7 +19,7 @@ class MakeControllerCommand extends Command
      /**
       * @var ControllerGenerator
      */
-     protected $entityGenerator;
+     protected $webGenerator;
 
 
 
@@ -52,7 +52,7 @@ class MakeControllerCommand extends Command
 
 
      /**
-      * @param ControllerGenerator $entityGenerator
+      * @param ControllerGenerator $webGenerator
       * @param ApiControllerGenerator $apiGenerator
       * @param TemplateGenerator $templateGenerator
       * @param RouteGenerator $routeGenerator

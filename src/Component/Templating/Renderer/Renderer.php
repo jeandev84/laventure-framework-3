@@ -298,7 +298,9 @@ class Renderer implements RendererInterface, RenderLayoutInterface
     private function resolvePath($path): string
     {
         $path = str_replace('.'. $this->getExtension(), '', $path);
+        $path = trim($path, "\\/");
+        $path = str_replace('.', DIRECTORY_SEPARATOR, $path);
 
-        return trim(sprintf('%s.%s', $path, $this->getExtension()), '\\/');
+        return sprintf('%s.%s', $path, $this->getExtension());
     }
 }

@@ -4,6 +4,7 @@ namespace Laventure\Component\Database\ORM\Mapper\Manager\Contact;
 
 use Closure;
 use Laventure\Component\Database\ORM\Mapper\Repository\Contract\EntityRepositoryInterface;
+use Laventure\Component\Database\ORM\Mapper\Repository\EntityRepository;
 use Laventure\Component\Database\ORM\Mapper\Service\ClassMapper;
 
 
@@ -22,18 +23,20 @@ interface EntityManagerInterface extends ObjectManager
 
 
        /**
-        * @param $entityClass
-        * @return void
+        * @param $class
+        * @return mixed
        */
-       public function registerClass($entityClass);
+       public function registerClass($class);
+
+
 
 
 
       /**
        * @param $entityClass
-       * @return EntityRepositoryInterface
+       * @return EntityRepository
       */
-      public function getRepository($entityClass): EntityRepositoryInterface;
+      public function getRepository($entityClass): EntityRepository;
 
 
 
@@ -42,7 +45,7 @@ interface EntityManagerInterface extends ObjectManager
       /**
        * @return ClassMapper
       */
-      public function getClassMap(): ClassMapper;
+      public function classMap(): ClassMapper;
 
 
 
@@ -85,7 +88,7 @@ interface EntityManagerInterface extends ObjectManager
        *
        * @return int
       */
-      public function lastInsertId(): int;
+      public function lastId(): int;
 
 
 

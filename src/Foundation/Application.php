@@ -170,9 +170,12 @@ final class Application extends Container
       */
       public function setTimezone($timezone)
       {
-           date_default_timezone_set($timezone);
+           if ($timezone) {
 
-           $this->bind('app.timezone', $timezone);
+               date_default_timezone_set($timezone);
+
+               $this->bind('app.timezone', $timezone);
+           }
       }
 
 
@@ -237,7 +240,7 @@ final class Application extends Container
       public function addMiddlewares(array $middlewares)
       {
           foreach ($middlewares as $middleware) {
-              $this->middleware->add($this->get($middleware));
+              $this['middleware']->add($this->get($middleware));
           }
       }
 
@@ -368,7 +371,7 @@ final class Application extends Container
       */
       public function terminate(Request $request, Response $response)
       {
-             $this->middleware->handle($request);
+             $this['middleware']->handle($request);
              $response->sendBody($request);
       }
 

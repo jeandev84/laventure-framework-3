@@ -159,6 +159,20 @@ abstract class InputArgv implements InputInterface
 
 
 
+
+     /**
+      * @param $argument
+      * @return void
+     */
+     public function addArgument($argument)
+     {
+          $this->arguments[] = $argument;
+     }
+
+
+
+
+
      /**
       * @param $name
       * @return bool
@@ -177,17 +191,18 @@ abstract class InputArgv implements InputInterface
      */
      public function getArgument($name = null)
      {
-         if ($name && $this->hasArgument($name)) {
-              return $this->arguments[$name];
-         }
+          $name = $name ?: 0;
 
-         $argument = array_shift($this->arguments);
+          if (! $this->hasArgument($name)) {
+               $message = "default argument.";
+               if ($name !== 0) {
+                    $message = "argument name '{$name}'";
+               }
 
-         if (! $argument) {
-             $this->abortIf("Default argument is required.");
-         }
+               $this->abortIf("Invalid $message");
+          }
 
-         return $argument;
+          return $this->arguments[$name];
      }
 
 
@@ -314,7 +329,7 @@ abstract class InputArgv implements InputInterface
      */
      protected function abortIf($message): InputArgvException
      {
-          return (function () use ($message) {
+          (function () use ($message) {
                throw new InputArgvException($message);
           })();
      }

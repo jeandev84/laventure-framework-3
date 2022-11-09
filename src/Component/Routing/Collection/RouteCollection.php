@@ -74,7 +74,15 @@ class RouteCollection
        */
        public function addRoute(Route $route): Route
        {
-            $this->collect($route);
+            $methods = $route->getMethodsToString();
+
+            $this->methods[$methods][$route->getPath()] = $route;
+
+            if ($controller = $route->getControllerName()) {
+               $this->controllers[$controller][$route->getPath()] = $route;
+            }
+
+            $this->routes[] = $route;
 
             return $route;
        }
@@ -300,30 +308,5 @@ class RouteCollection
             }
 
             return $this->getRoute($name)->generatePath($parameters);
-       }
-
-
-
-
-
-
-
-       /**
-        * @param Route $route
-        * @return $this
-       */
-       public function collect(Route $route): self
-       {
-             $methods = $route->getMethodsToString();
-
-             $this->methods[$methods][$route->getPath()] = $route;
-
-             if ($controller = $route->getControllerName()) {
-                 $this->controllers[$controller][$route->getPath()] = $route;
-             }
-
-             $this->routes[] = $route;
-
-             return $this;
        }
 }

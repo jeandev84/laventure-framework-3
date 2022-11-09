@@ -35,8 +35,10 @@ class DummyClass extends Controller
         */
         public function show($id): Response
         {
-              return view('DummyResourcePath/index');
+              return view('DummyResourcePath/show');
         }
+
+
 
 
 
@@ -57,20 +59,22 @@ class DummyClass extends Controller
         */
         public function store(Request $request): Response
         {
-              return view('DummyResourcePath/store');
+
         }
 
 
 
 
         /**
+         * Update resource
+         *
          * @param Request $request
          * @param $id
          * @return Response
         */
         public function update(Request $request, $id): Response
         {
-              return view('DummyResourcePath/index');
+
         }
 
 
@@ -78,13 +82,31 @@ class DummyClass extends Controller
 
 
         /**
+         * Edit resource
+         *
+         * @param $id
+         * @return Response
+        */
+        public function edit($id): Response
+        {
+              return view('DummyResourcePath/edit');
+        }
+
+
+
+
+
+
+
+        /**
+         * Delete resource
+         *
          * @param $id
          * @return Response
         */
         public function destroy($id): Response
         {
-              return view('DummyResourcePath/destroy');
-        }
 
+        }
 
 }

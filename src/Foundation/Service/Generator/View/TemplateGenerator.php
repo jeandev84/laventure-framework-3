@@ -34,7 +34,7 @@ class TemplateGenerator extends StubGenerator
            foreach ($views as $view) {
 
                $stub = $this->generateStub("template/view", [
-
+                    "TemplateViewName" => $view
                ]);
 
                if (! $this->generated($viewPath = $this->getTemplatePath($view))) {

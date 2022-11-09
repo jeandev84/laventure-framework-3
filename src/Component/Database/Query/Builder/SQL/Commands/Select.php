@@ -220,6 +220,8 @@ class Select extends SqlBuilder
 
 
 
+
+
        /**
         * @return string
        */
@@ -253,6 +255,9 @@ class Select extends SqlBuilder
        {
             return implode(',', $this->selects);
        }
+
+
+
 
 
 

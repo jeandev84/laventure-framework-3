@@ -35,7 +35,7 @@ abstract class Controller implements ContainerAwareInterface
        */
        public function setContainer(Container $container)
        {
-            $container->instance('view.layout', $this->getLayout());
+            $container->bind('view.layout', $this->getLayout());
             $this->container = $container;
        }
 

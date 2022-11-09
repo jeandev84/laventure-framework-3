@@ -60,11 +60,12 @@ class DataMapper
 
 
       /**
-       * @param object $object
+       * @param $object
        * @return int|null
       */
-      public function getId(object $object): ?int
+      public function getId($object): ?int
       {
+           if (! $object) { return null; }
            if (! method_exists($object, 'getId')) {
               $this->createDataMapperException(
                   "You must to implement method getId() inside entity class '". get_class($object) . "'"
@@ -74,16 +75,6 @@ class DataMapper
           return $object->getId();
       }
 
-
-
-      /**
-       * @param object $object
-       * @return string
-      */
-      public function getClassName(object $object): string
-      {
-           return get_class($object);
-      }
 
 
 

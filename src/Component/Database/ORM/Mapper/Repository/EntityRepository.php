@@ -94,12 +94,12 @@ abstract class EntityRepository implements EntityRepositoryInterface
 
 
        /**
-        * @param array $wheres
+        * @param $criteria
         * @return mixed
        */
-       public function findBy(array $wheres)
+       public function findBy($criteria)
        {
-           $command = $this->findByCriteria($wheres);
+           $command = $this->findByCriteria($criteria);
 
            return $command->getQuery()->getResult();
        }

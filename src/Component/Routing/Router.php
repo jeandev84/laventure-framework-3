@@ -17,13 +17,13 @@ use Laventure\Component\Routing\Resource\Types\ResourceType;
 
 
 /**
- * @class LaventureRouter
+ * @class Router
  *
  * @package Laventure\Component\Routing
  *
  * @author Yao Kouassi Jean-Claude <jeanyao@ymail.com php>
 */
-class LaventureRouter implements RouterInterface
+class Router implements RouterInterface
 {
 
 
@@ -348,7 +348,7 @@ class LaventureRouter implements RouterInterface
         */
         public function getController(string $name): string
         {
-            return $this->resolver->getControllerNamespace($name);
+            return $this->resolver->getController($name);
         }
 
 
@@ -369,7 +369,7 @@ class LaventureRouter implements RouterInterface
          */
         public function getNamespace(): string
         {
-            return $this->resolver->resolveNamespace();
+            return $this->resolver->getNamespace();
         }
 
 

@@ -350,16 +350,16 @@ if (! function_exists('json')) {
 
 /*
 |-----------------------------------------------------------------------------
-|   JsonResponse
+|   Redirect
 |
-|   json([
+|   redirect([
 |      'id' => 1,
 |      'content' => 'some content here'
 |   ], Response::HTTP_OK);
 |-----------------------------------------------------------------------------
 */
 
-if (! function_exists('json')) {
+if (! function_exists('redirect')) {
 
     /**
      * @param null $path

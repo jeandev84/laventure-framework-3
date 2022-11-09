@@ -67,6 +67,7 @@ class RenderTag implements RenderTagInterface
               '@if'       =>  "<?php if",
               '@endif'    =>  "<?php endif; ?>",
               '@loop'     =>  "<?php foreach",
+              '):'        =>  "): ?>",
               '@endloop'  =>  "<?php endforeach; ?>",
           ];
       }

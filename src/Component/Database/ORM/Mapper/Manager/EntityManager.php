@@ -10,6 +10,7 @@ use Laventure\Component\Database\ORM\Mapper\Manager\Event\Contract\EntityEventMa
 use Laventure\Component\Database\ORM\Mapper\Manager\Exception\EntityManagerException;
 use Laventure\Component\Database\ORM\Mapper\Query\QueryBuilder;
 use Laventure\Component\Database\ORM\Mapper\Repository\Contract\EntityRepositoryInterface;
+use Laventure\Component\Database\ORM\Mapper\Repository\EntityRepository;
 use Laventure\Component\Database\ORM\Mapper\Repository\Factory\EntityRepositoryFactory;
 use Laventure\Component\Database\ORM\Mapper\Service\ClassMapper;
 
@@ -84,7 +85,7 @@ class EntityManager implements EntityManagerInterface
              $this->connection        = $connection;
              $this->repositoryFactory = $repositoryFactory;
              $this->eventManager      = $eventManager;
-             $this->persistence       = new Persistence($this, $eventManager);
+             $this->persistence       = new Persistence($this);
              $this->classMap          = new ClassMapper();
        }
 
@@ -145,7 +146,7 @@ class EntityManager implements EntityManagerInterface
        /**
         * @inheritDoc
        */
-       public function getClassMap(): ClassMapper
+       public function classMap(): ClassMapper
        {
             return $this->classMap;
        }
@@ -156,28 +157,14 @@ class EntityManager implements EntityManagerInterface
        /**
         * @inheritDoc
        */
-       public function registerClass($entityClass): self
+       public function registerClass($class): self
        {
-             $this->classMap->mapClass($entityClass);
+             $this->classMap->map($class);
 
              return $this;
        }
 
 
-
-
-
-       
-       /**
-        * @param string $table
-        * @return $this
-       */
-       public function table(string $table): self
-       {
-            $this->classMap->withTable($table);
-
-            return $this;
-       }
 
 
 
@@ -194,13 +181,15 @@ class EntityManager implements EntityManagerInterface
 
 
        /**
-        * @param string $entityClass
-        * @return EntityRepositoryInterface
+        * @inheritdoc
        */
-       public function getRepository($entityClass): EntityRepositoryInterface
+       public function getRepository($entityClass): EntityRepository
        {
              return $this->repositoryFactory->createRepository($entityClass);
        }
+
+
+
 
 
 
@@ -213,8 +202,9 @@ class EntityManager implements EntityManagerInterface
        */
        public function attach($object): self
        {
-             if($index = $this->persistence->getId($object)) {
+             if($index = $this->persistence->getObjectID($object)) {
                   $this->attached[$index] = $object;
+                  $this->persist($object);
              }
 
              return $this;
@@ -231,7 +221,7 @@ class EntityManager implements EntityManagerInterface
        */
        public function detach($object)
        {
-            if($index = $this->persistence->getId($object)) {
+            if($index = $this->persistence->getObjectID($object)) {
                 unset($this->attached[$index]);
             }
        }
@@ -267,12 +257,14 @@ class EntityManager implements EntityManagerInterface
 
 
 
+
+
        /**
         * @return string
        */
        public function getClassName(): string
        {
-            return $this->classMap->getClassName();
+            return $this->classMap->className();
        }
 
 
@@ -316,9 +308,7 @@ class EntityManager implements EntityManagerInterface
        */
        public function flush()
        {
-            $this->persistence
-                 ->persists($this->attached)
-                 ->flush();
+            $this->persistence->flush();
        }
 
 
@@ -351,6 +341,8 @@ class EntityManager implements EntityManagerInterface
 
 
 
+
+
        /**
         * @param array $attributes
         * @return false|int
@@ -371,9 +363,10 @@ class EntityManager implements EntityManagerInterface
        public function update(array $attributes, array $wheres): bool
        {
              $queryBuilder = $this->createQueryBuilder();
-             $queryBuilder->criteria($wheres);
-             $command = $queryBuilder->update($attributes);
+             $command = $queryBuilder->update($attributes, $wheres);
 
+             // echo "Look at here: ". __METHOD__;
+             // dd($command->getSQL(), $command->getParameters());
              return $command->execute();
        }
 
@@ -430,9 +423,9 @@ class EntityManager implements EntityManagerInterface
        /**
         * @inheritDoc
        */
-       public function lastInsertId(): int
+       public function lastId(): int
        {
-           return $this->connection->lastInsertId();
+           return $this->persistence->getId();
        }
 
 
@@ -470,7 +463,7 @@ class EntityManager implements EntityManagerInterface
        protected function createEntityManagerException(string $message): EntityManagerException
        {
             return (function () use ($message) {
-                 return new EntityManagerException($message);
+                 throw new EntityManagerException($message);
             })();
        }
 
