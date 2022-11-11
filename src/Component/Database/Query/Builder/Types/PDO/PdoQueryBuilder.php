@@ -24,7 +24,7 @@ class PdoQueryBuilder extends QueryBuilderContract
       /**
        * @var int
       */
-      protected $indexAttribute = 1;
+      protected $attributeInc = 1;
 
 
 
@@ -33,7 +33,7 @@ class PdoQueryBuilder extends QueryBuilderContract
       /**
        * @var int
       */
-      protected $indexParameter = 1;
+      protected $parameterInc = 1;
 
 
 
@@ -86,7 +86,7 @@ class PdoQueryBuilder extends QueryBuilderContract
        * @param array $attributes
        * @return Insert
       */
-      public function insertMultiple(array $attributes): Insert
+      public function inserts(array $attributes): Insert
       {
             $insert = new Insert($this->getTable());
 
@@ -148,10 +148,10 @@ class PdoQueryBuilder extends QueryBuilderContract
            $resolved = [];
 
            foreach (array_keys($attributes) as $column) {
-               $resolved[$column] = ":{$column}{$this->indexAttribute}";
+               $resolved[$column] = ":{$column}{$this->attributeInc}";
            }
 
-           $this->indexAttribute++;
+           $this->attributeInc++;
 
            return $resolved;
       }
@@ -171,10 +171,10 @@ class PdoQueryBuilder extends QueryBuilderContract
           $resolved = [];
 
           foreach ($attributes as $column => $value) {
-              $resolved["{$column}{$this->indexParameter}"] = $value;
+              $resolved["{$column}{$this->parameterInc}"] = $value;
           }
 
-          $this->indexParameter++;
+          $this->parameterInc++;
 
           return $resolved;
       }

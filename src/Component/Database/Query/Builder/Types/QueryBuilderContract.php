@@ -110,9 +110,8 @@ abstract class QueryBuilderContract
               $this->wheres = [];
 
               if (! empty($attributes[0])) {
-                   return $this->insertMultiple($attributes);
+                   return $this->inserts($attributes);
               }
-
 
               return $this->builder->insert($this->resolveAttributes($attributes));
         }
@@ -126,7 +125,7 @@ abstract class QueryBuilderContract
          * @param array $attributes
          * @return Insert
         */
-        public function insertMultiple(array $attributes): Insert
+        public function inserts(array $attributes): Insert
         {
               $insert = new Insert($this->getTable());
 
