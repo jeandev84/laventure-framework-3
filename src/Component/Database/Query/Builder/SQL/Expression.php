@@ -6,7 +6,7 @@ namespace Laventure\Component\Database\Query\Builder\SQL;
 /**
  * Expression builder
 */
-class Expr
+class Expression
 {
 
 

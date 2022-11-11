@@ -3,9 +3,9 @@ namespace Laventure\Component\Database\ORM\Model\Query;
 
 use Laventure\Component\Database\Connection\Query\QueryInterface;
 use Laventure\Component\Database\ORM\Manager;
-use Laventure\Component\Database\Query\Builder\SQL\Commands\Delete;
-use Laventure\Component\Database\Query\Builder\SQL\Commands\Insert;
-use Laventure\Component\Database\Query\Builder\SQL\Commands\Select;
+use Laventure\Component\Database\Query\Builder\SQL\Command\Delete;
+use Laventure\Component\Database\Query\Builder\SQL\Command\Insert;
+use Laventure\Component\Database\Query\Builder\SQL\Command\Select;
 use Laventure\Component\Database\Query\QueryBuilder;
 
 

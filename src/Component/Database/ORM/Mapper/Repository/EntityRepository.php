@@ -6,7 +6,7 @@ use Laventure\Component\Database\ORM\Mapper\Manager\Contact\EntityManagerInterfa
 use Laventure\Component\Database\ORM\Mapper\Manager\EntityManager;
 use Laventure\Component\Database\ORM\Mapper\Query\QueryBuilder;
 use Laventure\Component\Database\ORM\Mapper\Repository\Contract\EntityRepositoryInterface;
-use Laventure\Component\Database\Query\Builder\SQL\Commands\Select;
+use Laventure\Component\Database\Query\Builder\SQL\Command\Select;
 
 
 /**
@@ -130,7 +130,7 @@ abstract class EntityRepository implements EntityRepositoryInterface
        public function findByCriteria(array $wheres)
        {
            $queryBuilder = $this->createQB();
-           $queryBuilder->criteria($wheres);
+           $queryBuilder->wheres($wheres);
            return $queryBuilder->select();
        }
 

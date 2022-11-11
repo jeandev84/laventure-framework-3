@@ -30,7 +30,8 @@ abstract class SqlBuilder
       /**
        * @var array
       */
-      protected $assigned = [];
+      protected $affected = [];
+
 
 
 
@@ -56,6 +57,8 @@ abstract class SqlBuilder
        * @var ConnectionInterface
       */
       protected $connection;
+
+
 
 
 
@@ -94,66 +97,35 @@ abstract class SqlBuilder
 
 
 
+
       /**
-       * @param string $name
+       * @param $column
        * @param $value
        * @return $this
       */
-      public function set(string $name, $value): self
+      public function set($column, $value): self
       {
-           $this->assigned[$name] = $value;
+           $this->affected[$column] = "$column = $value";
 
            return $this;
       }
 
 
 
-      /**
-       * @param array $attributes
-       * @return void
-      */
-      public function setColumns(array $attributes)
-      {
-           foreach ($attributes as $name => $value) {
-                $this->set($name, $value);
-           }
-      }
-
-
-
-
-      /**
-       * @return array
-      */
-      public function getAssigned(): array
-      {
-            return $this->assigned;
-      }
-
-
-
-      /**
-       * @return array
-      */
-      public function assignColumns(): array
-      {
-            $attributes = [];
-
-            foreach ($this->getAssigned() as $name => $value) {
-                $attributes[] = sprintf("%s = '%s'", $name, $value);
-            }
-
-            return $attributes;
-      }
-
 
 
       /**
        * @return string
       */
-      protected function makeSET(): string
+      protected function buildSET(): string
       {
-           return sprintf('SET %s', join(", ", $this->assignColumns()));
+           if (empty($this->affected)) {
+                return '';
+           }
+
+           $attributes = array_values($this->affected);
+
+           return sprintf('SET %s', join(", ", $attributes));
       }
 
 
@@ -221,6 +193,8 @@ abstract class SqlBuilder
 
 
 
+
+
       /**
        * @param string $column
        * @param string $start
@@ -264,12 +238,13 @@ abstract class SqlBuilder
 
 
       /**
-       * @return Expr
+       * @return Expression
       */
-      public function expr(): Expr
+      public function expr(): Expression
       {
-           return new Expr($this);
+           return new Expression($this);
       }
+
 
 
 
@@ -329,9 +304,10 @@ abstract class SqlBuilder
       public function getSQL(): string
       {
           $sql = implode(' ', [
-              $this->openSQL(),
-              $this->makeConditions(),
-              $this->closeSQL()
+              $this->openQuery(),
+              $this->buildSET(),
+              $this->buildConditions(),
+              $this->closeQuery()
           ]);
 
           return sprintf('%s;', trim($sql, ' '));
@@ -343,13 +319,13 @@ abstract class SqlBuilder
       /**
        * @return string
       */
-      public function makeConditions(): string
+      public function buildConditions(): string
       {
             if (! $this->wheres) {
                  return '';
             }
 
-            return sprintf('WHERE %s', $this->buildConditions());
+            return sprintf('WHERE %s', $this->resolveConditions());
       }
 
 
@@ -358,7 +334,7 @@ abstract class SqlBuilder
       /**
        * @return string
       */
-      public function buildConditions(): string
+      public function resolveConditions(): string
       {
             $wheres = [];
 
@@ -423,7 +399,7 @@ abstract class SqlBuilder
       /**
         * @return string
       */
-      abstract protected function openSQL(): string;
+      abstract protected function openQuery(): string;
 
 
 
@@ -431,7 +407,7 @@ abstract class SqlBuilder
       /**
        * @return string
       */
-      protected function closeSQL(): string
+      protected function closeQuery(): string
       {
             return "";
       }

@@ -1,5 +1,5 @@
 <?php
-namespace Laventure\Component\Database\Query\Builder\SQL\Commands;
+namespace Laventure\Component\Database\Query\Builder\SQL\Command;
 
 
 use Laventure\Component\Database\Connection\Query\QueryHydrateInterface;
@@ -209,7 +209,7 @@ class Select extends SqlBuilder
        /**
         * @return string
        */
-       protected function openSQL(): string
+       protected function openQuery(): string
        {
             return sprintf("SELECT%s %s FROM %s",
          $this->distinct ? " DISTINCT" : '',
@@ -240,7 +240,7 @@ class Select extends SqlBuilder
        /**
         * @return string
        */
-       protected function closeSQL(): string
+       protected function closeQuery(): string
        {
             return '';
        }

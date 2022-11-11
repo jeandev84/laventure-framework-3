@@ -380,7 +380,7 @@ class EntityManager implements EntityManagerInterface
        public function delete(array $wheres): bool
        {
             $queryBuilder = $this->createQueryBuilder();
-            $queryBuilder->criteria($wheres);
+            $queryBuilder->wheres($wheres);
             $command = $queryBuilder->delete();
 
             return $command->execute();

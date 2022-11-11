@@ -2,12 +2,11 @@
 namespace Laventure\Component\Database\Query;
 
 
-
 use Laventure\Component\Database\Connection\ConnectionInterface;
 use Laventure\Component\Database\Connection\ConnectionType;
-use Laventure\Component\Database\Query\Builder\Extension\Builder;
-use Laventure\Component\Database\Query\Builder\Extension\PDO\QueryBuilderPdo;
-
+use Laventure\Component\Database\Connection\Types\PDO\PdoConnection;
+use Laventure\Component\Database\Query\Builder\Types\PDO\PdoQueryBuilder;
+use Laventure\Component\Database\Query\Builder\Types\QueryBuilderContract;
 
 /**
  *
@@ -15,14 +14,15 @@ use Laventure\Component\Database\Query\Builder\Extension\PDO\QueryBuilderPdo;
 class QueryBuilderFactory
 {
 
-      /**
-       * @param ConnectionInterface $connection
-       * @return Builder
+     /**
+      * @param $connection
+      * @param $table
+      * @return QueryBuilderContract|null
      */
-     public static function make(ConnectionInterface $connection): Builder
+     public static function make($connection, $table): ?QueryBuilderContract
      {
           return [
-              ConnectionType::PDO => new QueryBuilderPdo($connection)
-          ][$connection->getTypeName()];
+              ConnectionType::PDO => new PdoQueryBuilder($connection, $table)
+          ][$connection->getTypeName()] ?: null;
      }
 }

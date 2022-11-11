@@ -1,10 +1,7 @@
 <?php
-namespace Laventure\Component\Database\Query\Builder;
+namespace Laventure\Component\Database\Query\Builder\SQL\Contract;
 
 
-/**
- * @SqlQueryBuilderInterface
-*/
 interface SqlQueryBuilderInterface
 {
 
@@ -16,7 +13,8 @@ interface SqlQueryBuilderInterface
      * @param string $table
      * @return mixed
     */
-    public function selectQuery(array $selects, string $table);
+    public function select(array $selects, string $table);
+
 
 
 
@@ -28,7 +26,7 @@ interface SqlQueryBuilderInterface
      * @param string $table
      * @return mixed
     */
-    public function insertQuery(array $attributes, string $table);
+    public function insert(array $attributes, string $table);
 
 
 
@@ -41,7 +39,9 @@ interface SqlQueryBuilderInterface
      * @param string $table
      * @return mixed
     */
-    public function updateQuery(array $attributes, string $table);
+    public function update(array $attributes, string $table);
+
+
 
 
 
@@ -52,5 +52,5 @@ interface SqlQueryBuilderInterface
      * @param $table
      * @return mixed
     */
-    public function deleteQuery($table);
+    public function delete($table);
 }

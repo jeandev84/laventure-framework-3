@@ -3,160 +3,111 @@ namespace Laventure\Component\Database\Query;
 
 
 use Laventure\Component\Database\Connection\ConnectionInterface;
-use Laventure\Component\Database\Query\Builder\Extension\Builder;
-use Laventure\Component\Database\Query\Builder\SQL\Commands\Delete;
-use Laventure\Component\Database\Query\Builder\SQL\Commands\Insert;
-use Laventure\Component\Database\Query\Builder\SQL\Commands\Select;
-use Laventure\Component\Database\Query\Builder\SQL\Commands\Update;
+use Laventure\Component\Database\Query\Builder\SQL\Command\Delete;
+use Laventure\Component\Database\Query\Builder\SQL\Command\Insert;
+use Laventure\Component\Database\Query\Builder\SQL\Command\Select;
+use Laventure\Component\Database\Query\Builder\SQL\Command\Update;
+use Laventure\Component\Database\Query\Builder\Types\QueryBuilderContract;
+
 
 
 /**
+ * @class QueryBuilder
  *
+ * @package Laventure\Component\Database\Query
+ *
+ * @author
 */
 class QueryBuilder
 {
 
-
-      /**
-       * @var Builder
-      */
-      protected $builder;
-
+       /**
+        * @var QueryBuilderContract
+       */
+       protected $builder;
 
 
 
-      /**
+
+       /**
         * @param ConnectionInterface $connection
-        * @param string|null $table
-      */
-      public function __construct(ConnectionInterface $connection, string $table = null)
-      {
-             $this->builder = QueryBuilderFactory::make($connection);
-
-             if ($table) {
-                  $this->builder->table($table);
-             }
-      }
+        * @param string $table
+       */
+       public function __construct(ConnectionInterface $connection, string $table)
+       {
+              $this->builder = QueryBuilderFactory::make($connection, $table);
+       }
 
 
 
 
-      /**
-       * @param Builder $builder
-       * @return $this
-      */
-      public function with(Builder $builder): QueryBuilder
-      {
-           $this->builder = $builder;
 
-           return $this;
-      }
+       /**
+        * @param array $wheres
+        * @return $this
+       */
+       public function wheres(array $wheres): self
+       {
+            $this->builder->wheres($wheres);
 
-
-
-
-      /**
-       * @param array $wheres
-       * @return $this
-      */
-      public function criteria(array $wheres): self
-      {
-           $this->builder->criteria($wheres);
-
-           return $this;
-      }
+            return $this;
+       }
 
 
 
 
-      /**
-       * @param string $table
-       * @return $this
-      */
-      public function table(string $table): self
-      {
-           $this->builder->table($table);
 
-           return $this;
-      }
-
-
-
-
-      /**
-       * @return string
-      */
-      public function getTable(): string
-      {
-           return $this->builder->getTable();
-      }
-
-
-
-      /**
-       * @param string $class
-       * @return void
-      */
-      public function classMap(string $class)
-      {
-           $this->builder->mapClass($class);
-      }
-
-
-
-      /**
-       * @param array $selects
-       * @return Select
-      */
-      public function select(array $selects = ["*"]): Select
-      {
-           return $this->builder->select($selects);
-      }
+       /**
+        * Return Select SQL Builder
+        *
+        * @param array $selects
+        * @return Select
+       */
+       public function select(array $selects = ["*"]): Select
+       {
+            return $this->builder->select($selects);
+       }
 
 
 
 
-      /**
-       * Return lastId if record successfully create
-       * OR false if insertion failed.
-       *
-       * @param array $attributes
-       * @return false|int
-      */
-      public function insert(array $attributes)
-      {
-           $query = $this->builder->insert($attributes);
 
-           if (! $query->execute()) {
-               return false;
-           }
-
-           return $query->lastId();
-      }
+       /**
+        * Return Insert SQL Builder
+        *
+        * @param array $attributes
+        * @return Insert
+       */
+       public function insert(array $attributes): Insert
+       {
+            return $this->builder->insert($attributes);
+       }
 
 
 
-      /**
-       * @param array $attributes
-       * @param array $wheres
-       * @return Update
-      */
-      public function update(array $attributes, array $wheres = []): Update
-      {
-            $this->criteria($wheres);
 
+
+       /**
+        * Return Update SQL Builder
+        *
+        * @param array $attributes
+        * @return Update
+       */
+       public function update(array $attributes): Update
+       {
             return $this->builder->update($attributes);
-      }
+       }
 
 
-      /**
-       * @param array $wheres
-       * @return Delete
-      */
-      public function delete(array $wheres = []): Delete
-      {
-           $this->criteria($wheres);
 
-           return $this->builder->delete();
-      }
+
+       /**
+        * Return Delete SQL Builder
+        *
+        * @return Delete
+       */
+       public function delete(): Delete
+       {
+            return $this->builder->delete();
+       }
 }

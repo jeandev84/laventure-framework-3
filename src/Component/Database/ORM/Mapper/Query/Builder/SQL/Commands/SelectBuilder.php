@@ -4,7 +4,7 @@ namespace Laventure\Component\Database\ORM\Mapper\Query\Builder\SQL\Commands;
 
 use Laventure\Component\Database\ORM\Mapper\Manager\EntityManager;
 use Laventure\Component\Database\ORM\Mapper\Query\Query;
-use Laventure\Component\Database\Query\Builder\SQL\Commands\Select;
+use Laventure\Component\Database\Query\Builder\SQL\Command\Select;
 
 
 /**

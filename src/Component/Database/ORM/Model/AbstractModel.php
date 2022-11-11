@@ -6,7 +6,7 @@ use Laventure\Component\Database\Connection\Query\QueryHydrateInterface;
 use Laventure\Component\Database\ORM\Model\Exception\ModelException;
 use Laventure\Component\Database\ORM\Model\Query\Query;
 use Laventure\Component\Database\ORM\Manager;
-use Laventure\Component\Database\Query\Builder\SQL\Commands\Select;
+use Laventure\Component\Database\Query\Builder\SQL\Command\Select;
 use Laventure\Component\Database\Query\QueryBuilder;
 
 
