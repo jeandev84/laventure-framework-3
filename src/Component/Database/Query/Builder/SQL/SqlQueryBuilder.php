@@ -28,6 +28,14 @@ class SqlQueryBuilder implements SqlQueryBuilderInterface
 
 
 
+       /**
+        * @var SqlBuilderFactory
+       */
+       protected $factory;
+
+
+
+
 
        /**
         * SqlQueryBuilder construct.
@@ -37,9 +45,32 @@ class SqlQueryBuilder implements SqlQueryBuilderInterface
        public function __construct(ConnectionInterface $connection)
        {
               $this->connection = $connection;
+              $this->factory    = new SqlBuilderFactory($connection);
        }
 
 
+
+
+
+       /**
+        * @return ConnectionInterface
+       */
+       public function getConnection(): ConnectionInterface
+       {
+             return $this->connection;
+       }
+
+
+
+
+
+       /**
+        * @return SqlBuilderFactory
+       */
+       public function getFactory(): SqlBuilderFactory
+       {
+            return $this->factory;
+       }
 
 
 
@@ -51,7 +82,9 @@ class SqlQueryBuilder implements SqlQueryBuilderInterface
        */
        public function select(array $selects, string $table): Select
        {
-            return $this->connect(new Select($selects, $table));
+            $command = $this->factory->createSelectQuery($table);
+            $command->addSelect($selects);
+            return $command;
        }
 
 
@@ -67,9 +100,10 @@ class SqlQueryBuilder implements SqlQueryBuilderInterface
        */
        public function insert(array $attributes, string $table): Insert
        {
-            $insert = new Insert($table);
-            $insert->add($attributes);
-            return $this->connect($insert);
+            $command = $this->factory->createInsertQuery($table);
+            $command->columns($attributes);
+            $command->data($attributes);
+            return $command;
        }
 
 
@@ -86,13 +120,13 @@ class SqlQueryBuilder implements SqlQueryBuilderInterface
        */
        public function update(array $attributes, string $table): Update
        {
-             $update = new Update($table);
+             $command = $this->factory->createUpdateQuery($table);
 
              foreach ($attributes as $column => $value) {
-                  $update->set($column, $value);
+                  $command->set($column, $value);
              }
 
-             return $this->connect($update);
+             return $command;
        }
 
 
@@ -106,21 +140,7 @@ class SqlQueryBuilder implements SqlQueryBuilderInterface
       */
       public function delete($table): Delete
       {
-           return $this->connect(new Delete($table));
+           return $this->factory->createDeleteQuery($table);
       }
 
-
-
-
-
-      /**
-       * @param SqlBuilder $command
-       * @return mixed
-      */
-      public function connect(SqlBuilder $command)
-      {
-           $command->connection($this->connection);
-
-           return $command;
-      }
 }

@@ -178,7 +178,7 @@ class Router extends LaventureRouter
      */
      public function loadWebRoutes()
      {
-           $this->configureGroup()->load($this->getWebPath());
+           $this->groupPrefixes()->load($this->getWebPath());
      }
 
 
@@ -191,7 +191,7 @@ class Router extends LaventureRouter
      */
      public function loadApiRoutes()
      {
-          $this->configureGroup()->load($this->getApiPath());
+          $this->groupPrefixes()->load($this->getApiPath());
      }
 
 
@@ -206,6 +206,8 @@ class Router extends LaventureRouter
      {
           return $this->paths;
      }
+
+
 
 
 
@@ -229,18 +231,10 @@ class Router extends LaventureRouter
      */
      protected function matchRoute(Request $request): Route
      {
-         // Middleware
-         if ($request->post()) {
-             if($method = $request->request->get('_method')) {
-                 $request->withMethod($method);
-             }
-         }
-
          if (! $route = $this->match($request->getMethod(), $path = $request->getRequestUri())) {
               $this->createRouteNotFoundException($path);
          }
 
-        
          $request->withAttributes([
              'route.name'   => $route->getName(),
              'route.action' => $route->getTarget(),
@@ -250,7 +244,7 @@ class Router extends LaventureRouter
 
          $this->app->instances([
              Request::class  => $request,
-             'current.route' => $route
+             'route' => $route
          ]);
 
          $this->app->addMiddlewares($route->getMiddlewares());
@@ -264,7 +258,7 @@ class Router extends LaventureRouter
      /**
       * @return FileSystem
      */
-     private function configureGroup(): FileSystem
+     private function groupPrefixes(): FileSystem
      {
          $this->removePrefixes();
 

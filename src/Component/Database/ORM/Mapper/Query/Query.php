@@ -36,17 +36,19 @@ class Query
        */
        public function __construct(EntityManager $em, QueryInterface $statement)
        {
-            $this->em = $em;
+            $statement->map($em->getClassName());
+            $this->em        = $em;
             $this->statement = $statement;
        }
 
 
 
 
+
        /**
-         * Fetch all
-         *
-         * @return mixed
+        * Fetch all
+        *
+        * @return mixed
        */
        public function getResult()
        {
@@ -54,6 +56,7 @@ class Query
 
             return $objects;
        }
+
 
 
 
@@ -74,6 +77,7 @@ class Query
 
 
 
+
        /**
         * Fetch column
         *
@@ -83,6 +87,8 @@ class Query
        {
             return $this->statement->fetchColumns();
        }
+
+
 
 
 

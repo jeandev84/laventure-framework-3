@@ -7,6 +7,7 @@ use Laventure\Component\Database\Query\Builder\SQL\Command\Delete;
 use Laventure\Component\Database\Query\Builder\SQL\Command\Insert;
 use Laventure\Component\Database\Query\Builder\SQL\Command\Select;
 use Laventure\Component\Database\Query\Builder\SQL\Command\Update;
+use Laventure\Component\Database\Query\Builder\SQL\SqlBuilderFactory;
 use Laventure\Component\Database\Query\Builder\SQL\SqlQueryBuilder;
 
 
@@ -34,7 +35,7 @@ class Builder
       /**
        * @var SqlQueryBuilder
       */
-      protected $builder;
+      protected $sql;
 
 
 
@@ -46,10 +47,32 @@ class Builder
       */
       public function __construct(ConnectionInterface $connection, string $table)
       {
-             $this->builder = new SqlQueryBuilder($connection);
+             $this->sql     = new SqlQueryBuilder($connection);
              $this->table   = $table;
       }
 
+
+
+
+      /**
+       * @return SqlBuilderFactory
+      */
+      public function getFactory(): SqlBuilderFactory
+      {
+           return $this->sql->getFactory();
+      }
+
+
+
+
+
+      /**
+       * @return ConnectionInterface
+      */
+      public function getConnection(): ConnectionInterface
+      {
+           return $this->sql->getConnection();
+      }
 
 
 
@@ -76,7 +99,7 @@ class Builder
       */
       public function select(array $selects): Select
       {
-            return $this->builder->select($selects, $this->getTable());
+            return $this->sql->select($selects, $this->getTable());
       }
 
 
@@ -90,9 +113,8 @@ class Builder
       */
       public function insert(array $attributes): Insert
       {
-           return $this->builder->insert($attributes, $this->getTable());
+           return $this->sql->insert($attributes, $this->getTable());
       }
-
 
 
 
@@ -104,7 +126,7 @@ class Builder
       */
       public function update(array $attributes): Update
       {
-            return $this->builder->update($attributes, $this->getTable());
+            return $this->sql->update($attributes, $this->getTable());
       }
 
 
@@ -116,6 +138,6 @@ class Builder
       */
       public function delete(): Delete
       {
-           return $this->builder->delete($this->getTable());
+           return $this->sql->delete($this->getTable());
       }
 }

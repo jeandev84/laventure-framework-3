@@ -12,6 +12,14 @@ use Laventure\Component\Database\Connection\Query\QueryInterface;
 abstract class SqlBuilder
 {
 
+
+      /**
+       * @var int
+      */
+      protected $index = 1;
+
+
+
       /**
        * @var string
       */
@@ -22,7 +30,7 @@ abstract class SqlBuilder
       /**
        * @var string
       */
-      protected $classMap;
+      protected $entity;
 
 
 
@@ -30,8 +38,15 @@ abstract class SqlBuilder
       /**
        * @var array
       */
-      protected $affected = [];
+      protected $attributes = [];
 
+
+
+
+      /**
+       * @var array
+      */
+      protected $sets  = [];
 
 
 
@@ -40,6 +55,7 @@ abstract class SqlBuilder
        * @var array
       */
       protected $wheres = [];
+
 
 
 
@@ -63,26 +79,39 @@ abstract class SqlBuilder
 
 
       /**
-       * @param string $table
+       * @var QueryInterface
       */
-      public function __construct(string $table)
-      {
-            $this->table = $table;
-      }
+      protected $statement;
+
 
 
 
 
       /**
        * @param ConnectionInterface $connection
-       * @return $this
+       * @param string $table
       */
-      public function connection(ConnectionInterface $connection): self
+      public function __construct(ConnectionInterface $connection, string $table)
       {
             $this->connection = $connection;
-
-            return $this;
+            $this->table      = $table;
       }
+
+
+
+
+
+      /**
+       * @param QueryInterface $statement
+       * @return void
+      */
+      public function query(QueryInterface $statement)
+      {
+            $this->statement = $statement;
+      }
+
+
+
 
 
 
@@ -91,7 +120,50 @@ abstract class SqlBuilder
       */
       public function getTable(): string
       {
-          return $this->table;
+           return $this->table;
+      }
+
+
+
+
+      /**
+       * @param $name
+       * @param $value
+       * @return void
+      */
+      public function setAttribute($name, $value)
+      {
+           $this->attributes[$name] = $value;
+      }
+
+
+
+
+
+      /**
+       * @param array $attributes
+       * @return void
+      */
+      public function setAttributes(array $attributes)
+      {
+           foreach ($attributes as $name => $value) {
+               $this->setAttribute($name, $value);
+           }
+      }
+
+
+
+
+
+
+      /**
+       * Return all attributes
+       *
+       * @return array
+      */
+      public function getAttributes(): array
+      {
+          return $this->attributes;
       }
 
 
@@ -105,7 +177,7 @@ abstract class SqlBuilder
       */
       public function set($column, $value): self
       {
-           $this->affected[$column] = "$column = $value";
+           $this->setAttribute($column, $value);
 
            return $this;
       }
@@ -119,14 +191,64 @@ abstract class SqlBuilder
       */
       protected function buildSET(): string
       {
-           if (empty($this->affected)) {
+           if (empty($this->attributes)) {
                 return '';
            }
 
-           $attributes = array_values($this->affected);
+           $attributes = [];
 
-           return sprintf('SET %s', join(", ", $attributes));
+           foreach ($this->getAttributes() as $column => $value) {
+               $attributes[] = "$column = $value";
+           }
+
+           return sprintf('SET %s', join(", ", array_values($attributes)));
       }
+
+
+
+
+
+      /**
+       * @param array $wheres
+       * @return $this
+      */
+      public function addWheres(array $wheres): self
+      {
+           if (! empty($wheres)) {
+               foreach ($wheres as $where) {
+                   $this->where($where);
+               }
+           }
+
+           return $this;
+      }
+
+
+
+
+      /**
+       * @param array $wheres
+       * @return void
+      */
+      public function refreshWheres(array $wheres)
+      {
+            $this->wheres = $wheres;
+      }
+
+
+
+
+
+
+      /**
+       * @return array
+      */
+      public function getWheres(): array
+      {
+           return $this->wheres;
+      }
+
+
 
 
 
@@ -139,6 +261,9 @@ abstract class SqlBuilder
       {
             return $this->andWhere($condition);
       }
+
+
+
 
 
 
@@ -268,8 +393,11 @@ abstract class SqlBuilder
       */
       public function setParameter(string $name, $value): self
       {
-           return $this->setParameters([$name => $value]);
+           $this->parameters[$name] = $value;
+
+           return $this;
       }
+
 
 
 
@@ -280,10 +408,13 @@ abstract class SqlBuilder
       */
       public function setParameters(array $parameters): self
       {
-            $this->parameters = array_merge($this->parameters, $parameters);
+            foreach ($parameters as $name => $value) {
+                $this->setParameter($name, $value);
+            }
 
             return $this;
-       }
+      }
+
 
 
 
@@ -295,6 +426,8 @@ abstract class SqlBuilder
       {
            return $this->parameters;
       }
+
+
 
 
 
@@ -312,6 +445,7 @@ abstract class SqlBuilder
 
           return sprintf('%s;', trim($sql, ' '));
       }
+
 
 
 
@@ -355,21 +489,20 @@ abstract class SqlBuilder
 
 
 
+
+
       /**
        * Query statement
        *
        * @return QueryInterface
       */
-      public function statement(): QueryInterface
+      public function getStatement(): QueryInterface
       {
-            $statement = $this->connection->statement($this->getSQL(), $this->getParameters());
-
-            if ($this->classMap) {
-                $statement->map($this->classMap);
-            }
-
-            return $statement;
+            return $this->connection->statement($this->getSQL(), $this->getParameters());
       }
+
+
+
 
 
 
@@ -379,8 +512,9 @@ abstract class SqlBuilder
       */
       public function execute(): bool
       {
-           return $this->statement()->execute();
+           return $this->getStatement()->execute();
       }
+
 
 
 
@@ -390,8 +524,11 @@ abstract class SqlBuilder
       */
       public function lastId(): int
       {
-           return $this->statement()->lastId();
+           return $this->getStatement()->lastId();
       }
+
+
+
 
 
 
@@ -404,11 +541,12 @@ abstract class SqlBuilder
 
 
 
+
       /**
        * @return string
       */
       protected function closeQuery(): string
       {
-            return "";
+           return "";
       }
 }

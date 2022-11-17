@@ -171,6 +171,7 @@ class Persistence
 
 
 
+
       /**
        * @param object $object
        * @return $this
@@ -223,21 +224,32 @@ class Persistence
       public function save()
       {
            foreach ($this->persists as $object) {
-
-                 $this->em->registerClass($name = $this->className($object));
-
-                 if ($id = $this->getObjectID($object)) {
-                     $attributes = $this->updateAttributes($object);
-                     $this->em->update($attributes, [$this->primaryKey() => $id]);
-                     $this->updated[$name][] = $id;
-                 }else{
-                     $attributes = $this->insertAttributes($object);
-                     $id = $this->em->insert($attributes);
-                     $this->inserted[$name][] = $id;
-                     $this->id = $id;
-                 }
+                 $this->store($object);
            }
       }
+
+
+
+      /**
+       * @param object $object
+       * @return void
+      */
+      public function store(object $object)
+      {
+           $this->em->registerClass($name = $this->className($object));
+
+           if ($id = $this->getObjectID($object)) {
+              $attributes = $this->updateAttributes($object);
+              $this->em->update($attributes, [$this->primaryKey() => $id]);
+              $this->updated[$name][] = $id;
+           }else{
+              $attributes = $this->insertAttributes($object);
+              $id = $this->em->insert($attributes);
+              $this->inserted[$name][] = $id;
+              $this->id = $id;
+           }
+      }
+
 
 
 
@@ -308,6 +320,8 @@ class Persistence
 
 
 
+
+
       /**
        * @param object $object
        * @return object
@@ -316,6 +330,7 @@ class Persistence
       {
             return $this->eventManager->preRemove($object);
       }
+
 
 
 

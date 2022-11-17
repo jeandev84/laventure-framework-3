@@ -67,19 +67,6 @@ class Select extends SqlBuilder
 
 
 
-       /**
-        * @param array $selects
-        * @param string $table
-       */
-       public function __construct(array $selects, string $table)
-       {
-            parent::__construct($table);
-
-            $this->selects = $selects;
-       }
-
-
-
 
        /**
         * SELECT DISTINCT
@@ -265,9 +252,9 @@ class Select extends SqlBuilder
         * @param $class
         * @return self
        */
-       public function mapClass($class): self
+       public function map($class): self
        {
-             $this->classMap = $class;
+             $this->entity = $class;
 
              return $this;
        }
@@ -280,7 +267,7 @@ class Select extends SqlBuilder
        */
        public function fetch(): QueryHydrateInterface
        {
-             return $this->statement()->fetch();
+             return $this->getStatement()->fetch();
        }
 
 

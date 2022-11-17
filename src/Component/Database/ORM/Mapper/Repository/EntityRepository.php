@@ -87,7 +87,7 @@ abstract class EntityRepository implements EntityRepositoryInterface
        {
             $command = $this->findByCriteria($wheres);
 
-            return $command->getQuery()->getOneOrNullResult();
+            return $command->getStatement()->getOneOrNullResult();
        }
 
 
@@ -101,7 +101,7 @@ abstract class EntityRepository implements EntityRepositoryInterface
        {
            $command = $this->findByCriteria($criteria);
 
-           return $command->getQuery()->getResult();
+           return $command->getStatement()->getResult();
        }
 
 
@@ -114,7 +114,7 @@ abstract class EntityRepository implements EntityRepositoryInterface
        {
             return  $this->createQB()
                          ->select()
-                         ->getQuery()
+                         ->getStatement()
                          ->getResult();
        }
 

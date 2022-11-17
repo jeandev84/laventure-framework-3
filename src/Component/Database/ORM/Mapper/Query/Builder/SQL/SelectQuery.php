@@ -1,5 +1,6 @@
 <?php
-namespace Laventure\Component\Database\ORM\Mapper\Query\Builder\SQL\Commands;
+namespace Laventure\Component\Database\ORM\Mapper\Query\Builder\SQL;
+
 
 
 use Laventure\Component\Database\ORM\Mapper\Manager\EntityManager;
@@ -7,10 +8,15 @@ use Laventure\Component\Database\ORM\Mapper\Query\Query;
 use Laventure\Component\Database\Query\Builder\SQL\Command\Select;
 
 
+
 /**
- * SelectBuilder
+ * @class SelectQuery
+ *
+ * @package Laventure\Component\Database\ORM\Mapper\Query\Builder\SQL
+ *
+ * @author
 */
-class SelectBuilder extends Select
+class SelectQuery extends Select
 {
 
         /**
@@ -23,17 +29,14 @@ class SelectBuilder extends Select
 
 
         /**
-         * With entity manager
-         *
          * @param EntityManager $em
-         * @return $this
         */
-        public function manager(EntityManager $em): self
+        public function __construct(EntityManager $em)
         {
-              $this->em = $em;
-
-              return $this;
+              parent::__construct($em->getConnectionManager(), $em->getTableName());
         }
+
+
 
 
 
@@ -43,8 +46,6 @@ class SelectBuilder extends Select
         */
         public function getQuery(): Query
         {
-             $this->mapClass($this->em->getClassName());
-             $statement = $this->statement();
-             return new Query($this->em, $statement);
+             return new Query($this->em, $this->getStatement());
         }
 }

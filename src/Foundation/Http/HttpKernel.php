@@ -98,7 +98,7 @@ abstract class HttpKernel implements Kernel
      {
          try {
 
-             $this->bootMiddlewares();
+             $this->preDispatchRoute($request);
 
              $response = $this->dispatchRoute($request);
 
@@ -166,8 +166,16 @@ abstract class HttpKernel implements Kernel
      /**
       * @return void
      */
-     private function bootMiddlewares()
+     private function preDispatchRoute(Request $request)
      {
-          $this->app->addMiddlewares($this->getPriorityMiddlewares());
+          if ($request->post()) {
+              $method = $request->request->get('_method');
+              if (in_array($method, ['PUT', 'DELETE'])) {
+                  $request->withMethod($method);
+                  $request->request->remove('_method');
+              }
+         }
+
+         $this->app->addMiddlewares($this->getPriorityMiddlewares());
      }
 }

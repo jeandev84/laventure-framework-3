@@ -1,6 +1,7 @@
 <?php
 namespace Laventure\Component\Database\Query\Builder\SQL\Command;
 
+use Exception;
 use Laventure\Component\Database\Query\Builder\SQL\SqlBuilder;
 
 
@@ -10,11 +11,27 @@ use Laventure\Component\Database\Query\Builder\SQL\SqlBuilder;
 class Insert extends SqlBuilder
 {
 
+       /**
+        * @var int
+       */
+       protected $index = 1;
+
+
+
+
+       /**
+        * @var array
+       */
+       protected $data = [];
+
+
+
 
        /**
         * @var array
        */
        protected $columns = [];
+
 
 
 
@@ -30,25 +47,18 @@ class Insert extends SqlBuilder
 
 
        /**
-        * @var array
-       */
-       protected $attributes = [];
-
-
-
-
-
-       /**
-        * Add attributes
-        *
-        * @param array $attributes
+        * @param array $data
         * @return $this
        */
-       public function add(array $attributes): self
+       public function data(array $data): self
        {
-            $this->columns      = array_keys($attributes);
-            $this->values[]     = array_values($attributes);
-            $this->attributes[] = $attributes;
+            if (isset($data[0])) {
+                foreach ($data as $attributes) {
+                     $this->add($attributes);
+                }
+            } else {
+                $this->add($data);
+            }
 
             return $this;
        }
@@ -58,45 +68,82 @@ class Insert extends SqlBuilder
 
 
 
-
        /**
-        * Refresh all attributes
-        *
-        * @return void
+        * @param array $columns
+        * @return $this
        */
-       public function refresh()
+       public function columns(array $columns): self
        {
-           $this->columns      = [];
-           $this->values[]     = [];
-           $this->attributes[] = [];
+             $this->columns = array_keys($columns[0] ?? $columns);
+
+             return $this;
        }
 
-       
+
+
+
+
+
+       /**
+        * @param array $attributes
+        * @return $this
+       */
+       public function add(array $attributes): self
+       {
+             $credentials = [];
+
+             foreach ($attributes as $column => $value) {
+                  $credentials[$column = "{$column}{$this->index}"] = $value;
+                  $this->setParameter($column, $value);
+             }
+
+             $this->data[]   = $credentials;
+             $this->values[] = array_values($credentials);
+
+             $this->index++;
+
+             return $this;
+       }
+
+
+
+
+
+
+       /**
+        * @param array $values
+        * @return void
+       */
+       public function refreshValues(array $values)
+       {
+            $this->values = array_replace($this->values, $values);
+       }
+
+
+
+
+
+
+       /**
+        * Return values
+        *
+        * @return array
+       */
+       public function getValues(): array
+       {
+            return $this->values;
+       }
+
 
 
 
        /**
         * @return array
        */
-       public function getAttributes(): array
+       public function getData(): array
        {
-            return $this->attributes;
+            return $this->data;
        }
-
-
-
-
-
-
-       /**
-        * @param array $replaces
-        * @return void
-       */
-       public function refreshValues(array $replaces)
-       {
-            $this->values = array_replace($this->values, $replaces);
-       }
-
 
 
 
@@ -106,13 +153,13 @@ class Insert extends SqlBuilder
        */
        protected function buildValues(): string
        {
-             $values = [];
+           $values = [];
 
-             foreach ($this->values as $data) {
-                 $values[] = "(". join(",", $data) . ")";
-             }
+           foreach ($this->getValues() as $data) {
+               $values[] = "(". join(",", $data) . ")";
+           }
 
-             return join(", ", $values);
+           return join(", ", $values);
        }
 
 
@@ -138,14 +185,13 @@ class Insert extends SqlBuilder
        */
        protected function openQuery(): string
        {
-            $command = "INSERT INTO {$this->getTable()}";
+            $sql = "INSERT INTO {$this->getTable()}";
 
-            if (! empty($this->affected)) {
-                 $this->attributes = [];
-                 return $command;
+            if (! $this->data) {
+                return $sql;
             }
 
-            return sprintf("%s (%s) VALUES %s", $command, $this->buildColumns(), $this->buildValues());
+            return sprintf("%s (%s) VALUES %s", $sql, $this->buildColumns(), $this->buildValues());
       }
 
 
@@ -165,30 +211,12 @@ class Insert extends SqlBuilder
 
 
      /**
-      * @return string
-     */
-     protected function makeInsertionValues(): string
-     {
-          $insertions = [];
-          
-          foreach ($this->getAttributes() as $attribute) {
-              $insertions[] = "('" . implode("', '", array_values($attribute)) . "')";
-          }
-          
-          return join(', ', $insertions);
-     }
-
-
-
-
-
-
-     /**
       * @param string $condition
       * @return SqlBuilder
+      * @throws Exception
      */
      public function where(string $condition): SqlBuilder
      {
-           return $this;
+           throw new Exception("Unable to execute : " . __METHOD__);
      }
 }

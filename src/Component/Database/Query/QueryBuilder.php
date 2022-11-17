@@ -3,11 +3,13 @@ namespace Laventure\Component\Database\Query;
 
 
 use Laventure\Component\Database\Connection\ConnectionInterface;
+use Laventure\Component\Database\Query\Builder\Builder;
 use Laventure\Component\Database\Query\Builder\SQL\Command\Delete;
 use Laventure\Component\Database\Query\Builder\SQL\Command\Insert;
 use Laventure\Component\Database\Query\Builder\SQL\Command\Select;
 use Laventure\Component\Database\Query\Builder\SQL\Command\Update;
-use Laventure\Component\Database\Query\Builder\Types\QueryBuilderContract;
+use Laventure\Component\Database\Query\Builder\Types\BaseQueryBuilder;
+use Laventure\Component\Database\Query\Resolver\QueryResolver;
 
 
 
@@ -21,38 +23,28 @@ use Laventure\Component\Database\Query\Builder\Types\QueryBuilderContract;
 class QueryBuilder
 {
 
+
+
        /**
-        * @var QueryBuilderContract
+        * @var Builder
        */
        protected $builder;
 
 
 
 
+
+
        /**
+        * QueryBuilder constructor .
+        *
         * @param ConnectionInterface $connection
         * @param string $table
        */
        public function __construct(ConnectionInterface $connection, string $table)
        {
-              $this->builder = QueryBuilderFactory::make($connection, $table);
+             $this->builder  = QueryBuilderFactory::make($connection, $table);
        }
-
-
-
-
-
-       /**
-        * @param array $wheres
-        * @return $this
-       */
-       public function wheres(array $wheres): self
-       {
-            $this->builder->wheres($wheres);
-
-            return $this;
-       }
-
 
 
 
@@ -87,6 +79,7 @@ class QueryBuilder
 
 
 
+
        /**
         * Return Update SQL Builder
         *
@@ -97,6 +90,8 @@ class QueryBuilder
        {
             return $this->builder->update($attributes);
        }
+
+
 
 
 
