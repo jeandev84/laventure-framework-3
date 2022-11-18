@@ -27,14 +27,6 @@ abstract class QueryBuilderContract
 
 
 
-    /**
-     * @var array
-    */
-    protected $criteria = [];
-
-
-
-
 
     /**
      * QueryBuilderContract constructor.
@@ -53,13 +45,13 @@ abstract class QueryBuilderContract
 
     /**
      * @param array $columns
-     * @param array $wheres
+     * @param array $criteria
      * @return Select
     */
-    public function select(array $columns, array $wheres = []): Select
+    public function select(array $columns, array $criteria = []): Select
     {
           $builder = $this->builder->select($columns);
-          $builder->criteria($wheres);
+          $builder->criteria($criteria);
           return $this->resolve($builder);
     }
 
@@ -82,15 +74,16 @@ abstract class QueryBuilderContract
     
     /**
      * @param array $attributes
-     * @param array $wheres
+     * @param array $criteria
      * @return Update
     */
-    public function update(array $attributes, array $wheres = []): Update
+    public function update(array $attributes, array $criteria): Update
     {
          $query = $this->builder->update($attributes);
-         $query->criteria($wheres);
+         $query->criteria($criteria);
          return $this->resolve($query);
     }
+
 
 
 
@@ -103,10 +96,10 @@ abstract class QueryBuilderContract
      *
      * @return mixed
     */
-    public function delete(array $wheres = [])
+    public function delete(array $criteria)
     {
         $query = $this->builder->delete();
-        $query->criteria($wheres);
+        $query->criteria($criteria);
         return $this->resolve($query);
     }
 

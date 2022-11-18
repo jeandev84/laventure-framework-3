@@ -100,13 +100,17 @@ class Statement implements QueryInterface
 
     /**
      * @param string $sql
+     * @param array $params
+     *
      * @return $this
     */
-    public function prepare($sql): QueryInterface
+    public function prepare($sql, array $params = []): QueryInterface
     {
+         $this->statement = $this->pdo->prepare($sql);
+
          $this->sql = $sql;
 
-         $this->statement = $this->pdo->prepare($sql);
+         $this->params = $params;
 
          return $this;
     }
@@ -147,19 +151,6 @@ class Statement implements QueryInterface
     }
 
 
-
-
-
-
-    /**
-     * @inheritDoc
-    */
-    public function params(array $params): QueryInterface
-    {
-          $this->params = $params;
-
-          return $this;
-    }
 
 
 
@@ -289,26 +280,13 @@ class Statement implements QueryInterface
 
 
 
-
-    /**
-     * @return int
-    */
-    public function rowCount(): int
-    {
-        return $this->fetch()->count();
-    }
-
-
-
-
-
-    /**
-     * @return array
-    */
-    public function errors(): array
-    {
+     /**
+      * @return array
+     */
+     public function errors(): array
+     {
         return $this->statement->errorInfo();
-    }
+     }
 
 
 

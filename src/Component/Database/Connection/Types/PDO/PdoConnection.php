@@ -279,8 +279,7 @@ class PdoConnection extends Connection implements PdoConnectionInterface
     */
     public function statement($sql, array $params = []): QueryInterface
     {
-          $this->statement->prepare($sql);
-          $this->statement->params($params);
+          $this->statement->prepare($sql, $params);
 
           return $this->statement;
     }

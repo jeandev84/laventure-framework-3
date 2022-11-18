@@ -10,18 +10,12 @@ interface QueryInterface
 
      /**
       * @param $sql
-      * @return $this
-     */
-     public function prepare($sql): QueryInterface;
-
-
-
-
-     /**
       * @param array $params
       * @return $this
      */
-     public function params(array $params): QueryInterface;
+     public function prepare($sql, array $params = []): QueryInterface;
+
+
 
 
 

@@ -63,8 +63,7 @@ abstract class SqlBuilder
       /**
        * @var array
       */
-      protected $parameters = [];
-
+      protected $criteria = [];
 
 
 
@@ -73,7 +72,7 @@ abstract class SqlBuilder
       /**
        * @var array
       */
-      protected $criteria = [];
+      protected $parameters = [];
 
 
 
@@ -223,11 +222,10 @@ abstract class SqlBuilder
       */
       public function criteria(array $criteria)
       {
-           foreach ($criteria as $column => $condition) {
-               $this->criteria[$column] = $condition;
-           }
+             foreach ($criteria as $column => $value) {
+                  $this->criteria[$column] = $value;
+             }
       }
-
 
 
 
@@ -237,9 +235,8 @@ abstract class SqlBuilder
       */
       public function getCriteria(): array
       {
-          return $this->criteria;
+            return $this->criteria;
       }
-
 
 
 

@@ -59,8 +59,8 @@ class QueryBuilder
     {
             $query = new SelectQuery($this->em);
             $query->addSelect($columns);
-            $query->addConstraints($criteria);
+            $query->addCriteria($criteria);
 
-            return $this->resolve($query);
+            return $this->qb->resolve($query);
     }
 }

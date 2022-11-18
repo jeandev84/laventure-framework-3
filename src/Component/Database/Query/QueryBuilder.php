@@ -104,7 +104,7 @@ class QueryBuilder
         * @param array $criteria
         * @return Update
        */
-       public function update(array $attributes, array $criteria = []): Update
+       public function update(array $attributes, array $criteria): Update
        {
             return $this->query->update($attributes, $criteria);
        }
@@ -119,7 +119,7 @@ class QueryBuilder
         * @param array $criteria
         * @return Delete
        */
-       public function delete(array $criteria = []): Delete
+       public function delete(array $criteria): Delete
        {
             return $this->query->delete($criteria);
        }
