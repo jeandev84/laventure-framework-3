@@ -21,7 +21,16 @@ abstract class QueryBuilderContract
     /**
      * @var Builder
     */
-    protected $query;
+    protected $builder;
+
+
+
+
+
+    /**
+     * @var array
+    */
+    protected $criteria = [];
 
 
 
@@ -35,7 +44,7 @@ abstract class QueryBuilderContract
     */
     public function __construct(ConnectionInterface $connection, $table)
     {
-         $this->query = new Builder($connection, $table);
+         $this->builder = new Builder($connection, $table);
     }
 
 
@@ -44,11 +53,14 @@ abstract class QueryBuilderContract
 
     /**
      * @param array $columns
+     * @param array $wheres
      * @return Select
     */
-    public function select(array $columns): Select
+    public function select(array $columns, array $wheres = []): Select
     {
-          return $this->resolve($this->query->select($columns));
+          $builder = $this->builder->select($columns);
+          $builder->criteria($wheres);
+          return $this->resolve($builder);
     }
 
 
@@ -57,24 +69,27 @@ abstract class QueryBuilderContract
 
     /**
      * @param array $attributes
-     * @return Insert
+     * @return false|int
     */
-    public function insert(array $attributes): Insert
+    public function insert(array $attributes)
     {
-         return $this->resolve($this->query->insert($attributes));
+         return $this->resolve($this->builder->insert($attributes));
     }
 
 
-
-
-
+    
+    
+    
     /**
      * @param array $attributes
-     * @return mixed
+     * @param array $wheres
+     * @return Update
     */
-    public function update(array $attributes)
+    public function update(array $attributes, array $wheres = []): Update
     {
-         return $this->resolve($this->query->update($attributes));
+         $query = $this->builder->update($attributes);
+         $query->criteria($wheres);
+         return $this->resolve($query);
     }
 
 
@@ -88,9 +103,11 @@ abstract class QueryBuilderContract
      *
      * @return mixed
     */
-    public function delete()
+    public function delete(array $wheres = [])
     {
-        return $this->resolve($this->query->delete());
+        $query = $this->builder->delete();
+        $query->criteria($wheres);
+        return $this->resolve($query);
     }
 
 
@@ -98,24 +115,12 @@ abstract class QueryBuilderContract
 
     /**
      * @return string
-     */
+    */
     public function getTable(): string
     {
-        return $this->query->getTable();
+        return $this->builder->getTable();
     }
 
-
-
-
-
-
-    /**
-     * @return SqlBuilderFactory
-    */
-    public function factory(): SqlBuilderFactory
-    {
-        return $this->query->getFactory();
-    }
 
 
 
@@ -127,12 +132,20 @@ abstract class QueryBuilderContract
     */
     public function resolve(SqlBuilder $command)
     {
-        if ($wheres = $command->getWheres()) {
-            $command->refreshWheres($this->resolveWheres($wheres));
-        }elseif ($command instanceof Insert) {
+        if ($command->getCriteria()) {
+            $command = $this->resolveCriteria($command);
+        }
+
+        if ($command instanceof Insert) {
             $data = $this->resolveInsertions($command->getData());
-            $command->refreshValues($data);
-        } elseif ($attributes = $command->getAttributes()){
+            $command->setValues($data);
+            if (! $command->execute()) {
+                return false;
+            }
+            return $command->lastId();
+        }
+
+        if ($attributes = $command->getAttributes()){
             $command->setAttributes($this->resolveAttributes($attributes));
             $command->setParameters($attributes);
         }
@@ -145,18 +158,16 @@ abstract class QueryBuilderContract
 
 
     /**
-     * @param array $wheres
-     * @return array
+     * @param SqlBuilder $builder
+     * @return mixed
     */
-    protected function resolveWheres(array $wheres): array
+    protected function resolveCriteria(SqlBuilder $builder)
     {
-        $criteria = [];
-
-        foreach ($wheres as $column => $condition) {
-            $criteria[] = "{$column} = '{$condition}'";
+        foreach ($builder->getCriteria() as $column => $condition) {
+            $builder->where("{$column} = '{$condition}'");
         }
 
-        return $criteria;
+        return $builder;
     }
 
 

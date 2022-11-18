@@ -86,50 +86,11 @@ interface QueryInterface
 
 
 
+
      /**
       * @return QueryHydrateInterface
      */
      public function fetch(): QueryHydrateInterface;
-
-
-
-
-     /**
-      * Fetch all records
-      *
-      * @return mixed
-     */
-     public function fetchAll();
-
-
-
-
-
-     /**
-      * Fetch one record
-      *
-      * @return mixed
-     */
-     public function fetchOne();
-
-
-
-
-
-     /**
-      * Fetch columns
-      *
-      * @return mixed
-     */
-     public function fetchColumns();
-
-
-
-
-     /**
-      * @return mixed
-     */
-     public function rowCount();
 
 
 

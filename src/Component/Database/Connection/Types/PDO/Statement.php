@@ -291,40 +291,6 @@ class Statement implements QueryInterface
 
 
     /**
-     * @inheritDoc
-    */
-    public function fetchAll()
-    {
-         return $this->fetch()->all();
-    }
-
-
-
-
-    /**
-     * @inheritDoc
-    */
-    public function fetchOne()
-    {
-         return $this->fetch()->one();
-    }
-
-
-    
-
-    /**
-     * @inheritDoc
-    */
-    public function fetchColumns()
-    {
-         return $this->fetch()->columns();
-    }
-
-
-
-
-
-    /**
      * @return int
     */
     public function rowCount(): int

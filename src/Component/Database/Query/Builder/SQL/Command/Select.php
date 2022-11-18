@@ -267,7 +267,7 @@ class Select extends SqlBuilder
        */
        public function fetch(): QueryHydrateInterface
        {
-             return $this->getStatement()->fetch();
+             return $this->getQuery()->fetch();
        }
 
 

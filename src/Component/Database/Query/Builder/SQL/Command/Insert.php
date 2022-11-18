@@ -114,7 +114,7 @@ class Insert extends SqlBuilder
         * @param array $values
         * @return void
        */
-       public function refreshValues(array $values)
+       public function setValues(array $values)
        {
             $this->values = array_replace($this->values, $values);
        }

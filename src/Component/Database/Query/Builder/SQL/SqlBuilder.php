@@ -69,6 +69,15 @@ abstract class SqlBuilder
 
 
 
+
+      /**
+       * @var array
+      */
+      protected $criteria = [];
+
+
+
+
       /**
        * @var ConnectionInterface
       */
@@ -209,32 +218,15 @@ abstract class SqlBuilder
 
 
       /**
-       * @param array $wheres
-       * @return $this
-      */
-      public function addWheres(array $wheres): self
-      {
-           if (! empty($wheres)) {
-               foreach ($wheres as $where) {
-                   $this->where($where);
-               }
-           }
-
-           return $this;
-      }
-
-
-
-
-      /**
-       * @param array $wheres
+       * @param array $criteria
        * @return void
       */
-      public function refreshWheres(array $wheres)
+      public function criteria(array $criteria)
       {
-            $this->wheres = $wheres;
+           foreach ($criteria as $column => $condition) {
+               $this->criteria[$column] = $condition;
+           }
       }
-
 
 
 
@@ -243,11 +235,52 @@ abstract class SqlBuilder
       /**
        * @return array
       */
-      public function getWheres(): array
+      public function getCriteria(): array
+      {
+          return $this->criteria;
+      }
+
+
+
+
+
+      /**
+       * @param array $wheres
+       * @return $this
+      */
+      public function addConstraints(array $wheres): self
+      {
+           foreach ($wheres as $where) {
+               $this->where($where);
+           }
+
+           return $this;
+      }
+
+
+
+
+
+      /**
+       * @return array
+      */
+      public function getConstraints(): array
       {
            return $this->wheres;
       }
 
+
+
+
+
+
+      /**
+       * @return void
+      */
+      public function removeConstraints()
+      {
+           $this->wheres = [];
+      }
 
 
 
@@ -494,7 +527,7 @@ abstract class SqlBuilder
       /**
        * Query statement
        *
-       * @return QueryInterface
+       * @return mixed|QueryInterface
       */
       public function getStatement(): QueryInterface
       {
@@ -512,7 +545,7 @@ abstract class SqlBuilder
       */
       public function execute(): bool
       {
-           return $this->getStatement()->execute();
+           return $this->getQuery()->execute();
       }
 
 
@@ -524,7 +557,7 @@ abstract class SqlBuilder
       */
       public function lastId(): int
       {
-           return $this->getStatement()->lastId();
+           return $this->getQuery()->lastId();
       }
 
 

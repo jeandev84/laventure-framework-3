@@ -55,30 +55,6 @@ class Builder
 
 
       /**
-       * @return SqlBuilderFactory
-      */
-      public function getFactory(): SqlBuilderFactory
-      {
-           return $this->sql->getFactory();
-      }
-
-
-
-
-
-      /**
-       * @return ConnectionInterface
-      */
-      public function getConnection(): ConnectionInterface
-      {
-           return $this->sql->getConnection();
-      }
-
-
-
-
-
-      /**
        * Return table name
        *
        * @return string

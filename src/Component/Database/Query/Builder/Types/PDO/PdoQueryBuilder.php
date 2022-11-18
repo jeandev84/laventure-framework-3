@@ -11,13 +11,13 @@ use Laventure\Component\Database\Query\Builder\Types\QueryBuilderContract;
 
 
 /**
- * @class QueryBuilder
+ * @class PdoQueryBuilder
  *
  * @package Laventure\Component\Database\Query\Builder\Types\PDO
  *
  * @author
 */
-class QueryBuilder extends QueryBuilderContract
+class PdoQueryBuilder extends QueryBuilderContract
 {
 
 
@@ -59,15 +59,14 @@ class QueryBuilder extends QueryBuilderContract
       /**
        * @inheritdoc
       */
-      protected function resolveWheres(array $wheres): array
+      protected function resolveCriteria(SqlBuilder $builder)
       {
-           $bindings = [];
-
-           foreach ($wheres as $column) {
-              $bindings[] = "$column = :{$column}";
+           foreach ($builder->getCriteria() as $column => $value) {
+                $builder->where("$column = :{$column}");
+                $builder->setParameter($column, $value);
            }
 
-           return $bindings;
+           return $builder;
       }
 
 

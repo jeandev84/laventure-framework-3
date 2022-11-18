@@ -3,14 +3,11 @@ namespace Laventure\Component\Database\Query;
 
 
 use Laventure\Component\Database\Connection\ConnectionInterface;
-use Laventure\Component\Database\Query\Builder\Builder;
 use Laventure\Component\Database\Query\Builder\SQL\Command\Delete;
-use Laventure\Component\Database\Query\Builder\SQL\Command\Insert;
 use Laventure\Component\Database\Query\Builder\SQL\Command\Select;
 use Laventure\Component\Database\Query\Builder\SQL\Command\Update;
-use Laventure\Component\Database\Query\Builder\Types\BaseQueryBuilder;
-use Laventure\Component\Database\Query\Resolver\QueryResolver;
-
+use Laventure\Component\Database\Query\Builder\SQL\SqlBuilder;
+use Laventure\Component\Database\Query\Builder\Types\QueryBuilderContract;
 
 
 /**
@@ -26,9 +23,9 @@ class QueryBuilder
 
 
        /**
-        * @var Builder
+        * @var QueryBuilderContract
        */
-       protected $builder;
+       protected $query;
 
 
 
@@ -43,8 +40,26 @@ class QueryBuilder
        */
        public function __construct(ConnectionInterface $connection, string $table)
        {
-             $this->builder  = QueryBuilderFactory::make($connection, $table);
+             $this->query  = QueryBuilderFactory::make($connection, $table);
        }
+
+
+
+
+
+
+       /**
+        * Resolve Command SQL
+        *
+        * @param SqlBuilder $builder
+        * @return mixed
+       */
+       public function resolve(SqlBuilder $builder)
+       {
+            return $this->query->resolve($builder);
+       }
+
+
 
 
 
@@ -52,13 +67,15 @@ class QueryBuilder
        /**
         * Return Select SQL Builder
         *
-        * @param array $selects
+        * @param array $columns
+        * @param array $criteria
         * @return Select
        */
-       public function select(array $selects = ["*"]): Select
+       public function select(array $columns = ["*"], array $criteria = []): Select
        {
-            return $this->builder->select($selects);
+            return $this->query->select($columns, $criteria);
        }
+
 
 
 
@@ -68,11 +85,11 @@ class QueryBuilder
         * Return Insert SQL Builder
         *
         * @param array $attributes
-        * @return Insert
+        * @return false|int
        */
-       public function insert(array $attributes): Insert
+       public function insert(array $attributes)
        {
-            return $this->builder->insert($attributes);
+            return $this->query->insert($attributes);
        }
 
 
@@ -84,13 +101,13 @@ class QueryBuilder
         * Return Update SQL Builder
         *
         * @param array $attributes
+        * @param array $criteria
         * @return Update
        */
-       public function update(array $attributes): Update
+       public function update(array $attributes, array $criteria = []): Update
        {
-            return $this->builder->update($attributes);
+            return $this->query->update($attributes, $criteria);
        }
-
 
 
 
@@ -99,10 +116,11 @@ class QueryBuilder
        /**
         * Return Delete SQL Builder
         *
+        * @param array $criteria
         * @return Delete
        */
-       public function delete(): Delete
+       public function delete(array $criteria = []): Delete
        {
-            return $this->builder->delete();
+            return $this->query->delete($criteria);
        }
 }

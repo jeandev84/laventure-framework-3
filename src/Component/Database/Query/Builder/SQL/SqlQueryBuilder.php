@@ -51,30 +51,6 @@ class SqlQueryBuilder implements SqlQueryBuilderInterface
 
 
 
-
-       /**
-        * @return ConnectionInterface
-       */
-       public function getConnection(): ConnectionInterface
-       {
-             return $this->connection;
-       }
-
-
-
-
-
-       /**
-        * @return SqlBuilderFactory
-       */
-       public function getFactory(): SqlBuilderFactory
-       {
-            return $this->factory;
-       }
-
-
-
-
        /**
         * @param array $selects
         * @param string $table

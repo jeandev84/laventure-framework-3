@@ -3,7 +3,7 @@ namespace Laventure\Component\Database\Query;
 
 
 use Laventure\Component\Database\Connection\ConnectionType;
-use Laventure\Component\Database\Query\Builder\Types\PDO\QueryBuilder as PdoQueryBuilder;
+use Laventure\Component\Database\Query\Builder\Types\PDO\PdoQueryBuilder;
 use Laventure\Component\Database\Query\Builder\Types\QueryBuilderContract;
 
 

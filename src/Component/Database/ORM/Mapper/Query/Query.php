@@ -8,6 +8,7 @@ use Laventure\Component\Database\ORM\Mapper\Manager\EntityManager;
 
 
 
+
 /**
  * Query
 */
@@ -52,7 +53,7 @@ class Query
        */
        public function getResult()
        {
-            $this->em->attaches($objects = $this->statement->fetchAll());
+            $this->em->attaches($objects = $this->statement->fetch()->all());
 
             return $objects;
        }
@@ -69,7 +70,7 @@ class Query
        */
        public function getOneOrNullResult()
        {
-            $this->em->attach($object = $this->statement->fetchOne());
+            $this->em->attach($object = $this->statement->fetch()->one());
 
             return $object;
        }
@@ -85,7 +86,7 @@ class Query
        */
        public function getArrayColumns()
        {
-            return $this->statement->fetchColumns();
+            return $this->statement->fetch()->columns();
        }
 
 
@@ -100,7 +101,7 @@ class Query
        */
        public function count()
        {
-             return $this->statement->rowCount();
+             return $this->statement->fetch()->count();
        }
 
 
